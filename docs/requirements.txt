@@ -1,0 +1,7 @@
+sphinx>=7.3.2
+sphinx-book-theme==1.1.1  # v1.1.2 requires pydata-sphinx-theme v0.15
+sphinx-copybutton>=0.5.0
+sphinx_design
+sphinxemoji
+sphinx-autodocgen
+sphinxcontrib-napoleon
