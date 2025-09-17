@@ -1,6 +1,7 @@
-jax[cuda12]>=0.5.3
+jax==0.5.3
+jaxdecomp==0.2.7
 tensorflow
-orbax-checkpoint>=0.11.18
+orbax-checkpoint==0.11.18
 numpy
 matplotlib
 h5py

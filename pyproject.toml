@@ -1,0 +1,29 @@
+[project]
+name = "jaxion"
+description="A differentiable simulation library for fuzzy dark matter in JAX"
+authors = [
+    { name = "Philip Mocz", email = "philip.mocz@gmail.com" },
+]
+readme = "README.md"
+requires-python = ">=3.12"
+license = {file = "LICENSE"}
+dynamic = ["version", "dependencies"]
+
+[project.urls]
+Documentation = "https://jaxion.readthedocs.io"
+Homepage = "https://github.com/pmocz/jaxion"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements-core.txt"]}
+
+[project.optional-dependencies]
+gpu = [
+    "jax[cuda12]==0.5.3",
+]
+
+[tool.setuptools-git-versioning]
+enabled = true
+
+[build-system]
+requires = ["setuptools>=70.1.1", "wheel", "setuptools-git-versioning>=2.0,<3"]
+build-backend = "setuptools.build_meta"
