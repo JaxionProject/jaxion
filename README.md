@@ -17,7 +17,7 @@
 [license-link]:        https://opensource.org/licenses/Apache-2.0
 [license-badge]:       https://img.shields.io/badge/License-Apache_2.0-blue.svg
 
-JAX-powered simulation library for numerical experiments of fuzzy dark matter, stars, gas + more!
+A simple JAX-powered simulation library for numerical experiments of fuzzy dark matter, stars, gas + more!
 
 Author: [Philip Mocz (@pmocz)](https://github.com/pmocz/)
 
