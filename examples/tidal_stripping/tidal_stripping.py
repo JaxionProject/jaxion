@@ -6,6 +6,9 @@ sys.path.append("../../")  # XXX TODO: remove
 import jaxion
 import argparse
 
+# switch on for double precision
+# jax.config.update("jax_enable_x64", True)
+
 """
 Tidal Stripping of Fuzzy Dark Matter soliton
 
@@ -17,7 +20,7 @@ Usage:
 
 
 def setup_simulation(resolution_multiplier):
-    # Parameters to change from default values
+    # Parameters added/changed from default values
     params = {
         "physics": {
             "external_potential": True,
@@ -31,6 +34,11 @@ def setup_simulation(resolution_multiplier):
     sim = jaxion.Simulation(params)
 
     # Set initial conditions
+    M_soliton = 1.0e9  # mass of soliton (Msun)
+    k_soliton = 4.0  # wave-number for orbital motion of soliton
+    r_separation = 2.0  # separation of soliton from center (kpc)
+    m22 = sim.params["quantum"]["m22"]
+
     # XXX
 
     return sim

@@ -1,8 +1,8 @@
 {
   "physics": {
     "quantum": true,
-    "self_gravity": true,
-    "hydrodynamics": false,
+    "gravity": true,
+    "hydro": false,
     "particles": false,
     "cosmology": false,
     "external_potential": false
@@ -25,7 +25,7 @@
   "quantum": {
     "m22": 1.0
   },
-  "hydrodynamics": {
+  "hydro": {
     "gamma": 1.0
   },
   "particles": {

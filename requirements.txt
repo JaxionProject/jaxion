@@ -5,4 +5,5 @@ orbax-checkpoint==0.11.18
 optax==0.2.5
 numpy
 matplotlib
+json
 setuptools>=70.1.1
