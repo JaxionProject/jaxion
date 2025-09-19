@@ -8,7 +8,8 @@ def print_parameters(params):
 
 def set_up_parameters(user_overwrites):
     # first load the default params
-    with importlib.resources.open_text("jaxion", "params_default.json") as f:
+    params_path = importlib.resources.files("jaxion") / "params_default.json"
+    with params_path.open("r", encoding="utf-8") as f:
         params = json.load(f)
 
     # go down to lowest level in dict and eliminate meta-data

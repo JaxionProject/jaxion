@@ -1,10 +1,9 @@
-import jax
 import jax.numpy as jnp
+import jaxion
+import argparse
 import sys  # XXX TODO: remove
 
 sys.path.append("../../")  # XXX TODO: remove
-import jaxion
-import argparse
 
 # switch on for double precision
 # jax.config.update("jax_enable_x64", True)
@@ -34,7 +33,7 @@ def setup_simulation(resolution_multiplier):
     sim = jaxion.Simulation(params)
 
     # Set initial conditions (orbiting soliton in external potential)
-    M_soliton = 1.0e9  # mass of soliton (Msun)
+    M_soliton = 1.0e9  # mass of soliton (M_sun)
     k_soliton = 4.0  # wave-number for orbital motion of soliton
     r_separation = 2.0  # separation of soliton from center (kpc)
     m_22 = sim.params["quantum"]["m_22"]
@@ -61,7 +60,7 @@ def setup_simulation(resolution_multiplier):
 
     # add external potential (host halo)
     M_halo = 0.25 * box_size * k_soliton**2 * hbar**2 / (G * m**2)
-    print(f"M_halo: {M_halo:.2e} Msun")
+    print(f"M_halo: {M_halo:.2e} M_sun")
     assert M_halo > M_soliton * 2.0  # halo should be much more massive than soliton
 
     r = jnp.sqrt(
