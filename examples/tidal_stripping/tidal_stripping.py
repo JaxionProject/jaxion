@@ -1,9 +1,6 @@
 import jax.numpy as jnp
 import jaxion
 import argparse
-import sys  # XXX TODO: remove
-
-sys.path.append("../../")  # XXX TODO: remove
 
 # switch on for double precision
 # jax.config.update("jax_enable_x64", True)
@@ -80,6 +77,8 @@ def main():
 
     sim = setup_simulation(args.res)
     sim.run()
+
+    return sim
 
 
 if __name__ == "__main__":
