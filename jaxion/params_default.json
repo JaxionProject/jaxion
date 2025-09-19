@@ -65,5 +65,8 @@
     "Omega_m": 0.3,
     "Omega_Lambda": 0.7
   },
-  "git_hash": "unknown"
+  "version": {
+    "default": "unknown",
+    "description": "version of the jaxion library used to create these parameters (automatically detected)."
+  }
 }

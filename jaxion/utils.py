@@ -4,6 +4,7 @@ import importlib.util
 from pathlib import Path
 import importlib.resources
 import json
+from importlib.metadata import version
 
 
 def print_parameters(params):
@@ -22,7 +23,8 @@ def set_up_parameters(user_overwrites):
     # update default values with user-supplied overwrites
     params = _update_dicts(params, user_overwrites)
 
-    # XXX update git_hash/library version
+    # detect jaxion version
+    params["version"] = version("jaxion")
 
     return params
 
