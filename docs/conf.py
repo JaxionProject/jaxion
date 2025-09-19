@@ -37,12 +37,12 @@ extensions = [
 html_theme_options = {
     "collapse_navigation": True,
     "navigation_depth": 4,
-    "repository_url": "https://github.com/pmocz/jaxion",
+    "repository_url": "https://github.com/JaxionProject/jaxion",
     "use_repository_button": True,
     "icon_links": [
         {
             "name": "GitHub",
-            "url": "https://github.com/pmocz/jaxion",
+            "url": "https://github.com/JaxionProject/jaxion",
             "icon": "fa-brands fa-github",
         },
     ],

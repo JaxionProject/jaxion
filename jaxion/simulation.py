@@ -41,8 +41,8 @@ class Simulation:
                 jnp.zeros((self.resolution, self.resolution, self.resolution)) * 1j
             )
         if self.params["physics"]["external_potential"]:
-            self.state["V_ext"] = (
-                jnp.zeros((self.resolution, self.resolution, self.resolution))
+            self.state["V_ext"] = jnp.zeros(
+                (self.resolution, self.resolution, self.resolution)
             )
 
         # XXX TODO: finish
@@ -61,10 +61,15 @@ class Simulation:
     @property
     def dx(self):
         return self.box_size / self.resolution
-    
+
     @property
     def axion_mass(self):
-        return self.params["quantum"]["m_22"] * 1.0e-22 * constants["electron_volt"] / constants["speed_of_light"]**2
+        return (
+            self.params["quantum"]["m_22"]
+            * 1.0e-22
+            * constants["electron_volt"]
+            / constants["speed_of_light"] ** 2
+        )
 
     @property
     def params(self):
@@ -124,7 +129,7 @@ class Simulation:
 
         # Simulation parameters
         dx = self.dx
-        m_per_hbar = self.axion_mass/ constants["reduced_planck_constant"]
+        m_per_hbar = self.axion_mass / constants["reduced_planck_constant"]
 
         dt_fac = 1.0
         dt_kin = dt_fac * (m_per_hbar / 6.0) * (dx * dx)
@@ -143,7 +148,9 @@ class Simulation:
 
         # Checkpointer
         options = ocp.CheckpointManagerOptions()
-        checkpoint_dir = checkpoint_dir = os.path.join(os.getcwd(), self.params["output"]["path"])
+        checkpoint_dir = checkpoint_dir = os.path.join(
+            os.getcwd(), self.params["output"]["path"]
+        )
         path = ocp.test_utils.erase_and_create_empty(checkpoint_dir)
         async_checkpoint_manager = ocp.CheckpointManager(path, options=options)
 
@@ -157,8 +164,13 @@ class Simulation:
                 V = self._calc_grav_potential(state, k_sq)
             if self.params["physics"]["quantum"] and self.params["physics"]["gravity"]:
                 state["psi"] = quantum_kick(state["psi"], V, m_per_hbar, 0.5 * dt)
-            if self.params["physics"]["quantum"] and self.params["physics"]["external_potential"]:
-                state["psi"] = quantum_kick(state["psi"], state["V_ext"], m_per_hbar, 0.5 * dt)
+            if (
+                self.params["physics"]["quantum"]
+                and self.params["physics"]["external_potential"]
+            ):
+                state["psi"] = quantum_kick(
+                    state["psi"], state["V_ext"], m_per_hbar, 0.5 * dt
+                )
 
             # Drift (full-step)
             if self.params["physics"]["quantum"]:
@@ -169,8 +181,13 @@ class Simulation:
                 V = self._calc_grav_potential(state, k_sq)
             if self.params["physics"]["quantum"] and self.params["physics"]["gravity"]:
                 state["psi"] = quantum_kick(state["psi"], V, m_per_hbar, 0.5 * dt)
-            if self.params["physics"]["quantum"] and self.params["physics"]["external_potential"]:
-                state["psi"] = quantum_kick(state["psi"], state["V_ext"], m_per_hbar, 0.5 * dt)
+            if (
+                self.params["physics"]["quantum"]
+                and self.params["physics"]["external_potential"]
+            ):
+                state["psi"] = quantum_kick(
+                    state["psi"], state["V_ext"], m_per_hbar, 0.5 * dt
+                )
 
             # update time
             state["t"] += dt

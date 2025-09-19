@@ -10,8 +10,8 @@
 [status-badge]:        https://www.repostatus.org/badges/latest/active.svg
 [pypi-link]:           https://pypi.org/project/jaxion
 [pypi-badge]:          https://img.shields.io/pypi/v/jaxion?label=PyPI&logo=pypi
-[workflow-test-link]:  https://github.com/pmocz/jaxion/actions/workflows/test-package.yml
-[workflow-test-badge]: https://github.com/pmocz/jaxion/actions/workflows/test-package.yml/badge.svg?event=push
+[workflow-test-link]:  https://github.com/JaxionProject/jaxion/actions/workflows/test-package.yml
+[workflow-test-badge]: https://github.com/JaxionProject/jaxion/actions/workflows/test-package.yml/badge.svg?event=push
 [docs-link]:           https://jaxion.readthedocs.io
 [docs-badge]:          https://readthedocs.org/projects/jaxion/badge
 [license-link]:        https://opensource.org/licenses/Apache-2.0
@@ -28,18 +28,24 @@ Jaxion is built for multi-GPU scalability and is fully differentiable. It is a h
 
 ## Getting started
 
-Install with 
+Install with:
 
 ```console
 pip install jaxion
 ```
 
-Check out the `examples` directory for demonstrations of using Jaxion.
+or, for GPU support use:
+
+```console
+pip install jaxion[cuda12]
+```
+
+Check out the `examples/` directory for demonstrations of using Jaxion.
 
 
 ## Links
 
-* [Code repository](https://github.com/pmocz/jaxion) on GitHub (this page).
+* [Code repository](https://github.com/JaxionProject/jaxion) on GitHub (this page).
 * [Documentation](https://jaxion.readthedocs.io) for up-to-date information about installing and running jaxion.
 
 

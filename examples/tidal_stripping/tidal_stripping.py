@@ -10,7 +10,7 @@ import argparse
 # jax.config.update("jax_enable_x64", True)
 
 """
-Tidal Stripping of Fuzzy Dark Matter soliton
+Tidal Stripping of Fuzzy Dark Matter soliton in an external potential
 
 Philip Mocz (2025)
 

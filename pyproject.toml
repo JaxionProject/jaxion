@@ -11,13 +11,13 @@ dynamic = ["version", "dependencies"]
 
 [project.urls]
 Documentation = "https://jaxion.readthedocs.io"
-Homepage = "https://github.com/pmocz/jaxion"
+Homepage = "https://github.com/JaxionProject/jaxion"
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements-core.txt"]}
 
 [project.optional-dependencies]
-gpu = [
+cuda12 = [
     "jax[cuda12]==0.5.3",
 ]
 
