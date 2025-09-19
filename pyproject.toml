@@ -9,6 +9,9 @@ requires-python = ">=3.11"
 license = {file = "LICENSE"}
 dynamic = ["version", "dependencies"]
 
+[tool.setuptools.package-data]
+"jaxion" = ["*.json"]
+
 [project.urls]
 Documentation = "https://jaxion.readthedocs.io"
 Homepage = "https://github.com/JaxionProject/jaxion"
