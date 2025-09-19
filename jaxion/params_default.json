@@ -1,11 +1,29 @@
 {
   "physics": {
-    "quantum": true,
-    "gravity": true,
-    "hydro": false,
-    "particles": false,
-    "cosmology": false,
-    "external_potential": false
+    "quantum": { 
+      "default": true,
+      "description": "switch on for fuzzy dark matter"
+    },
+    "gravity": { 
+      "default": true,
+      "description": "switch on for self-gravity"
+    },
+    "hydro": { 
+      "default": false,
+      "description": "switch on for hydrodynamics"
+    },
+    "particles": { 
+      "default": false,
+      "description": "switch on for particle-mesh particles"
+    },
+    "cosmology": { 
+      "default": false,
+      "description": "switch on for cosmological factors/comoving units."
+    },
+    "external_potential": { 
+      "default": false,
+      "description": "switch on for external gravitational potential."
+    }
   },
   "domain": {
     "box_size": 10.0,
@@ -29,7 +47,7 @@
     "gamma": 1.0
   },
   "particles": {
-    "num_particles": 1000,
+    "num_particles": 0,
     "particle_mass": 1.0
   },
   "cosmology": {

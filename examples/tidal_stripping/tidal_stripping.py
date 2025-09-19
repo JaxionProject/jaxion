@@ -39,7 +39,7 @@ def setup_simulation(resolution_multiplier):
     r_separation = 2.0  # separation of soliton from center (kpc)
     m22 = sim.params["quantum"]["m22"]
 
-    # XXX
+    # XXX update git_hash/library version
 
     return sim
 

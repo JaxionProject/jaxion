@@ -1,12 +1,11 @@
 import jax
 import jax.numpy as jnp
 from functools import partial
-import importlib.resources
-import json
 
 from .constants import constants
 from .quantum import quantum_kick, quantum_drift
 from .gravity import calculate_gravitational_potential
+from .utils import set_up_params, print_params
 
 
 class Simulation:
@@ -20,28 +19,24 @@ class Simulation:
     """
 
     def __init__(self, params):
-        # start from default simulation parameters
-        with importlib.resources.open_text("jaxion", "params_default.json") as f:
-            self._params = json.load(f)
-        # update with user params
-        for key in params:
-            if key in self._params:
-                self._params[key].update(params[key])
-            else:
-                raise KeyError(f"Unknown parameter key: {key}")
+        # start from default simulation parameters and update with user params
+        self._params = set_up_params(params)
+
+        # additional checks
+        if self.resolution % 2 != 0:
+            raise ValueError("Resolution must be divisible by 2.")
+
+        print_params(self.params)
 
         # simulation state
         self.state = {}
         self.state["t"] = 0.0
         if self.params["physics"]["quantum"]:
-            self.state["psi"] = jnp.zeros((self.resolution, self.resolution, self.resolution)) * 1j
+            self.state["psi"] = (
+                jnp.zeros((self.resolution, self.resolution, self.resolution)) * 1j
+            )
 
         # XXX TODO: finish
-
-        # checks
-        if self.resolution % 2 != 0:
-            raise ValueError("Resolution must be divisible by 2.")
-
 
     @property
     def resolution(self):
@@ -116,7 +111,7 @@ class Simulation:
         """
 
         # Simulation parameters
-        dt = 0.1 # XXX
+        dt = 0.1  # XXX
         nt = 100
 
         # Fourier space variables
