@@ -21,6 +21,9 @@ def setup_simulation(resolution_multiplier):
         "physics": {
             "external_potential": True,
         },
+        "domain": {
+            "resolution_multiplier": resolution_multiplier,
+        },
         "output": {
             "path": f"./checkpoints{resolution_multiplier}/",
         },

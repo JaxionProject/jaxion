@@ -10,7 +10,7 @@
     },
     "hydro": { 
       "default": false,
-      "description": "switch on for hydrodynamics."
+      "description": "switch on for hydrodynamics (isothermal)."
     },
     "particles": { 
       "default": false,
@@ -55,7 +55,10 @@
     }
   },
   "hydro": {
-    "gamma": 1.0
+    "sound_speed": { 
+      "default": 1.0,
+      "description": "Isothermal sound speed (km/s)."
+    }
   },
   "particles": {
     "num_particles": 0,

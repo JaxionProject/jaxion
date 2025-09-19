@@ -207,9 +207,12 @@ class Simulation:
         async_checkpoint_manager.wait_until_finished()
         t_start_timer = time.time()
         for i in range(1, num_checkpoints + 1):
-            percent = int(100 * i / num_checkpoints)
-            print(f"{percent:.1f}%")
             state = jax.lax.fori_loop(0, nt_sub, _update, init_val=state)
+            percent = int(100 * i / num_checkpoints)
+            elapsed = time.time() - t_start_timer
+            est_total = elapsed / i * num_checkpoints
+            est_remaining = est_total - elapsed
+            print(f"{percent:.1f}%: estimated time remaining (s): {est_remaining:.1f}")
             async_checkpoint_manager.save(i, args=ocp.args.StandardSave(state))
             plot_sim(state, checkpoint_dir, i, vmin, vmax)
             async_checkpoint_manager.wait_until_finished()
