@@ -6,7 +6,7 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">=3.11"
-license = {file = "LICENSE"}
+license = "Apache-2.0"
 dynamic = ["version", "dependencies"]
 
 [tool.setuptools.package-data]
@@ -17,7 +17,7 @@ Documentation = "https://jaxion.readthedocs.io"
 Homepage = "https://github.com/JaxionProject/jaxion"
 
 [tool.setuptools.dynamic]
-dependencies = {file = ["requirements-core.txt"]}
+dependencies = {file = ["requirements.txt"]}
 
 [project.optional-dependencies]
 cuda12 = [

@@ -22,5 +22,8 @@ def plot_sim(state, checkpoint_dir, i, vmin, vmax):
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
 
-    plt.tight_layout()
-    plt.savefig(os.path.join(checkpoint_dir, f"snap{i:03d}.png"))
+    plt.savefig(
+        os.path.join(checkpoint_dir, f"snap{i:03d}.png"),
+        bbox_inches="tight",
+        pad_inches=0,
+    )

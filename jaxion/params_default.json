@@ -31,7 +31,7 @@
       "description": "periodic domain box size (kpc)."
     },
     "resolution_base": { 
-      "default": 64,
+      "default": 32,
       "description": "base resolution per linear dimension."
     },
     "resolution_multiplier": { 
