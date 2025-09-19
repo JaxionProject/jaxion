@@ -2,19 +2,19 @@
   "physics": {
     "quantum": { 
       "default": true,
-      "description": "switch on for fuzzy dark matter"
+      "description": "switch on for fuzzy dark matter."
     },
     "gravity": { 
       "default": true,
-      "description": "switch on for self-gravity"
+      "description": "switch on for self-gravity."
     },
     "hydro": { 
       "default": false,
-      "description": "switch on for hydrodynamics"
+      "description": "switch on for hydrodynamics."
     },
     "particles": { 
       "default": false,
-      "description": "switch on for particle-mesh particles"
+      "description": "switch on for particle-mesh particles."
     },
     "cosmology": { 
       "default": false,
@@ -26,22 +26,33 @@
     }
   },
   "domain": {
-    "box_size": 10.0,
-    "resolution_base": 64,
-    "resolution_multiplier": 1
+    "box_size": { 
+      "default": 10.0,
+      "description": "periodic domain box size (kpc)."
+    },
+    "resolution_base": { 
+      "default": 64,
+      "description": "base resolution per linear dimension."
+    },
+    "resolution_multiplier": { 
+      "default": 1,
+      "description": "resolution multiplier."
+    }
   },
   "time": {
     "start": 0.0,
-    "stop": 1.0,
+    "end": 1.0,
     "adaptive": false
   },
   "output": {
     "path": "./checkpoints",
-    "num_checkpoints": 100,
-    "save": true
+    "num_checkpoints": 100
   },
   "quantum": {
-    "m22": 1.0
+    "m_22": { 
+      "default": 1.0,
+      "description": "axion mass in units of 10^{-22} eV."
+    }
   },
   "hydro": {
     "gamma": 1.0
