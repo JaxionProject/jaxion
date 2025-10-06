@@ -8,6 +8,7 @@ import time
 from .constants import constants
 from .quantum import quantum_kick, quantum_drift
 from .gravity import calculate_gravitational_potential
+from .hydro import hydro_fluxes, hydro_accelerate
 from .utils import set_up_parameters, print_parameters
 from .visualization import plot_sim
 
@@ -44,6 +45,19 @@ class Simulation:
             self.state["V_ext"] = jnp.zeros(
                 (self.resolution, self.resolution, self.resolution)
             )
+        if self.params["physics"]["hydro"]:
+            self.state["rho"] = jnp.zeros(
+                (self.resolution, self.resolution, self.resolution)
+            )
+            self.state["vx"] = jnp.zeros(
+                (self.resolution, self.resolution, self.resolution)
+            )
+            self.state["vy"] = jnp.zeros(
+                (self.resolution, self.resolution, self.resolution)
+            )
+            self.state["vz"] = jnp.zeros(
+                (self.resolution, self.resolution, self.resolution)
+            )
 
         # XXX TODO: finish
 
@@ -72,6 +86,10 @@ class Simulation:
         )
 
     @property
+    def sound_speed(self):
+        return self.params["hydro"]["sound_speed"]
+
+    @property
     def params(self):
         return self._params
 
@@ -96,6 +114,8 @@ class Simulation:
         rho_bar = 0.0
         if self.params["physics"]["quantum"]:
             rho_bar += jnp.mean(jnp.abs(state["psi"]) ** 2)
+        if self.params["physics"]["hydro"]:
+            rho_bar += jnp.mean(state["rho"])
         return rho_bar
 
     def _calc_grav_potential(self, state, k_sq):
@@ -104,6 +124,8 @@ class Simulation:
         rho_tot = 0.0
         if self.params["physics"]["quantum"]:
             rho_tot += jnp.abs(state["psi"]) ** 2
+        if self.params["physics"]["hydro"]:
+            rho_tot += state["rho"]
         return calculate_gravitational_potential(rho_tot, k_sq, G, rho_bar)
 
     @property
@@ -135,6 +157,8 @@ class Simulation:
         dt_kin = dt_fac * (m_per_hbar / 6.0) * (dx * dx)
         t_end = self.params["time"]["end"]
 
+        cs = self.params["hydro"]["sound_speed"]
+
         # round up to the nearest multiple of num_checkpoints
         num_checkpoints = self.params["output"]["num_checkpoints"]
         nt = int(jnp.ceil(jnp.ceil(t_end / dt_kin) / num_checkpoints) * num_checkpoints)
@@ -154,40 +178,45 @@ class Simulation:
         path = ocp.test_utils.erase_and_create_empty(checkpoint_dir)
         async_checkpoint_manager = ocp.CheckpointManager(path, options=options)
 
+        def _kick(state, dt):
+            # Kick (half-step)
+            if (
+                self.params["physics"]["gravity"]
+                and self.params["physics"]["external_potential"]
+            ):
+                V = self._calc_grav_potential(state, k_sq) + state["V_ext"]
+            elif self.params["physics"]["gravity"]:
+                V = self._calc_grav_potential(state, k_sq)
+            elif self.params["physics"]["external_potential"]:
+                V = state["V_ext"]
+
+            if (
+                self.params["physics"]["gravity"]
+                or self.params["physics"]["external_potential"]
+            ):
+                if self.params["physics"]["quantum"]:
+                    state["psi"] = quantum_kick(state["psi"], V, m_per_hbar, dt)
+                if self.params["physics"]["hydro"]:
+                    state["vx"], state["vy"], state["vz"] = hydro_accelerate(
+                        state["vx"], state["vy"], state["vz"], V, kx, ky, kz, dt
+                    )
+
+        def _drift(state, dt):
+            # Drift (full-step)
+            if self.params["physics"]["quantum"]:
+                state["psi"] = quantum_drift(state["psi"], k_sq, m_per_hbar, dt)
+            if self.params["physics"]["hydro"]:
+                state["rho"], state["vx"], state["vy"], state["vz"] = hydro_fluxes(
+                    state["rho"], state["vx"], state["vy"], state["vz"], dt, dx, cs
+                )
+
         @jax.jit
         def _update(_, state):
             # Update the simulation state by one timestep
             # according to a 2nd-order `kick-drift-kick` scheme
-
-            # Kick (half-step)
-            if self.params["physics"]["gravity"]:
-                V = self._calc_grav_potential(state, k_sq)
-            if self.params["physics"]["quantum"] and self.params["physics"]["gravity"]:
-                state["psi"] = quantum_kick(state["psi"], V, m_per_hbar, 0.5 * dt)
-            if (
-                self.params["physics"]["quantum"]
-                and self.params["physics"]["external_potential"]
-            ):
-                state["psi"] = quantum_kick(
-                    state["psi"], state["V_ext"], m_per_hbar, 0.5 * dt
-                )
-
-            # Drift (full-step)
-            if self.params["physics"]["quantum"]:
-                state["psi"] = quantum_drift(state["psi"], k_sq, m_per_hbar, dt)
-
-            # Kick (half-step)
-            if self.params["physics"]["gravity"]:
-                V = self._calc_grav_potential(state, k_sq)
-            if self.params["physics"]["quantum"] and self.params["physics"]["gravity"]:
-                state["psi"] = quantum_kick(state["psi"], V, m_per_hbar, 0.5 * dt)
-            if (
-                self.params["physics"]["quantum"]
-                and self.params["physics"]["external_potential"]
-            ):
-                state["psi"] = quantum_kick(
-                    state["psi"], state["V_ext"], m_per_hbar, 0.5 * dt
-                )
+            _kick(state, 0.5 * dt)
+            _drift(state, dt)
+            _kick(state, 0.5 * dt)
 
             # update time
             state["t"] += dt
@@ -198,23 +227,21 @@ class Simulation:
         print("Starting simulation ...")
         with open(os.path.join(checkpoint_dir, "params.json"), "w") as f:
             json.dump(self.params, f, indent=2)
-        rho_bar = self._calc_rho_bar(state)
-        vmin = jnp.log10(rho_bar / 100.0)
-        vmax = jnp.log10(rho_bar * 100.0)
         # save initial state
         async_checkpoint_manager.save(0, args=ocp.args.StandardSave(state))
-        plot_sim(state, checkpoint_dir, 0, vmin, vmax)
+        plot_sim(state, checkpoint_dir, 0, self.params)
         async_checkpoint_manager.wait_until_finished()
         t_start_timer = time.time()
         for i in range(1, num_checkpoints + 1):
             state = jax.lax.fori_loop(0, nt_sub, _update, init_val=state)
+            jax.block_until_ready(state)
+            async_checkpoint_manager.save(i, args=ocp.args.StandardSave(state))
             percent = int(100 * i / num_checkpoints)
             elapsed = time.time() - t_start_timer
             est_total = elapsed / i * num_checkpoints
             est_remaining = est_total - elapsed
             print(f"{percent:.1f}%: estimated time remaining (s): {est_remaining:.1f}")
-            async_checkpoint_manager.save(i, args=ocp.args.StandardSave(state))
-            plot_sim(state, checkpoint_dir, i, vmin, vmax)
+            plot_sim(state, checkpoint_dir, i, self.params)
             async_checkpoint_manager.wait_until_finished()
         jax.block_until_ready(state)
         print("Simulation Run Time (s): ", time.time() - t_start_timer)

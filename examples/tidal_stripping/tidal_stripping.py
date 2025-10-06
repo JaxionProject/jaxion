@@ -1,4 +1,7 @@
 import jax.numpy as jnp
+import sys  # XXX
+
+sys.path.append("../../")  # XXX
 import jaxion
 import argparse
 
@@ -80,6 +83,7 @@ def main():
 
     sim = setup_simulation(args.res)
     sim.run()
+    print("mean |psi| =", jnp.mean(jnp.abs(sim.state["psi"])))
 
     return sim
 
