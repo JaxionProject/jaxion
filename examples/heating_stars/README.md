@@ -10,4 +10,4 @@ Usage:
 python heating_stars.py --res <resolution_multiplier>
 ```
 
-Takes around XXX (res=1) seconds to run on my macbook (cpu).
+Takes around 9 (res=1) seconds to run on my macbook (cpu).

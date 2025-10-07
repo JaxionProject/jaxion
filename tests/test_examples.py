@@ -20,3 +20,15 @@ def test_heating_gas():
     assert jnp.mean(jnp.abs(sim.state["vx"])) == pytest.approx(3.5349982)
     assert jnp.mean(jnp.abs(sim.state["vy"])) == pytest.approx(3.0522914)
     assert jnp.mean(jnp.abs(sim.state["vz"])) == pytest.approx(4.054723)
+
+
+def test_heating_stars():
+    sim = run_example_main(
+        "examples/heating_stars/heating_stars.py", argv=["--res", "1"]
+    )
+    assert sim.resolution == 32
+    assert sim.state["t"] > 0.0
+    assert jnp.mean(jnp.abs(sim.state["psi"])) == pytest.approx(2586.0823)
+    assert jnp.mean(jnp.abs(sim.state["vx"])) == pytest.approx(16.866589)
+    assert jnp.mean(jnp.abs(sim.state["vy"])) == pytest.approx(17.564104)
+    assert jnp.mean(jnp.abs(sim.state["vz"])) == pytest.approx(16.524908)
