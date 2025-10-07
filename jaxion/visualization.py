@@ -48,6 +48,7 @@ def plot_sim(state, checkpoint_dir, i, params):
         plt.clf()
 
         # gas projection
+        nx = state["rho"].shape[0]
         rho_bar = jnp.mean(state["rho"])
         vmin = jnp.log10(rho_bar / dynamic_range)
         vmax = jnp.log10(rho_bar * dynamic_range)
@@ -59,6 +60,7 @@ def plot_sim(state, checkpoint_dir, i, params):
             origin="lower",
             vmin=vmin,
             vmax=vmax,
+            extent=[0, nx, 0, nx],
         )
         ax.set_aspect("equal")
         ax.get_xaxis().set_visible(False)
