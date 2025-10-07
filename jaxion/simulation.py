@@ -9,6 +9,7 @@ from .constants import constants
 from .quantum import quantum_kick, quantum_drift
 from .gravity import calculate_gravitational_potential
 from .hydro import hydro_fluxes, hydro_accelerate
+from .particles import particles_accelerate, particles_drift
 from .utils import set_up_parameters, print_parameters
 from .visualization import plot_sim
 
@@ -58,8 +59,9 @@ class Simulation:
             self.state["vz"] = jnp.zeros(
                 (self.resolution, self.resolution, self.resolution)
             )
-
-        # XXX TODO: finish
+        if self.params["physics"]["particles"]:
+            self.state["pos"] = jnp.zeros((self.num_particles, 3))
+            self.state["vel"] = jnp.zeros((self.num_particles, 3))
 
     @property
     def resolution(self):
@@ -67,6 +69,10 @@ class Simulation:
             self._params["domain"]["resolution_base"]
             * self._params["domain"]["resolution_multiplier"]
         )
+
+    @property
+    def num_particles(self):
+        return self._params["particles"]["num_particles"]
 
     @property
     def box_size(self):
@@ -101,7 +107,7 @@ class Simulation:
         return X, Y, Z
 
     @property
-    def fourier(self):
+    def kgrid(self):
         nx = self.resolution
         k_lin = (2.0 * jnp.pi / self.box_size) * jnp.arange(-nx / 2, nx / 2)
         kx, ky, kz = jnp.meshgrid(k_lin, k_lin, k_lin, indexing="ij")
@@ -130,7 +136,7 @@ class Simulation:
 
     @property
     def potential(self):
-        kx, ky, kz = self.fourier
+        kx, ky, kz = self.kgrid
         k_sq = kx**2 + ky**2 + kz**2
         return self._calc_grav_potential(self.state, k_sq)
 
@@ -157,7 +163,8 @@ class Simulation:
         dt_kin = dt_fac * (m_per_hbar / 6.0) * (dx * dx)
         t_end = self.params["time"]["end"]
 
-        cs = self.params["hydro"]["sound_speed"]
+        c_sound = self.params["hydro"]["sound_speed"]
+        box_size = self.box_size
 
         # round up to the nearest multiple of num_checkpoints
         num_checkpoints = self.params["output"]["num_checkpoints"]
@@ -167,7 +174,7 @@ class Simulation:
 
         # Fourier space variables
         if self.params["physics"]["gravity"] or self.params["physics"]["quantum"]:
-            kx, ky, kz = self.fourier
+            kx, ky, kz = self.kgrid
             k_sq = kx**2 + ky**2 + kz**2
 
         # Checkpointer
@@ -200,6 +207,10 @@ class Simulation:
                     state["vx"], state["vy"], state["vz"] = hydro_accelerate(
                         state["vx"], state["vy"], state["vz"], V, kx, ky, kz, dt
                     )
+                if self.params["physics"]["particles"]:
+                    state["vel"] = particles_accelerate(
+                        state["vel"], state["pos"], V, kx, ky, kz, dx, dt
+                    )
 
         def _drift(state, dt):
             # Drift (full-step)
@@ -207,8 +218,10 @@ class Simulation:
                 state["psi"] = quantum_drift(state["psi"], k_sq, m_per_hbar, dt)
             if self.params["physics"]["hydro"]:
                 state["rho"], state["vx"], state["vy"], state["vz"] = hydro_fluxes(
-                    state["rho"], state["vx"], state["vy"], state["vz"], dt, dx, cs
+                    state["rho"], state["vx"], state["vy"], state["vz"], dt, dx, c_sound
                 )
+            if self.params["physics"]["particles"]:
+                state["pos"] = particles_drift(state["pos"], state["vel"], dt, box_size)
 
         @jax.jit
         def _update(_, state):

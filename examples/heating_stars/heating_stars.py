@@ -10,12 +10,12 @@ import argparse
 # jax.config.update("jax_enable_x64", True)
 
 """
-Heating Gas due to Fuzzy Dark Matter fluctuations
+Heating Stars due to Fuzzy Dark Matter fluctuations
 
 Philip Mocz (2025)
 
 Usage:
-  python heating_gas.py --res <resolution_multiplier>
+  python heating_stars.py --res <resolution_multiplier>
 """
 
 
@@ -23,7 +23,7 @@ def setup_simulation(resolution_multiplier):
     # Parameters added/changed from default values
     params = {
         "physics": {
-            "hydro": True,
+            "particles": True,
         },
         "domain": {
             "resolution_multiplier": resolution_multiplier,
@@ -36,25 +36,25 @@ def setup_simulation(resolution_multiplier):
             "path": f"./checkpoints{resolution_multiplier}/",
             "plot_dynamic_range": 2.0,
         },
-        "hydro": {
-            "sound_speed": 20.0,  # km/s
+        "particles": {
+            "num_particles": 400,
         },
     }
 
     # Initialize the simulation
     sim = jaxion.Simulation(params)
 
-    # average density of all matter (dm+gas) in the simulation (in units of Msun / kpc^3)
+    # average density of all matter (dm+stars) in the simulation (in units of Msun / kpc^3)
     rho_bar = 1.0e7
 
-    # gas
-    frac_gas = 0.15  # fraction of total mass in gas
-    rho_gas = frac_gas * rho_bar  # average density of gas
-    c_sound = sim.sound_speed  # sound speed (km/s)
+    # stars
+    frac_stars = 0.15  # fraction of total mass in stars
+    rho_stars = frac_stars * rho_bar  # average density of stars
+    sigma_stars = 20.0  # velocity dispersion (1d) of stars (km/s)
 
     # dark matter
-    frac_dm = 1.0 - frac_gas  # fraction of total mass in dark matter
-    sigma = 40.0  # velocity dispersion of dm
+    frac_dm = 1.0 - frac_stars  # fraction of total mass in dark matter
+    sigma = 40.0  # velocity dispersion of dm (km/s)
 
     m = sim.axion_mass
     hbar = jaxion.constants["reduced_planck_constant"]
@@ -63,7 +63,6 @@ def setup_simulation(resolution_multiplier):
     kx, ky, kz = sim.kgrid
     k_sq = kx**2 + ky**2 + kz**2
 
-    nx = sim.resolution
     box_size = sim.box_size
     G = jaxion.constants["gravitational_constant"]
 
@@ -73,7 +72,7 @@ def setup_simulation(resolution_multiplier):
     assert n_wavelengths > 1
 
     # check the Jeans length
-    jeans_length = c_sound * jnp.sqrt(jnp.pi / (G * rho_gas))
+    jeans_length = sigma_stars * jnp.sqrt(jnp.pi / (G * rho_stars))
     n_jeans = box_size / jeans_length
     assert n_jeans < 0.5
 
@@ -88,17 +87,16 @@ def setup_simulation(resolution_multiplier):
     # re-normalize it
     psi *= jnp.sqrt(frac_dm * rho_bar / jnp.mean(jnp.abs(psi) ** 2))
 
-    # gas is initially uniform
-    rho = jnp.ones((nx, nx, nx)) * rho_gas
-    vx = jnp.zeros((nx, nx, nx))
-    vy = jnp.zeros((nx, nx, nx))
-    vz = jnp.zeros((nx, nx, nx))
+    # stars are initially uniform
+    num_stars = params["particles"]["num_particles"]
+    pos = np.random.rand(num_stars, 3) * box_size
+    vel = np.random.randn(num_stars, 3) * sigma_stars
+    pos = jnp.array(pos)
+    vel = jnp.array(vel)
 
     sim.state["psi"] = psi
-    sim.state["rho"] = rho
-    sim.state["vx"] = vx
-    sim.state["vy"] = vy
-    sim.state["vz"] = vz
+    sim.state["pos"] = pos
+    sim.state["vel"] = vel
 
     return sim
 
@@ -111,9 +109,17 @@ def main():
     sim = setup_simulation(args.res)
     sim.run()
     print("mean |psi| =", jnp.mean(jnp.abs(sim.state["psi"])))
-    print("mean |vx| =", jnp.mean(jnp.abs(sim.state["vx"])))
-    print("mean |vy| =", jnp.mean(jnp.abs(sim.state["vy"])))
-    print("mean |vz| =", jnp.mean(jnp.abs(sim.state["vz"])))
+    print("mean |vx| =", jnp.mean(jnp.abs(sim.state["vel"][:, 0])))
+    print("mean |vy| =", jnp.mean(jnp.abs(sim.state["vel"][:, 1])))
+    print("mean |vz| =", jnp.mean(jnp.abs(sim.state["vel"][:, 2])))
+    print(
+        "std vel =",
+        jnp.sqrt(
+            jnp.std(sim.state["vel"][:, 0]) ** 2
+            + jnp.std(sim.state["vel"][:, 1]) ** 2
+            + jnp.std(sim.state["vel"][:, 2]) ** 2
+        ),
+    )
 
     return sim
 
