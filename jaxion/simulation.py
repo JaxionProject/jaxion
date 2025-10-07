@@ -122,6 +122,11 @@ class Simulation:
             rho_bar += jnp.mean(jnp.abs(state["psi"]) ** 2)
         if self.params["physics"]["hydro"]:
             rho_bar += jnp.mean(state["rho"])
+        if self.params["physics"]["particles"]:
+            m_particle = self.params["particles"]["particle_mass"]
+            n_particles = self.num_particles
+            box_size = self.box_size
+            rho_bar += m_particle * n_particles / box_size
         return rho_bar
 
     def _calc_grav_potential(self, state, k_sq):

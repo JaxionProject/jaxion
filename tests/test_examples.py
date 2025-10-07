@@ -28,7 +28,7 @@ def test_heating_stars():
     )
     assert sim.resolution == 32
     assert sim.state["t"] > 0.0
-    assert jnp.mean(jnp.abs(sim.state["psi"])) == pytest.approx(2586.2021)
-    assert jnp.mean(jnp.abs(sim.state["vel"][:, 0])) == pytest.approx(16.760576)
-    assert jnp.mean(jnp.abs(sim.state["vel"][:, 1])) == pytest.approx(17.233585)
-    assert jnp.mean(jnp.abs(sim.state["vel"][:, 2])) == pytest.approx(16.625536)
+    assert jnp.mean(jnp.abs(sim.state["psi"])) == pytest.approx(2586.2876)
+    assert jnp.mean(jnp.abs(sim.state["vel"][:, 0])) == pytest.approx(16.76063)
+    assert jnp.mean(jnp.abs(sim.state["vel"][:, 1])) == pytest.approx(17.23357)
+    assert jnp.mean(jnp.abs(sim.state["vel"][:, 2])) == pytest.approx(16.62564)
