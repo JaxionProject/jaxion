@@ -1,4 +1,4 @@
-# Tidal Stripping
+# Heating Stars
 
 Heating Stars due to Fuzzy Dark Matter fluctuations
 

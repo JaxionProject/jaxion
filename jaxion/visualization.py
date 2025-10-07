@@ -12,6 +12,7 @@ def plot_sim(state, checkpoint_dir, i, params):
         plt.clf()
 
         # DM projection
+        nx = state["psi"].shape[0]
         rho_bar = jnp.mean(jnp.abs(state["psi"]) ** 2)
         vmin = jnp.log10(rho_bar / dynamic_range)
         vmax = jnp.log10(rho_bar * dynamic_range)
@@ -24,10 +25,10 @@ def plot_sim(state, checkpoint_dir, i, params):
             origin="lower",
             vmin=vmin,
             vmax=vmax,
+            extent=[0, nx, 0, nx],
         )
         if params["physics"]["particles"]:
             # draw particles
-            nx = state["psi"].shape[0]
             box_size = params["domain"]["box_size"]
             sx = state["pos"][:, 0] / box_size * nx
             sy = state["pos"][:, 1] / box_size * nx

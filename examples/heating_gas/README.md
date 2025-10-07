@@ -1,4 +1,4 @@
-# Tidal Stripping
+# Heating Gas
 
 Heating Gas due to Fuzzy Dark Matter fluctuations
 
