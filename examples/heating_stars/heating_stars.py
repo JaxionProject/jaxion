@@ -20,6 +20,19 @@ Usage:
 
 
 def setup_simulation(resolution_multiplier):
+    # average density of all matter (dm+stars) in the simulation (in units of Msun / kpc^3)
+    rho_bar = 1.0e7
+
+    # stars
+    frac_stars = 0.15  # fraction of total mass in stars
+    rho_stars = frac_stars * rho_bar  # average density of stars
+    sigma_stars = 20.0  # velocity dispersion (1d) of stars (km/s)
+
+    box_size = 4.0  # kpc
+
+    n_stars = 400
+    m_stars = rho_stars * box_size**3 / n_stars  # Msun
+
     # Parameters added/changed from default values
     params = {
         "physics": {
@@ -27,7 +40,7 @@ def setup_simulation(resolution_multiplier):
         },
         "domain": {
             "resolution_multiplier": resolution_multiplier,
-            "box_size": 4.0,  # kpc
+            "box_size": box_size,
         },
         "time": {
             "end": 0.4,
@@ -36,21 +49,11 @@ def setup_simulation(resolution_multiplier):
             "path": f"./checkpoints{resolution_multiplier}/",
             "plot_dynamic_range": 2.0,
         },
-        "particles": {
-            "num_particles": 400,
-        },
+        "particles": {"num_particles": n_stars, "particle_mass": m_stars},
     }
 
     # Initialize the simulation
     sim = jaxion.Simulation(params)
-
-    # average density of all matter (dm+stars) in the simulation (in units of Msun / kpc^3)
-    rho_bar = 1.0e7
-
-    # stars
-    frac_stars = 0.15  # fraction of total mass in stars
-    rho_stars = frac_stars * rho_bar  # average density of stars
-    sigma_stars = 20.0  # velocity dispersion (1d) of stars (km/s)
 
     # dark matter
     frac_dm = 1.0 - frac_stars  # fraction of total mass in dark matter
@@ -63,7 +66,6 @@ def setup_simulation(resolution_multiplier):
     kx, ky, kz = sim.kgrid
     k_sq = kx**2 + ky**2 + kz**2
 
-    box_size = sim.box_size
     G = jaxion.constants["gravitational_constant"]
 
     # check that de broglie wavelength fits into box
@@ -88,9 +90,8 @@ def setup_simulation(resolution_multiplier):
     psi *= jnp.sqrt(frac_dm * rho_bar / jnp.mean(jnp.abs(psi) ** 2))
 
     # stars are initially uniform
-    num_stars = params["particles"]["num_particles"]
-    pos = np.random.rand(num_stars, 3) * box_size
-    vel = np.random.randn(num_stars, 3) * sigma_stars
+    pos = np.random.rand(n_stars, 3) * box_size
+    vel = np.random.randn(n_stars, 3) * sigma_stars
     pos = jnp.array(pos)
     vel = jnp.array(vel)
 

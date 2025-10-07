@@ -9,7 +9,7 @@ from .constants import constants
 from .quantum import quantum_kick, quantum_drift
 from .gravity import calculate_gravitational_potential
 from .hydro import hydro_fluxes, hydro_accelerate
-from .particles import particles_accelerate, particles_drift
+from .particles import particles_accelerate, particles_drift, bin_particles
 from .utils import set_up_parameters, print_parameters
 from .visualization import plot_sim
 
@@ -126,12 +126,15 @@ class Simulation:
 
     def _calc_grav_potential(self, state, k_sq):
         G = constants["gravitational_constant"]
+        m_particle = self.params["particles"]["particle_mass"]
         rho_bar = self._calc_rho_bar(self.state)
         rho_tot = 0.0
         if self.params["physics"]["quantum"]:
             rho_tot += jnp.abs(state["psi"]) ** 2
         if self.params["physics"]["hydro"]:
             rho_tot += state["rho"]
+        if self.params["physics"]["particles"]:
+            rho_tot += bin_particles(state["pos"], self.dx, self.resolution, m_particle)
         return calculate_gravitational_potential(rho_tot, k_sq, G, rho_bar)
 
     @property
