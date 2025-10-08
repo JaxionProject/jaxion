@@ -32,8 +32,9 @@ class Simulation:
         if self.resolution % 2 != 0:
             raise ValueError("Resolution must be divisible by 2.")
 
-        print("Simulation initialized with parameters:")
-        print_parameters(self.params)
+        if self.params["output"]["save"]:
+            print("Simulation initialized with parameters:")
+            print_parameters(self.params)
 
         # simulation state
         self.state = {}
@@ -66,17 +67,17 @@ class Simulation:
     @property
     def resolution(self):
         return (
-            self._params["domain"]["resolution_base"]
-            * self._params["domain"]["resolution_multiplier"]
+            self.params["domain"]["resolution_base"]
+            * self.params["domain"]["resolution_multiplier"]
         )
 
     @property
     def num_particles(self):
-        return self._params["particles"]["num_particles"]
+        return self.params["particles"]["num_particles"]
 
     @property
     def box_size(self):
-        return self._params["domain"]["box_size"]
+        return self.params["domain"]["box_size"]
 
     @property
     def dx(self):
@@ -176,8 +177,10 @@ class Simulation:
 
         # round up to the nearest multiple of num_checkpoints
         num_checkpoints = self.params["output"]["num_checkpoints"]
-        nt = int(jnp.ceil(jnp.ceil(t_end / dt_kin) / num_checkpoints) * num_checkpoints)
-        nt_sub = int(jnp.round(nt / num_checkpoints))
+        nt = (
+            jnp.ceil(jnp.ceil(t_end / dt_kin) / num_checkpoints) * num_checkpoints
+        ).astype(int)
+        nt_sub = (jnp.round(nt / num_checkpoints)).astype(int)
         dt = t_end / nt
 
         # Fourier space variables
@@ -186,12 +189,13 @@ class Simulation:
             k_sq = kx**2 + ky**2 + kz**2
 
         # Checkpointer
-        options = ocp.CheckpointManagerOptions()
-        checkpoint_dir = checkpoint_dir = os.path.join(
-            os.getcwd(), self.params["output"]["path"]
-        )
-        path = ocp.test_utils.erase_and_create_empty(checkpoint_dir)
-        async_checkpoint_manager = ocp.CheckpointManager(path, options=options)
+        if self.params["output"]["save"]:
+            options = ocp.CheckpointManagerOptions()
+            checkpoint_dir = checkpoint_dir = os.path.join(
+                os.getcwd(), self.params["output"]["path"]
+            )
+            path = ocp.test_utils.erase_and_create_empty(checkpoint_dir)
+            async_checkpoint_manager = ocp.CheckpointManager(path, options=options)
 
         def _kick(state, dt):
             # Kick (half-step)
@@ -244,26 +248,32 @@ class Simulation:
 
             return state
 
-        # Simulation Main Loop
-        print("Starting simulation ...")
-        with open(os.path.join(checkpoint_dir, "params.json"), "w") as f:
-            json.dump(self.params, f, indent=2)
         # save initial state
-        async_checkpoint_manager.save(0, args=ocp.args.StandardSave(state))
-        plot_sim(state, checkpoint_dir, 0, self.params)
-        async_checkpoint_manager.wait_until_finished()
+        print("Starting simulation ...")
+        if self.params["output"]["save"]:
+            with open(os.path.join(checkpoint_dir, "params.json"), "w") as f:
+                json.dump(self.params, f, indent=2)
+            async_checkpoint_manager.save(0, args=ocp.args.StandardSave(state))
+            plot_sim(state, checkpoint_dir, 0, self.params)
+            async_checkpoint_manager.wait_until_finished()
+
+        # Simulation Main Loop
         t_start_timer = time.time()
         for i in range(1, num_checkpoints + 1):
             state = jax.lax.fori_loop(0, nt_sub, _update, init_val=state)
             jax.block_until_ready(state)
-            async_checkpoint_manager.save(i, args=ocp.args.StandardSave(state))
-            percent = int(100 * i / num_checkpoints)
-            elapsed = time.time() - t_start_timer
-            est_total = elapsed / i * num_checkpoints
-            est_remaining = est_total - elapsed
-            print(f"{percent:.1f}%: estimated time remaining (s): {est_remaining:.1f}")
-            plot_sim(state, checkpoint_dir, i, self.params)
-            async_checkpoint_manager.wait_until_finished()
+            # save state
+            if self.params["output"]["save"]:
+                async_checkpoint_manager.save(i, args=ocp.args.StandardSave(state))
+                percent = int(100 * i / num_checkpoints)
+                elapsed = time.time() - t_start_timer
+                est_total = elapsed / i * num_checkpoints
+                est_remaining = est_total - elapsed
+                print(
+                    f"{percent:.1f}%: estimated time remaining (s): {est_remaining:.1f}"
+                )
+                plot_sim(state, checkpoint_dir, i, self.params)
+                async_checkpoint_manager.wait_until_finished()
         jax.block_until_ready(state)
         print("Simulation Run Time (s): ", time.time() - t_start_timer)
 
