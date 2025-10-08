@@ -47,6 +47,7 @@
   "output": {
     "path": "./checkpoints",
     "num_checkpoints": 100,
+    "save": true,
     "plot_dynamic_range": 100.0
   },
   "quantum": {

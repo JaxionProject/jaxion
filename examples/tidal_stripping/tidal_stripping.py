@@ -18,7 +18,7 @@ Usage:
 """
 
 
-def setup_simulation(resolution_multiplier):
+def set_up_simulation(resolution_multiplier):
     # Parameters added/changed from default values
     params = {
         "physics": {
@@ -81,7 +81,7 @@ def main():
     parser.add_argument("--res", type=int, default=1, help="Resolution multiplier")
     args = parser.parse_args()
 
-    sim = setup_simulation(args.res)
+    sim = set_up_simulation(args.res)
     sim.run()
     print("mean |psi| =", jnp.mean(jnp.abs(sim.state["psi"])))
 

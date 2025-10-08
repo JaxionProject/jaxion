@@ -19,7 +19,7 @@ Usage:
 """
 
 
-def setup_simulation(resolution_multiplier):
+def set_up_simulation(resolution_multiplier):
     # average density of all matter (dm+stars) in the simulation (in units of Msun / kpc^3)
     rho_bar = 1.0e7
 
@@ -107,7 +107,7 @@ def main():
     parser.add_argument("--res", type=int, default=1, help="Resolution multiplier")
     args = parser.parse_args()
 
-    sim = setup_simulation(args.res)
+    sim = set_up_simulation(args.res)
     sim.run()
     print("mean |psi| =", jnp.mean(jnp.abs(sim.state["psi"])))
     print("mean |vx| =", jnp.mean(jnp.abs(sim.state["vel"][:, 0])))
