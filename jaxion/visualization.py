@@ -30,8 +30,8 @@ def plot_sim(state, checkpoint_dir, i, params):
         if params["physics"]["particles"]:
             # draw particles
             box_size = params["domain"]["box_size"]
-            sx = state["pos"][:, 0] / box_size * nx
-            sy = state["pos"][:, 1] / box_size * nx
+            sx = (state["pos"][:, 0] / box_size) * nx
+            sy = (state["pos"][:, 1] / box_size) * nx
             plt.plot(sx, sy, color="cyan", marker=".", linestyle="None", markersize=2)
         ax.set_aspect("equal")
         ax.get_xaxis().set_visible(False)

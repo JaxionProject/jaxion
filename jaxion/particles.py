@@ -107,7 +107,7 @@ def particles_accelerate(vel, pos, V, kx, ky, kz, dx, dt):
 
 
 def particles_drift(pos, vel, dt, box_size):
-    pos = pos + vel * dt
+    pos += vel * dt
     pos = jnp.mod(pos, jnp.array([box_size, box_size, box_size]))
 
     return pos
