@@ -177,10 +177,8 @@ class Simulation:
 
         # round up to the nearest multiple of num_checkpoints
         num_checkpoints = self.params["output"]["num_checkpoints"]
-        nt = (
-            jnp.ceil(jnp.ceil(t_end / dt_kin) / num_checkpoints) * num_checkpoints
-        ).astype(int)
-        nt_sub = (jnp.round(nt / num_checkpoints)).astype(int)
+        nt = int(round(round(t_end / dt_kin) / num_checkpoints) * num_checkpoints)
+        nt_sub = int(round(nt / num_checkpoints))
         dt = t_end / nt
 
         # Fourier space variables
@@ -259,11 +257,11 @@ class Simulation:
 
         # Simulation Main Loop
         t_start_timer = time.time()
-        for i in range(1, num_checkpoints + 1):
-            state = jax.lax.fori_loop(0, nt_sub, _update, init_val=state)
-            jax.block_until_ready(state)
-            # save state
-            if self.params["output"]["save"]:
+        if self.params["output"]["save"]:
+            for i in range(1, num_checkpoints + 1):
+                state = jax.lax.fori_loop(0, nt_sub, _update, init_val=state)
+                jax.block_until_ready(state)
+                # save state
                 async_checkpoint_manager.save(i, args=ocp.args.StandardSave(state))
                 percent = int(100 * i / num_checkpoints)
                 elapsed = time.time() - t_start_timer
@@ -274,6 +272,8 @@ class Simulation:
                 )
                 plot_sim(state, checkpoint_dir, i, self.params)
                 async_checkpoint_manager.wait_until_finished()
+        else:
+            state = jax.lax.fori_loop(0, nt, _update, init_val=state)
         jax.block_until_ready(state)
         print("Simulation Run Time (s): ", time.time() - t_start_timer)
 
