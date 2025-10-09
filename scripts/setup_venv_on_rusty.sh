@@ -11,7 +11,7 @@ rm -fr $VENVDIR/jaxion-venv
 
 module purge
 module load python/3.11
-python -m venv --system-site-packages $VENVDIR/jaxionvenv
+python -m venv --system-site-packages $VENVDIR/jaxion-venv
 source $VENVDIR/jaxion-venv/bin/activate
 pip install --upgrade pip
-pip install -r requirements.txt
+pip install .[cuda12]

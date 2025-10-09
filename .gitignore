@@ -166,3 +166,5 @@ cython_debug/
 *~
 checkpoints*/
 .vscode/
+slurm-*.out
+slurm-*.err
