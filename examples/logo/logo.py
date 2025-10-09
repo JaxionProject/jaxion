@@ -28,10 +28,10 @@ def set_up_simulation(save=False):
     # Parameters added/changed from default values
     params = {
         "physics": {
-            "particles": False,  # XXX True,
+            "particles": True,
         },
         "domain": {
-            "resolution_base": 16,  # XXX 64,
+            "resolution_base": 32,
             "box_size": 20.0,  # kpc
         },
         "time": {
@@ -44,7 +44,7 @@ def set_up_simulation(save=False):
             "plot_dynamic_range": 10.0,
         },
         "particles": {
-            "num_particles": 100,
+            "num_particles": 64,
             "particle_mass": 1.0e7,  # Msun
         },
     }
@@ -66,11 +66,18 @@ def set_up_simulation(save=False):
     np.random.seed(17)
     pos = np.random.rand(num_stars, 3) * box_size
     pos = jnp.array(pos)
+    # Arrange positions in a uniform grid in x-y plane, z=box_size/2
+    side = int(np.round(num_stars ** (1 / 2)))
+    xlin = jnp.linspace(0, box_size, side, endpoint=False) + box_size / (2 * side)
+    ylin = jnp.linspace(0, box_size, side, endpoint=False) + box_size / (2 * side)
+    zlin = jnp.array([box_size / 2.0])
+    xx, yy, zz = jnp.meshgrid(xlin, ylin, zlin, indexing="ij")
+    pos = jnp.vstack([xx.ravel(), yy.ravel(), zz.ravel()]).T
     vel = jnp.zeros((num_stars, 3))
 
     sim.state["psi"] = psi
-    # XXXsim.state["pos"] = pos
-    # XXXsim.state["vel"] = vel
+    sim.state["pos"] = pos
+    sim.state["vel"] = vel
 
     return sim
 
@@ -128,16 +135,15 @@ def solve_inverse_problem():
     """Optimize the initial star positions to recreate the logo"""
     # Load the target density field
     target_data = img.imread("target.png")[:, :, 0]
-    target_data = target_data[::4, ::4]  # XXX
+    target_data = target_data[::2, ::2]  # downsample
     target = jnp.flipud(jnp.array(target_data, dtype=float)).T
-    target = 1.0 - 0.5 * (target - 0.5)
+    target = 1.0 - 1.6 * (target - 0.5)
     target /= jnp.mean(target)
 
     @jax.jit
     def loss_function(theta):
         sim = set_up_simulation()
-        # XXXsim.state["pos"] = theta
-        sim.state["psi"] = jnp.sqrt(1.0e5) * jnp.exp(1.0j * theta)
+        sim.state["vel"] = theta
 
         sim.run()
 
@@ -153,17 +159,14 @@ def solve_inverse_problem():
     opt = optax.chain(print_info(), optax.lbfgs())
 
     sim = set_up_simulation()
-    # XXXinit_params = sim.state["pos"]
-    # XXX
-    theta = jnp.zeros((sim.resolution, sim.resolution, sim.resolution))
-    init_params = theta
+    init_params = sim.state["vel"]
 
     print(
         f"Initial value: {loss_function(init_params):.2e} "
         f"Initial gradient norm: {optax.tree_utils.tree_norm(jax.grad(loss_function)(init_params)):.2e}"
     )
     t0 = time.time()
-    final_params, _ = run_opt(init_params, loss_function, opt, max_iter=100, tol=1e-4)
+    final_params, _ = run_opt(init_params, loss_function, opt, max_iter=100, tol=1e-5)
     print("Inverse-problem solve time (s): ", time.time() - t0)
     print(
         f"Final value: {loss_function(final_params):.2e}, "
@@ -174,11 +177,10 @@ def solve_inverse_problem():
 
 
 def main():
-    optimized_pos = solve_inverse_problem()
+    optimized_ics = solve_inverse_problem()
 
     sim = set_up_simulation(save=True)
-    sim.state["psi"] = jnp.sqrt(1.0e5) * jnp.exp(1.0j * optimized_pos)  # XXX
-    # XXXsim.state["pos"] = optimized_pos
+    sim.state["vel"] = optimized_ics
     sim.run()
 
     return sim
