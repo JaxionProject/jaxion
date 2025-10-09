@@ -38,7 +38,7 @@ def set_up_simulation(save=False):
             "end": 1.0,
         },
         "output": {
-            "path": f"./checkpoints/",
+            "path": "./checkpoints/",
             "num_checkpoints": 100,
             "save": save,
             "plot_dynamic_range": 10.0,
