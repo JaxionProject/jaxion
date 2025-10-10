@@ -81,9 +81,8 @@ def set_up_simulation(resolution_multiplier):
     # construct in fourier space according to Eq (27) of our paper [https://arxiv.org/abs/1801.03507]
     np.random.seed(17)
     # initialize random phases
-    sid = np.argsort(
-        k_sq.flatten(), stable=True
-    )  # use this to set lowest k modes first
+    # (use order to set lowest k modes first)
+    sid = np.argsort(k_sq.flatten(), stable=True)
     psi = np.zeros((nx**3,), dtype=complex)
     psi[sid] = np.exp(1.0j * 2.0 * np.pi * np.random.rand(nx**3))
     psi = psi.reshape(k_sq.shape)
