@@ -33,6 +33,7 @@ def set_up_simulation(resolution_multiplier):
             "end": 0.01 * (1.0 / resolution_multiplier**2),
         },
         "output": {
+            "num_checkpoints": 100,
             "save": False,
         },
         "hydro": {
