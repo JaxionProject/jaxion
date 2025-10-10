@@ -247,7 +247,7 @@ class Simulation:
             return state
 
         # save initial state
-        print(f"Starting simulation (nt={nt}) ...")
+        print(f"Starting simulation (res={self.resolution}, nt={nt}) ...")
         if self.params["output"]["save"]:
             with open(os.path.join(checkpoint_dir, "params.json"), "w") as f:
                 json.dump(self.params, f, indent=2)
