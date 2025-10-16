@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://jaxion.readthedocs.io">
+    <img src="docs/_static/jaxion-logo.png" alt="jaxion logo" width="128"/>
+  </a>
+</p>
+
 # jaxion
 
 [![Repo Status][status-badge]][status-link]
@@ -44,6 +50,20 @@ pip install jaxion[cuda12]
 
 Check out the `examples/` directory for demonstrations of using Jaxion.
 
+
+## Examples
+
+<p align="center">
+  <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/dynamical_friction">
+    <img src="examples/dynamical_friction/movie.gif" alt="dynamical_friction" width="128"/>
+  </a>
+  <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/heating_gas">
+    <img src="examples/heating_gas/movie.gif" alt="heating_gas" width="128"/>
+  </a>
+  <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/tidal_stripping">
+    <img src="examples/tidal_stripping/movie.gif" alt="tidal_stripping" width="128"/>
+  </a>
+</p>
 
 ## Links
 
