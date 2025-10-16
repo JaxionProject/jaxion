@@ -22,6 +22,8 @@ version = "main"
 sys.path.insert(0, os.path.abspath(".."))
 
 html_title = "jaxion"
+html_logo = "_static/jaxion-logo.png"
+html_favicon = "_static/jaxion-favicon.png"
 
 extensions = [
     "sphinx.ext.autodoc",
