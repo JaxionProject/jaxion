@@ -72,6 +72,6 @@
   },
   "version": {
     "default": "unknown",
-    "description": "version of the jaxion library used to create these parameters (automatically detected)."
+    "description": "version of the jaxion library used (automatically detected)."
   }
 }

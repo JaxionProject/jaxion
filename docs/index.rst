@@ -105,4 +105,5 @@ jaxion
     :maxdepth: 1
     :caption: References
 
+    pages/parameters
     pages/api
