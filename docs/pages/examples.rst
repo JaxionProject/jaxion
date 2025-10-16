@@ -43,3 +43,19 @@ Below is a list of available examples:
      - Performance timing and benchmarking for Jaxion simulations
    * - **TODO**
      - TODO XXX
+
+
+dynamical_friction
+------------------
+
+TODO XXX
+
+heating_gas
+-----------
+
+TODO XXX
+
+tidal_stripping
+---------------
+
+TODO XXX

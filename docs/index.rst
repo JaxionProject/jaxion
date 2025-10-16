@@ -76,16 +76,19 @@ jaxion
          :width: 300px
          :align: center
          :alt: dynamical friction
+         :target: pages/examples.html#dynamical-friction
 
      - .. figure:: ../examples/heating_gas/movie.gif
          :width: 300px
          :align: center
          :alt: gas heating
+         :target: pages/examples.html#heating-gas
 
      - .. figure:: ../examples/tidal_stripping/movie.gif
          :width: 300px
          :align: center
          :alt: tidal stripping
+         :target: pages/examples.html#tidal-stripping
 
 
 .. toctree::
