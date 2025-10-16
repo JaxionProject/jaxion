@@ -67,11 +67,17 @@ jaxion
       :link-type: doc
       :class-card: examples
 
+
 .. list-table::
-   :widths: 50 50
+   :widths: 32 32 32
    :header-rows: 0
 
-   * - .. figure:: ../examples/heating_gas/movie.gif
+   * - .. figure:: ../examples/dynamical_friction/movie.gif
+         :width: 300px
+         :align: center
+         :alt: dynamical friction
+
+     - .. figure:: ../examples/heating_gas/movie.gif
          :width: 300px
          :align: center
          :alt: gas heating
