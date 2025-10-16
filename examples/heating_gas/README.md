@@ -12,6 +12,7 @@ python heating_gas.py --res <resolution_multiplier>
 
 Takes around 37 (res=1) seconds to run on my macbook (cpu).
 
+
 ## Simulation snapshots
 
 Snapshots from the run:

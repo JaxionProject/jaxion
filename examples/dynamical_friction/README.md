@@ -12,6 +12,7 @@ python dynamical_friction.py --res <resolution_multiplier>
 
 Takes around 3 (res=1) seconds to run on my macbook (cpu).
 
+
 ## Simulation snapshots
 
 Snapshots from the run:
@@ -19,3 +20,8 @@ Snapshots from the run:
 <div style="display:flex;flex-wrap:wrap;gap:8px">
   <img src="dm100.png" alt="dm100" width="80%"/>
 </div>
+
+
+## Reference
+
+[Lancaster, L.; Giovanetti, C.; Mocz, P.; Kahn, Y.; Lisanti, M.; Spergel, D.N.; Dynamical friction in a Fuzzy Dark Matter universe. JCAP (2020)](https://ui.adsabs.harvard.edu/abs/2020JCAP...01..001L)

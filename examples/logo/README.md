@@ -10,4 +10,4 @@ Usage:
 python logo.py
 ```
 
-Takes around XXX seconds to run on my macbook (cpu).
+Takes around 200 seconds to run on my macbook (cpu).
