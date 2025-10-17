@@ -41,6 +41,8 @@ html_theme_options = {
     "navigation_depth": 4,
     "repository_url": "https://github.com/JaxionProject/jaxion",
     "use_repository_button": True,
+    "use_edit_page_button": True,
+    "use_source_button": True,
     "icon_links": [
         {
             "name": "GitHub",

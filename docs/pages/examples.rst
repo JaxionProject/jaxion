@@ -34,11 +34,11 @@ Gallery
          :alt: logo
          :target: examples.html#logo
 
-     - .. figure:: ../../examples/merging_solitons/movie.gif
+     - .. figure:: ../../examples/soliton_merger/movie.gif
          :width: 300px
          :align: center
-         :alt: merging solitons
-         :target: examples.html#merging-solitons
+         :alt: soliton merger
+         :target: examples.html#soliton-merger
 
      - .. figure:: ../../examples/tidal_stripping/movie.gif
          :width: 300px
@@ -92,8 +92,8 @@ logo
 
 TODO XXX
 
-merging_solitons
-----------------
+soliton_merger
+--------------
 
 TODO XXX
 

@@ -1,4 +1,4 @@
-# Merging Solitons
+# Soliton Merger
 
 Merge solitons to form an idealized Fuzzy Dark Matter halo
 
@@ -7,7 +7,7 @@ Philip Mocz (2025)
 Usage:
 
 ```console
-python merging_solitons.py --res <resolution_multiplier>
+python soliton_merger.py --res <resolution_multiplier>
 ```
 
 Takes around 4 (res=1) seconds to run on my macbook (cpu).
