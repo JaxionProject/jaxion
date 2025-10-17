@@ -11,3 +11,9 @@ python logo.py
 ```
 
 Takes around 200 seconds to run on my macbook (cpu).
+
+## Simulation snapshots
+
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+  <img src="dm100.png" alt="dm100" width="45%"/>
+</div>

@@ -7,18 +7,45 @@ Gallery
 -------
 
 .. list-table::
-   :widths: 50 50
+   :widths: 32 32 32
    :header-rows: 0
 
-   * - .. figure:: ../../examples/heating_gas/movie.gif
+   * - .. figure:: ../../examples/dynamical_friction/movie.gif
          :width: 300px
          :align: center
-         :alt: gas heating
+         :alt: dynamical friction
+         :target: examples.html#dynamical-friction
+
+     - .. figure:: ../../examples/heating_gas/movie.gif
+         :width: 300px
+         :align: center
+         :alt: heating gas
+         :target: examples.html#heating-gas
+
+     - .. figure:: ../../examples/heating_stars/movie.gif
+         :width: 300px
+         :align: center
+         :alt: heating stars
+         :target: examples.html#heating-stars
+
+   * - .. figure:: ../../examples/logo/movie.gif
+         :width: 300px
+         :align: center
+         :alt: logo
+         :target: examples.html#logo
+
+     - .. figure:: ../../examples/merging_solitons/movie.gif
+         :width: 300px
+         :align: center
+         :alt: merging solitons
+         :target: examples.html#merging-solitons
 
      - .. figure:: ../../examples/tidal_stripping/movie.gif
          :width: 300px
          :align: center
          :alt: tidal stripping
+         :target: examples.html#tidal-stripping
+
 
 Overview
 --------
@@ -52,6 +79,21 @@ TODO XXX
 
 heating_gas
 -----------
+
+TODO XXX
+
+heating_stars
+-------------
+
+TODO XXX
+
+logo
+----
+
+TODO XXX
+
+merging_solitons
+----------------
 
 TODO XXX
 

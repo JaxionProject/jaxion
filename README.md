@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://jaxion.readthedocs.io">
-    <img src="docs/_static/jaxion-logo.png" alt="jaxion logo" width="128"/>
+    <img src="docs/_static/jaxion-logo.svg" alt="jaxion logo" width="128"/>
   </a>
 </p>
 
