@@ -23,7 +23,7 @@ def main():
     plt.xticks(resolutions, labels=[f"{r}³" for r in resolutions])
     plt.legend()
     plt.tight_layout()
-    plt.savefig("timing.eps", dpi=300)
+    plt.savefig("timing.png", dpi=300)
     plt.show()
 
 
