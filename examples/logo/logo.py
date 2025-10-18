@@ -1,9 +1,6 @@
 import jax
 import jax.numpy as jnp
 import numpy as np
-import sys  # XXX
-
-sys.path.append("../../")  # XXX
 import jaxion
 import chex
 from typing import NamedTuple

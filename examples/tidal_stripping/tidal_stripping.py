@@ -1,7 +1,4 @@
 import jax.numpy as jnp
-import sys  # XXX
-
-sys.path.append("../../")  # XXX
 import jaxion
 import argparse
 

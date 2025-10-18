@@ -1,8 +1,5 @@
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
-import sys  # XXX
-
-sys.path.append("../../")  # XXX
 import jaxion
 
 # switch on for double precision
