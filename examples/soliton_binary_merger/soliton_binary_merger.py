@@ -64,7 +64,6 @@ def main():
 
     sim = set_up_simulation(args.res)
     sim.run()
-    print("mean |psi| =", jnp.mean(jnp.abs(sim.state["psi"])))
 
     return sim
 
