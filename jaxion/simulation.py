@@ -6,7 +6,7 @@ import json
 import time
 
 from .constants import constants
-from .quantum import quantum_kick, quantum_drift
+from .quantum import quantum_kick, quantum_drift, quantum_velocity
 from .gravity import calculate_gravitational_potential
 from .hydro import hydro_fluxes, hydro_accelerate
 from .particles import particles_accelerate, particles_drift, bin_particles
@@ -136,6 +136,11 @@ class Simulation:
         ky = jnp.fft.ifftshift(ky)
         kz = jnp.fft.ifftshift(kz)
         return kx, ky, kz
+
+    @property
+    def quantum_velocity(self):
+        m_per_hbar = self.axion_mass / constants["reduced_planck_constant"]
+        return quantum_velocity(self.state["psi"], self.box_size, m_per_hbar)
 
     def _calc_rho_bar(self, state):
         rho_bar = 0.0
