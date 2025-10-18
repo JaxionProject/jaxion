@@ -21,10 +21,20 @@ class Simulation:
     Parameters
     ----------
       params (dict): The Python dictionary that contains the simulation parameters.
+      params can also be a string path to a checkpoint directory to load a saved simulation.
 
     """
 
     def __init__(self, params):
+        # allow loading directly from a checkpoint path
+        load_from_checkpoint = False
+        checkpoint_dir = ""
+        if isinstance(params, str):
+            load_from_checkpoint = True
+            checkpoint_dir = os.path.join(os.getcwd(), params)
+            with open(os.path.join(checkpoint_dir, "params.json"), "r") as f:
+                params = json.load(f)
+
         # start from default simulation parameters and update with user params
         self._params = set_up_parameters(params)
 
@@ -33,7 +43,7 @@ class Simulation:
             raise ValueError("Resolution must be divisible by 2.")
 
         if self.params["output"]["save"]:
-            print("Simulation initialized with parameters:")
+            print("Simulation parameters:")
             print_parameters(self.params)
 
         # simulation state
@@ -63,6 +73,16 @@ class Simulation:
         if self.params["physics"]["particles"]:
             self.state["pos"] = jnp.zeros((self.num_particles, 3))
             self.state["vel"] = jnp.zeros((self.num_particles, 3))
+
+        if load_from_checkpoint:
+            options = ocp.CheckpointManagerOptions()
+            async_checkpoint_manager = ocp.CheckpointManager(
+                checkpoint_dir, options=options
+            )
+            step = async_checkpoint_manager.latest_step()
+            self.state = async_checkpoint_manager.restore(
+                step, args=ocp.args.StandardRestore(self.state)
+            )
 
     @property
     def resolution(self):
