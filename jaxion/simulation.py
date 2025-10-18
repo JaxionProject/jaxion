@@ -42,6 +42,9 @@ class Simulation:
         if self.resolution % 2 != 0:
             raise ValueError("Resolution must be divisible by 2.")
 
+        if self.params["time"]["adaptive"]:
+            raise NotImplementedError("Adaptive time stepping is not yet implemented.")
+
         if self.params["output"]["save"]:
             print("Simulation parameters:")
             print_parameters(self.params)
