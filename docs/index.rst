@@ -110,3 +110,4 @@ jaxion
 
     pages/parameters
     pages/api
+    pages/about
