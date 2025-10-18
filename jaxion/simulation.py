@@ -21,7 +21,7 @@ class Simulation:
     Parameters
     ----------
       params (dict): The Python dictionary that contains the simulation parameters.
-      params can also be a string path to a checkpoint directory to load a saved simulation.
+                     Params can also be a string path to a checkpoint directory to load a saved simulation.
 
     """
 
