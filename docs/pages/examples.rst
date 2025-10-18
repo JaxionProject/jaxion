@@ -1,7 +1,7 @@
 Examples
 ========
 
-The ``examples/`` directory contains a collection of physics simulations demonstrating various applications of the Jaxion library.
+The `examples/ <https://github.com/JaxionProject/jaxion/tree/main/examples>`_ directory contains a collection of astrophysics simulations demonstrating various applications of the Jaxion library.
 
 Gallery
 -------
