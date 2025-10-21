@@ -94,13 +94,17 @@
     }
   },
   "cosmology": {
-    "Omega_m": {
+    "omega_matter": {
       "default": 0.3,
       "description": "matter density parameter."
     },
-    "Omega_Lambda": {
+    "omega_lambda": {
       "default": 0.7,
       "description": "dark energy density parameter."
+    },
+    "little_h": {
+      "default": 0.7,
+      "description": "Hubble parameter little h (H_0 = 100 h km/s/Mpc)."
     }
   },
   "version": {

@@ -10,6 +10,7 @@ from .quantum import quantum_kick, quantum_drift, quantum_velocity
 from .gravity import calculate_gravitational_potential
 from .hydro import hydro_fluxes, hydro_accelerate
 from .particles import particles_accelerate, particles_drift, bin_particles
+from .cosmology import get_supercomoving_time_interval, get_next_scale_factor
 from .utils import set_up_parameters, print_parameters
 from .visualization import plot_sim
 
@@ -45,6 +46,16 @@ class Simulation:
         if self.params["time"]["adaptive"]:
             raise NotImplementedError("Adaptive time stepping is not yet implemented.")
 
+        if self.params["physics"]["cosmology"]:
+            if (
+                self.params["physics"]["hydro"]
+                or self.params["physics"]["particles"]
+                or self.params["physics"]["external_potential"]
+            ):
+                raise NotImplementedError(
+                    "Cosmological hydro/particles/external_potential physics is not yet implemented."
+                )
+
         if self.params["output"]["save"]:
             print("Simulation parameters:")
             print_parameters(self.params)
@@ -76,6 +87,8 @@ class Simulation:
         if self.params["physics"]["particles"]:
             self.state["pos"] = jnp.zeros((self.num_particles, 3))
             self.state["vel"] = jnp.zeros((self.num_particles, 3))
+        if self.params["physics"]["cosmology"]:
+            self.state["redshift"] = 0.0
 
         if load_from_checkpoint:
             options = ocp.CheckpointManagerOptions()
@@ -161,7 +174,7 @@ class Simulation:
     def _calc_grav_potential(self, state, k_sq):
         G = constants["gravitational_constant"]
         m_particle = self.params["particles"]["particle_mass"]
-        rho_bar = self._calc_rho_bar(self.state)
+        rho_bar = self._calc_rho_bar(state)
         rho_tot = 0.0
         if self.params["physics"]["quantum"]:
             rho_tot += jnp.abs(state["psi"]) ** 2
@@ -169,6 +182,10 @@ class Simulation:
             rho_tot += state["rho"]
         if self.params["physics"]["particles"]:
             rho_tot += bin_particles(state["pos"], self.dx, self.resolution, m_particle)
+        if self.params["physics"]["cosmology"]:
+            scale_factor = 1.0 / (1.0 + state["redshift"])
+            rho_bar *= scale_factor
+            rho_tot *= scale_factor
         return calculate_gravitational_potential(rho_tot, k_sq, G, rho_bar)
 
     @property
@@ -195,19 +212,36 @@ class Simulation:
         # Simulation parameters
         dx = self.dx
         m_per_hbar = self.axion_mass / constants["reduced_planck_constant"]
+        box_size = self.box_size
 
         dt_fac = 1.0
         dt_kin = dt_fac * (m_per_hbar / 6.0) * (dx * dx)
+        t_start = self.params["time"]["start"]
         t_end = self.params["time"]["end"]
+        t_span = t_end - t_start
+        state["t"] = t_start
 
+        # cosmology
+        if self.params["physics"]["cosmology"]:
+            z_start = self.params["time"]["start"]
+            z_end = self.params["time"]["end"]
+            omega_matter = self.params["cosmology"]["omega_matter"]
+            omega_lambda = self.params["cosmology"]["omega_lambda"]
+            little_h = self.params["cosmology"]["little_h"]
+            t_span = get_supercomoving_time_interval(
+                z_start, z_end, omega_matter, omega_lambda, little_h
+            )
+            state["t"] = 0.0
+            state["redshift"] = z_start
+
+        # hydro
         c_sound = self.params["hydro"]["sound_speed"]
-        box_size = self.box_size
 
         # round up to the nearest multiple of num_checkpoints
         num_checkpoints = self.params["output"]["num_checkpoints"]
-        nt = int(round(round(t_end / dt_kin) / num_checkpoints) * num_checkpoints)
+        nt = int(round(round(t_span / dt_kin) / num_checkpoints) * num_checkpoints)
         nt_sub = int(round(nt / num_checkpoints))
-        dt = t_end / nt
+        dt = t_span / nt
 
         # Fourier space variables
         if self.params["physics"]["gravity"] or self.params["physics"]["quantum"]:
@@ -267,10 +301,18 @@ class Simulation:
             # according to a 2nd-order `kick-drift-kick` scheme
             _kick(state, 0.5 * dt)
             _drift(state, dt)
-            _kick(state, 0.5 * dt)
-
-            # update time
+            # update time & redshift
             state["t"] += dt
+            if self.params["physics"]["cosmology"]:
+                scale_factor = get_next_scale_factor(
+                    state["redshift"],
+                    dt,
+                    self.params["cosmology"]["omega_matter"],
+                    self.params["cosmology"]["omega_lambda"],
+                    self.params["cosmology"]["little_h"],
+                )
+                state["redshift"] = 1.0 / scale_factor - 1.0
+            _kick(state, 0.5 * dt)
 
             return state
 
