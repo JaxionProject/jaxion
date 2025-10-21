@@ -10,7 +10,13 @@ Gallery
    :widths: 32 32 32
    :header-rows: 0
 
-   * - .. figure:: ../../examples/dynamical_friction/movie.gif
+   * - .. figure:: ../../examples/cosmological_box/movie.gif
+         :width: 300px
+         :align: center
+         :alt: cosmological box
+         :target: examples.html#cosmological-box
+
+     - .. figure:: ../../examples/dynamical_friction/movie.gif
          :width: 300px
          :align: center
          :alt: dynamical friction
@@ -22,17 +28,29 @@ Gallery
          :alt: heating gas
          :target: examples.html#heating-gas
 
-     - .. figure:: ../../examples/heating_stars/movie.gif
+   * - .. figure:: ../../examples/heating_stars/movie.gif
          :width: 300px
          :align: center
          :alt: heating stars
          :target: examples.html#heating-stars
 
-   * - .. figure:: ../../examples/logo/movie.gif
+     - .. figure:: ../../examples/kinetic_condensation/movie.gif
+         :width: 300px
+         :align: center
+         :alt: kinetic condensation
+         :target: examples.html#kinetic-condensation
+
+     - .. figure:: ../../examples/logo/movie.gif
          :width: 300px
          :align: center
          :alt: logo
          :target: examples.html#logo
+
+   * - .. figure:: ../../examples/soliton_binary_merger/movie.gif
+         :width: 300px
+         :align: center
+         :alt: soliton binary merger
+         :target: examples.html#soliton-binary-merger
 
      - .. figure:: ../../examples/soliton_merger/movie.gif
          :width: 300px
@@ -46,58 +64,56 @@ Gallery
          :alt: tidal stripping
          :target: examples.html#tidal-stripping
 
+cosmological_box
+----------------
 
-Overview
---------
-
-Below is a list of available examples:
-
-.. list-table:: Example Simulations
-   :widths: 25 75
-   :header-rows: 1
-
-   * - Example
-     - Description
-   * - **heating_gas**
-     - Heating gas due to Fuzzy Dark Matter fluctuations
-   * - **heating_stars**
-     - Heating stars due to Fuzzy Dark Matter fluctuations
-   * - **tidal_stripping**
-     - Tidal stripping of Fuzzy Dark Matter soliton in an external potential
-   * - **logo**
-     - Inverse problem: Find initial conditions for velocity (dm+stars) to achieve target density at t=1
-   * - **timing**
-     - Performance timing and benchmarking for Jaxion simulations
-   * - **TODO**
-     - TODO XXX
-
+.. literalinclude:: ../../examples/cosmological_box/README.md
+  :language: md
 
 dynamical_friction
 ------------------
 
-TODO XXX
+.. literalinclude:: ../../examples/dynamical_friction/README.md
+  :language: md
 
 heating_gas
 -----------
 
-TODO XXX
+.. literalinclude:: ../../examples/heating_gas/README.md
+  :language: md
 
 heating_stars
 -------------
 
-TODO XXX
+.. literalinclude:: ../../examples/heating_stars/README.md
+  :language: md
+
+kinetic_condensation
+--------------------
+
+.. literalinclude:: ../../examples/kinetic_condensation/README.md
+  :language: md
 
 logo
 ----
 
-TODO XXX
+.. literalinclude:: ../../examples/logo/README.md
+  :language: md
+
+soliton_binary_merger
+---------------------
+
+.. literalinclude:: ../../examples/soliton_binary_merger/README.md
+  :language: md
 
 soliton_merger
 --------------
 
-TODO XXX
+.. literalinclude:: ../../examples/soliton_merger/README.md
+  :language: md
 
 tidal_stripping
 ---------------
 
-TODO XXX
+.. literalinclude:: ../../examples/tidal_stripping/README.md
+  :language: md
