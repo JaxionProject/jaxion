@@ -1,2 +1,3 @@
 ruff
 pytest
+sphinx-lint>=1.0.0

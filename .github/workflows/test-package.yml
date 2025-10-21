@@ -35,6 +35,9 @@ jobs:
         cd ${{ github.workspace }}
         ruff format --check
         ruff check
+    - name: Lint with sphinx-lint
+      run: |
+        sphinx-lint
     - name: Test with pytest
       run: |
         pytest
