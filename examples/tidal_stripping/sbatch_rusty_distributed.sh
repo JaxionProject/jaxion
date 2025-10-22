@@ -18,4 +18,4 @@ export PYTHONUNBUFFERED=TRUE
 
 source $VENVDIR/jaxion-venv/bin/activate
 
-srun -cpu-bind=cores python tidal_stripping.py --res=4 --distributed
+srun --cpu-bind=cores python tidal_stripping.py --res=8 --distributed
