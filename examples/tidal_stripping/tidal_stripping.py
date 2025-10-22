@@ -1,13 +1,13 @@
 import jax
 import jax.numpy as jnp
-import jaxion
 from jax.experimental import mesh_utils
 from jax.sharding import Mesh, PartitionSpec, NamedSharding
 import argparse
 import os
-import sys  # XXX
+import sys
 
 sys.path.append("../../")  # XXX
+import jaxion
 
 # switch on for double precision
 # jax.config.update("jax_enable_x64", True)
