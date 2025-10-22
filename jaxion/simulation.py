@@ -70,8 +70,9 @@ class Simulation:
                 )
 
         if self.params["output"]["save"]:
-            print("Simulation parameters:")
-            print_parameters(self.params)
+            if jax.process_index() == 0:
+                print("Simulation parameters:")
+                print_parameters(self.params)
 
         # jitted functions
         self.xmeshgrid_jit = jax.jit(
@@ -277,7 +278,9 @@ class Simulation:
             checkpoint_dir = checkpoint_dir = os.path.join(
                 os.getcwd(), self.params["output"]["path"]
             )
-            path = ocp.test_utils.erase_and_create_empty(checkpoint_dir)
+            path = os.path.join(os.getcwd(), checkpoint_dir)
+            if jax.process_index() == 0:
+                path = ocp.test_utils.erase_and_create_empty(checkpoint_dir)
             async_checkpoint_manager = ocp.CheckpointManager(path, options=options)
 
         def _kick(state, dt):
@@ -340,7 +343,8 @@ class Simulation:
             return state
 
         # save initial state
-        print(f"Starting simulation (res={self.resolution}, nt={nt}) ...")
+        if jax.process_index() == 0:
+            print(f"Starting simulation (res={self.resolution}, nt={nt}) ...")
         if self.params["output"]["save"]:
             with open(os.path.join(checkpoint_dir, "params.json"), "w") as f:
                 json.dump(self.params, f, indent=2)
@@ -360,15 +364,17 @@ class Simulation:
                 elapsed = time.time() - t_start_timer
                 est_total = elapsed / i * num_checkpoints
                 est_remaining = est_total - elapsed
-                print(
-                    f"{percent:.1f}%: estimated time remaining (s): {est_remaining:.1f}"
-                )
+                if jax.process_index() == 0:
+                    print(
+                        f"{percent:.1f}%: estimated time remaining (s): {est_remaining:.1f}"
+                    )
                 plot_sim(state, checkpoint_dir, i, self.params)
                 async_checkpoint_manager.wait_until_finished()
         else:
             state = jax.lax.fori_loop(0, nt, _update, init_val=state)
         jax.block_until_ready(state)
-        print("Simulation Run Time (s): ", time.time() - t_start_timer)
+        if jax.process_index() == 0:
+            print("Simulation Run Time (s): ", time.time() - t_start_timer)
 
         return state
 
