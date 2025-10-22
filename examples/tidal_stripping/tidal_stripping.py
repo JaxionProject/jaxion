@@ -69,7 +69,8 @@ def set_up_simulation(resolution_multiplier, sharding):
 
     # add external potential (host halo)
     M_halo = 0.25 * box_size * k_soliton**2 * hbar**2 / (G * m**2)
-    print(f"M_halo: {M_halo:.2e} M_sun")
+    if jax.process_index() == 0:
+        print(f"M_halo: {M_halo:.2e} M_sun")
     assert M_halo > M_soliton * 2.0  # halo should be much more massive than soliton
 
     r = jnp.sqrt(
@@ -99,7 +100,8 @@ def main():
             flags += " --xla_force_host_platform_device_count=8"  # change to, e.g., 8 for testing sharding virtually
             os.environ["CUDA_VISIBLE_DEVICES"] = ""
             os.environ["XLA_FLAGS"] = flags
-            print("Using emulated distributed CPU mode")
+            if jax.process_index() == 0:
+                print("Using emulated distributed CPU mode")
         else:
             jax.distributed.initialize()
             if jax.process_index() == 0:
@@ -132,7 +134,9 @@ def main():
 
     sim = set_up_simulation(args.res, sharding)
     sim.run()
-    print("mean |psi| =", jnp.mean(jnp.abs(sim.state["psi"])))
+    mean_psi = jnp.mean(jnp.abs(sim.state["psi"]))
+    if jax.process_index() == 0:
+        print("mean |psi| =", mean_psi)
 
     return sim
 
