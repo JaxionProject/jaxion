@@ -117,3 +117,7 @@ def xzeros(nx):
 
 def xones(nx):
     return jnp.ones((nx, nx, nx))
+
+
+def xproject_y(data_cube):
+    return jnp.mean(jnp.abs(data_cube) ** 2, axis=2).T

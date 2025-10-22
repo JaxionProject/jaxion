@@ -18,6 +18,7 @@ from .utils import (
     xmeshgrid_transpose,
     xzeros,
     xones,
+    xproject_y,
 )
 from .visualization import plot_sim
 
@@ -86,6 +87,9 @@ class Simulation:
         )
         self.xones_jit = jax.jit(
             xones, static_argnums=0, in_shardings=None, out_shardings=sharding
+        )
+        self.xproject_y_jit = jax.jit(
+            xproject_y, in_shardings=None, out_shardings=sharding
         )
 
         # simulation state
@@ -349,7 +353,7 @@ class Simulation:
             with open(os.path.join(checkpoint_dir, "params.json"), "w") as f:
                 json.dump(self.params, f, indent=2)
             async_checkpoint_manager.save(0, args=ocp.args.StandardSave(state))
-            plot_sim(state, checkpoint_dir, 0, self.params)
+            plot_sim(state, self.xproject_y_jit, checkpoint_dir, 0, self.params)
             async_checkpoint_manager.wait_until_finished()
 
         # Simulation Main Loop
@@ -368,7 +372,7 @@ class Simulation:
                     print(
                         f"{percent:.1f}%: estimated time remaining (s): {est_remaining:.1f}"
                     )
-                plot_sim(state, checkpoint_dir, i, self.params)
+                plot_sim(state, self.xproject_y_jit, checkpoint_dir, i, self.params)
                 async_checkpoint_manager.wait_until_finished()
         else:
             state = jax.lax.fori_loop(0, nt, _update, init_val=state)

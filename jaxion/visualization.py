@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import os
 
 
-def plot_sim(state, checkpoint_dir, i, params):
+def plot_sim(state, projection_operator, checkpoint_dir, i, params):
     """Plot the simulation state."""
 
     dynamic_range = params["output"]["plot_dynamic_range"]
@@ -12,10 +12,10 @@ def plot_sim(state, checkpoint_dir, i, params):
     # process distributed data
     if params["physics"]["quantum"]:
         rho_bar_dm = jnp.mean(jnp.abs(state["psi"]) ** 2)
-        rho_proj_dm = jnp.log10(jnp.mean(jnp.abs(state["psi"]) ** 2, axis=2)).T
+        rho_proj_dm = jnp.log10(projection_operator(state["psi"]))
     if params["physics"]["hydro"]:
         rho_bar_gas = jnp.mean(state["rho"])
-        rho_proj_gas = jnp.log10(jnp.mean(state["rho"], axis=2)).T
+        rho_proj_gas = jnp.log10(projection_operator(state["rho"]))
 
     # create plot on process 0
     if jax.process_index() == 0:
