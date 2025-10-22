@@ -1,4 +1,5 @@
 import jax.numpy as jnp
+import jaxdecomp as jd
 
 # Pure functions for quantum simulation
 
@@ -9,9 +10,9 @@ def quantum_kick(psi, V, m_per_hbar, dt):
 
 
 def quantum_drift(psi, k_sq, m_per_hbar, dt):
-    psi_hat = jnp.fft.fftn(psi)
+    psi_hat = jd.fft.pfft3d(psi)
     psi_hat = jnp.exp(dt * (-1.0j * k_sq / m_per_hbar / 2.0)) * psi_hat
-    psi = jnp.fft.ifftn(psi_hat)
+    psi = jd.fft.pifft3d(psi_hat)
     return psi
 
 
@@ -21,14 +22,14 @@ def get_gradient(psi, kx, ky, kz):
     psi: jnp.ndarray (3D)
     Returns: grad_psi_x, grad_psi_y, grad_psi_z
     """
-    psi_hat = jnp.fft.fftn(psi)
+    psi_hat = jd.fft.pfft3d(psi)
     grad_psi_x_hat = 1.0j * kx * psi_hat
     grad_psi_y_hat = 1.0j * ky * psi_hat
     grad_psi_z_hat = 1.0j * kz * psi_hat
 
-    grad_psi_x = jnp.fft.ifftn(grad_psi_x_hat)
-    grad_psi_y = jnp.fft.ifftn(grad_psi_y_hat)
-    grad_psi_z = jnp.fft.ifftn(grad_psi_z_hat)
+    grad_psi_x = jd.fft.pifft3d(grad_psi_x_hat)
+    grad_psi_y = jd.fft.pifft3d(grad_psi_y_hat)
+    grad_psi_z = jd.fft.pifft3d(grad_psi_z_hat)
 
     return grad_psi_x, grad_psi_y, grad_psi_z
 

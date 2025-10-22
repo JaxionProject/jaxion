@@ -1,5 +1,6 @@
 import jax
 import jax.numpy as jnp
+import jaxdecomp as jd
 
 # Pure functions for particle-mesh calculations (stars, BHs, ...)
 
@@ -64,10 +65,10 @@ def get_acceleration(pos, V, kx, ky, kz, dx):
     i, ip1, w_i, w_ip1 = get_cic_indices_and_weights(pos, dx, resolution)
 
     # find accelerations on the grid
-    V_hat = jnp.fft.fftn(V)
-    ax = -jnp.real(jnp.fft.ifftn(1.0j * kx * V_hat))
-    ay = -jnp.real(jnp.fft.ifftn(1.0j * ky * V_hat))
-    az = -jnp.real(jnp.fft.ifftn(1.0j * kz * V_hat))
+    V_hat = jd.fft.pfft3d(V)
+    ax = -jnp.real(jd.fft.pifft3d(1.0j * kx * V_hat))
+    ay = -jnp.real(jd.fft.pifft3d(1.0j * ky * V_hat))
+    az = -jnp.real(jd.fft.pifft3d(1.0j * kz * V_hat))
     a_grid = jnp.stack((ax, ay, az), axis=-1)
 
     # interpolate the accelerations to the particle positions

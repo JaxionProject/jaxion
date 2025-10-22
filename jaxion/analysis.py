@@ -1,4 +1,5 @@
 import jax.numpy as jnp
+import jaxdecomp as jd
 
 
 def radial_power_spectrum(data_cube, kx, ky, kz, box_size):
@@ -13,7 +14,7 @@ def radial_power_spectrum(data_cube, kx, ky, kz, box_size):
     dx = box_size / nx
 
     # Compute power spectrum
-    data_cube_hat = jnp.fft.fftn(data_cube)
+    data_cube_hat = jd.fft.pfft3d(data_cube)
     total_power = 0.5 * jnp.sum(jnp.abs(data_cube_hat) ** 2) / nx**dim * dx**dim
     phi_k = 0.5 * jnp.abs(data_cube_hat) ** 2 / nx**dim * dx**dim
     half_size = nx // 2 + 1

@@ -1,4 +1,5 @@
 import jax.numpy as jnp
+import jaxdecomp as jd
 
 # Pure functions for hydro simulation
 
@@ -89,11 +90,11 @@ def get_flux(rho_L, vx_L, vy_L, vz_L, rho_R, vx_R, vy_R, vz_R, cs):
 
 
 def hydro_accelerate(vx, vy, vz, V, kx, ky, kz, dt):
-    V_hat = jnp.fft.fftn(V)
+    V_hat = jd.fft.pfft3d(V)
 
-    ax = -jnp.real(jnp.fft.ifftn(1.0j * kx * V_hat))
-    ay = -jnp.real(jnp.fft.ifftn(1.0j * ky * V_hat))
-    az = -jnp.real(jnp.fft.ifftn(1.0j * kz * V_hat))
+    ax = -jnp.real(jd.fft.pifft3d(1.0j * kx * V_hat))
+    ay = -jnp.real(jd.fft.pifft3d(1.0j * ky * V_hat))
+    az = -jnp.real(jd.fft.pifft3d(1.0j * kz * V_hat))
 
     vx += ax * dt
     vy += ay * dt

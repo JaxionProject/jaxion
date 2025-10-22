@@ -11,7 +11,14 @@ from .gravity import calculate_gravitational_potential
 from .hydro import hydro_fluxes, hydro_accelerate
 from .particles import particles_accelerate, particles_drift, bin_particles
 from .cosmology import get_supercomoving_time_interval, get_next_scale_factor
-from .utils import set_up_parameters, print_parameters
+from .utils import (
+    set_up_parameters,
+    print_parameters,
+    xmeshgrid,
+    xmeshgrid_transpose,
+    xzeros,
+    xones,
+)
 from .visualization import plot_sim
 
 
@@ -26,7 +33,7 @@ class Simulation:
 
     """
 
-    def __init__(self, params):
+    def __init__(self, params, sharding=None):
         # allow loading directly from a checkpoint path
         load_from_checkpoint = False
         checkpoint_dir = ""
@@ -56,39 +63,55 @@ class Simulation:
                     "Cosmological hydro/particles/external_potential physics is not yet implemented."
                 )
 
+        if self.params["physics"]["hydro"] or self.params["physics"]["particles"]:
+            if sharding is not None:
+                raise NotImplementedError(
+                    "hydro/particles sharding is not yet implemented."
+                )
+
         if self.params["output"]["save"]:
             print("Simulation parameters:")
             print_parameters(self.params)
 
+        # jitted functions
+        self.xmeshgrid_jit = jax.jit(
+            xmeshgrid, in_shardings=None, out_shardings=sharding
+        )
+        self.xmeshgrid_transpose_jit = jax.jit(
+            xmeshgrid_transpose, in_shardings=None, out_shardings=sharding
+        )
+        self.xzeros_jit = jax.jit(
+            xzeros, static_argnums=0, in_shardings=None, out_shardings=sharding
+        )
+        self.xones_jit = jax.jit(
+            xones, static_argnums=0, in_shardings=None, out_shardings=sharding
+        )
+
         # simulation state
         self.state = {}
         self.state["t"] = 0.0
+        if self.params["physics"]["cosmology"]:
+            self.state["redshift"] = 0.0
         if self.params["physics"]["quantum"]:
-            self.state["psi"] = (
-                jnp.zeros((self.resolution, self.resolution, self.resolution)) * 1j
-            )
+            self.state["psi"] = self.xzeros_jit(self.resolution) * 1j
         if self.params["physics"]["external_potential"]:
-            self.state["V_ext"] = jnp.zeros(
-                (self.resolution, self.resolution, self.resolution)
-            )
+            self.state["V_ext"] = self.xzeros_jit(self.resolution)
         if self.params["physics"]["hydro"]:
             self.state["rho"] = jnp.zeros(
-                (self.resolution, self.resolution, self.resolution)
+                (self.resolution, self.resolution, self.resolution),
             )
             self.state["vx"] = jnp.zeros(
-                (self.resolution, self.resolution, self.resolution)
+                (self.resolution, self.resolution, self.resolution),
             )
             self.state["vy"] = jnp.zeros(
-                (self.resolution, self.resolution, self.resolution)
+                (self.resolution, self.resolution, self.resolution),
             )
             self.state["vz"] = jnp.zeros(
-                (self.resolution, self.resolution, self.resolution)
+                (self.resolution, self.resolution, self.resolution),
             )
         if self.params["physics"]["particles"]:
             self.state["pos"] = jnp.zeros((self.num_particles, 3))
             self.state["vel"] = jnp.zeros((self.num_particles, 3))
-        if self.params["physics"]["cosmology"]:
-            self.state["redshift"] = 0.0
 
         if load_from_checkpoint:
             options = ocp.CheckpointManagerOptions()
@@ -140,14 +163,14 @@ class Simulation:
     def grid(self):
         hx = 0.5 * self.dx
         x_lin = jnp.linspace(hx, self.box_size - hx, self.resolution)
-        X, Y, Z = jnp.meshgrid(x_lin, x_lin, x_lin, indexing="ij")
+        X, Y, Z = self.xmeshgrid_jit(x_lin)
         return X, Y, Z
 
     @property
     def kgrid(self):
         nx = self.resolution
         k_lin = (2.0 * jnp.pi / self.box_size) * jnp.arange(-nx / 2, nx / 2)
-        kx, ky, kz = jnp.meshgrid(k_lin, k_lin, k_lin, indexing="ij")
+        kx, ky, kz = self.xmeshgrid_transpose_jit(k_lin)
         kx = jnp.fft.ifftshift(kx)
         ky = jnp.fft.ifftshift(ky)
         kz = jnp.fft.ifftshift(kz)

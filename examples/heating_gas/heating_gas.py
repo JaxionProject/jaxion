@@ -1,5 +1,6 @@
 import jax.numpy as jnp
 import numpy as np
+import jaxdecomp as jd
 import sys  # XXX
 
 sys.path.append("../../")  # XXX
@@ -88,7 +89,7 @@ def set_up_simulation(resolution_multiplier):
     psi = psi.reshape(k_sq.shape)
     psi = jnp.array(psi)
     psi *= np.sqrt(np.exp(-k_sq / (2.0 * sigma**2 * m_per_hbar**2)))
-    psi = np.fft.ifftn(psi)
+    psi = jd.fft.pifft3d(psi)
     # re-normalize it
     psi *= jnp.sqrt(frac_dm * rho_bar / jnp.mean(jnp.abs(psi) ** 2))
 
