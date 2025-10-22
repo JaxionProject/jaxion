@@ -1,7 +1,6 @@
 import jax
 import jax.numpy as jnp
 import jaxion
-import argparse
 from jax.experimental import mesh_utils
 from jax.sharding import Mesh, PartitionSpec, NamedSharding
 import argparse
