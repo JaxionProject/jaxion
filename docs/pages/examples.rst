@@ -67,53 +67,116 @@ Gallery
 cosmological_box
 ----------------
 
+README:
+
 .. literalinclude:: ../../examples/cosmological_box/README.md
   :language: md
+
+Script:
+
+.. literalinclude:: ../../examples/cosmological_box/cosmological_box.py
+  :language: python
 
 dynamical_friction
 ------------------
 
+README:
+
 .. literalinclude:: ../../examples/dynamical_friction/README.md
   :language: md
+
+Script:
+
+.. literalinclude:: ../../examples/dynamical_friction/dynamical_friction.py
+  :language: python
 
 heating_gas
 -----------
 
+README:
+
 .. literalinclude:: ../../examples/heating_gas/README.md
   :language: md
+
+Script:
+
+.. literalinclude:: ../../examples/heating_gas/heating_gas.py
+  :language: python
 
 heating_stars
 -------------
 
+README:
+
 .. literalinclude:: ../../examples/heating_stars/README.md
   :language: md
+
+Script:
+
+.. literalinclude:: ../../examples/heating_stars/heating_stars.py
+  :language: python
 
 kinetic_condensation
 --------------------
 
+README:
+
 .. literalinclude:: ../../examples/kinetic_condensation/README.md
   :language: md
+
+Script:
+
+.. literalinclude:: ../../examples/kinetic_condensation/kinetic_condensation.py
+  :language: python
 
 logo
 ----
 
+README:
+
 .. literalinclude:: ../../examples/logo/README.md
   :language: md
+
+Script:
+
+.. literalinclude:: ../../examples/logo/logo.py
+  :language: python
 
 soliton_binary_merger
 ---------------------
 
+README:
+
 .. literalinclude:: ../../examples/soliton_binary_merger/README.md
   :language: md
+
+Script:
+
+.. literalinclude:: ../../examples/soliton_binary_merger/soliton_binary_merger.py
+  :language: python
 
 soliton_merger
 --------------
 
+README:
+
 .. literalinclude:: ../../examples/soliton_merger/README.md
   :language: md
+
+Script:
+
+.. literalinclude:: ../../examples/soliton_merger/soliton_merger.py
+  :language: python
 
 tidal_stripping
 ---------------
 
+README:
+
 .. literalinclude:: ../../examples/tidal_stripping/README.md
   :language: md
+
+Script:
+
+.. literalinclude:: ../../examples/tidal_stripping/tidal_stripping.py
+  :language: python
