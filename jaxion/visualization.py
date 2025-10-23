@@ -10,17 +10,18 @@ def plot_sim(state, projection_operator, checkpoint_dir, i, params):
     dynamic_range = params["output"]["plot_dynamic_range"]
 
     # process distributed data
-    cpu_device = jax.devices("cpu")[0]
     if params["physics"]["quantum"]:
+        nx = state["psi"].shape[0]
         rho_bar_dm = jnp.mean(jnp.abs(state["psi"]) ** 2)
-        rho_proj_dm = jax.device_put(
-            jnp.log10(projection_operator(state["psi"])), device=cpu_device
-        )
+        rho_proj_dm = jax.experimental.multihost_utils.process_allgather(
+            jnp.log10(jnp.mean(jnp.abs(state["psi"]) ** 2, axis=2).T)
+        ).reshape(nx, nx)
     if params["physics"]["hydro"]:
+        nx = state["rho"].shape[0]
         rho_bar_gas = jnp.mean(state["rho"])
-        rho_proj_gas = jax.device_put(
-            jnp.log10(projection_operator(state["rho"])), device=cpu_device
-        )
+        rho_proj_gas = jax.experimental.multihost_utils.process_allgather(
+            jnp.log10(jnp.mean(jnp.abs(state["rho"]) ** 2, axis=2).T)
+        ).reshape(nx, nx)
 
     # create plot on process 0
     if jax.process_index() == 0:
