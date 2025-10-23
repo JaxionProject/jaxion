@@ -1,6 +1,6 @@
 # Heating Gas
 
-Timing test based on heating_gas/
+Timing test for FDM+hydro based on heating_gas/
 
 Philip Mocz (2025)
 

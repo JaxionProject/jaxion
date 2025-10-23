@@ -244,3 +244,22 @@ Script:
 
 .. literalinclude:: ../../examples/tidal_stripping/tidal_stripping.py
   :language: python
+
+timing
+------
+
+.. figure:: ../../examples/timing/timing.png
+  :width: 300px
+  :align: center
+  :alt: timing
+  :target: examples.html#timing
+
+README:
+
+.. literalinclude:: ../../examples/timing/README.md
+  :language: md
+
+Script:
+
+.. literalinclude:: ../../examples/timing/timing.py
+  :language: python

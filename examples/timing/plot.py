@@ -14,8 +14,8 @@ def main():
     gpu_mcups = num_cells / gpu_times / 1e6
 
     plt.figure(figsize=(4, 4))
-    plt.plot(resolutions, cpu_mcups, label="Apple M3 Max (cpu)", marker="o")
     plt.plot(resolutions, gpu_mcups, label="H100 (gpu)", marker="o")
+    plt.plot(resolutions, cpu_mcups, label="Apple M3 Max (cpu)", marker="o")
     plt.xscale("log")
     plt.yscale("log")
     plt.xlabel("resolution")
