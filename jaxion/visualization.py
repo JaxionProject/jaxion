@@ -1,7 +1,5 @@
 import jax
-from jax._src import state
 import jax.numpy as jnp
-import numpy as np
 import matplotlib.pyplot as plt
 import os
 
