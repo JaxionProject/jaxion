@@ -9,7 +9,7 @@
 #SBATCH --gpus-per-node=4
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=80G
-#SBATCH --time=00-01:00
+#SBATCH --time=00-00:20
 
 module purge
 module load python/3.11
