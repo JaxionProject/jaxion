@@ -1,4 +1,5 @@
 import jax
+from jax._src import state
 import jax.numpy as jnp
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,12 +12,17 @@ def plot_sim(state, projection_operator, checkpoint_dir, i, params):
     dynamic_range = params["output"]["plot_dynamic_range"]
 
     # process distributed data
+    cpu_device = jax.devices("cpu")[0]
     if params["physics"]["quantum"]:
         rho_bar_dm = jnp.mean(jnp.abs(state["psi"]) ** 2)
-        rho_proj_dm = np.array(jnp.log10(projection_operator(state["psi"])))
+        rho_proj_dm = jax.device_put(
+            jnp.log10(projection_operator(state["psi"])), device=cpu_device
+        )
     if params["physics"]["hydro"]:
         rho_bar_gas = jnp.mean(state["rho"])
-        rho_proj_gas = np.array(jnp.log10(projection_operator(state["rho"])))
+        rho_proj_gas = jax.device_put(
+            jnp.log10(projection_operator(state["rho"])), device=cpu_device
+        )
 
     # create plot on process 0
     if jax.process_index() == 0:
