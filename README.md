@@ -69,17 +69,17 @@ Check out the `examples/` directory for demonstrations of using Jaxion.
 ## Links
 
 * [Code repository](https://github.com/JaxionProject/jaxion) on GitHub (this page).
-* [Documentation](https://jaxion.readthedocs.io) for up-to-date information about installing and running jaxion.
+* [Documentation](https://jaxion.readthedocs.io) for up-to-date information about installing and using jaxion.
 
 
 ## Testing
 
-`jaxion` is tested with `pytest`. Tests are included in the `tests/` folder.
+Jaxion is tested with `pytest`. Tests are included in the `tests/` folder.
 
 
 ## Contributing
 
-`jaxion` welcomes community contributions of all kinds. Open an issue or fork the code and submit a Pull request. Please check out the [Contributing Guidslines](CONTRIBUTING.md)
+Jaxion welcomes community contributions of all kinds. Open an issue or fork the code and submit a Pull request. Please check out the [Contributing Guidelines](CONTRIBUTING.md)
 
 
 ## Cite this repository
