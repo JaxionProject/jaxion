@@ -267,6 +267,10 @@ class Simulation:
         nt_sub = int(round(nt / num_checkpoints))
         dt = t_span / nt
 
+        # distributed arrays (fixed) needed for calculations
+        kx, ky, kz = None, None, None
+        k_sq = None
+
         # Fourier space variables
         if self.params["physics"]["gravity"] or self.params["physics"]["quantum"]:
             kx, ky, kz = self.kgrid
@@ -283,7 +287,9 @@ class Simulation:
                 path = ocp.test_utils.erase_and_create_empty(checkpoint_dir)
             async_checkpoint_manager = ocp.CheckpointManager(path, options=options)
 
-        def _kick(state, dt):
+        carry = (state, kx, ky, kz, k_sq)
+
+        def _kick(state, kx, ky, kz, k_sq, dt):
             # Kick (half-step)
             if (
                 self.params["physics"]["gravity"]
@@ -310,7 +316,7 @@ class Simulation:
                         state["vel"], state["pos"], V, kx, ky, kz, dx, dt
                     )
 
-        def _drift(state, dt):
+        def _drift(state, k_sq, dt):
             # Drift (full-step)
             if self.params["physics"]["quantum"]:
                 state["psi"] = quantum_drift(state["psi"], k_sq, m_per_hbar, dt)
@@ -322,11 +328,12 @@ class Simulation:
                 state["pos"] = particles_drift(state["pos"], state["vel"], dt, box_size)
 
         @jax.jit
-        def _update(_, state):
+        def _update(_, carry):
             # Update the simulation state by one timestep
             # according to a 2nd-order `kick-drift-kick` scheme
-            _kick(state, 0.5 * dt)
-            _drift(state, dt)
+            state, kx, ky, kz, k_sq = carry
+            _kick(state, kx, ky, kz, k_sq, 0.5 * dt)
+            _drift(state, k_sq, dt)
             # update time & redshift
             state["t"] += dt
             if self.params["physics"]["cosmology"]:
@@ -338,9 +345,9 @@ class Simulation:
                     self.params["cosmology"]["little_h"],
                 )
                 state["redshift"] = 1.0 / scale_factor - 1.0
-            _kick(state, 0.5 * dt)
+            _kick(state, kx, ky, kz, k_sq, 0.5 * dt)
 
-            return state
+            return state, kx, ky, kz, k_sq
 
         # save initial state
         if jax.process_index() == 0:
@@ -356,7 +363,8 @@ class Simulation:
         t_start_timer = time.time()
         if self.params["output"]["save"]:
             for i in range(1, num_checkpoints + 1):
-                state = jax.lax.fori_loop(0, nt_sub, _update, init_val=state)
+                carry = jax.lax.fori_loop(0, nt_sub, _update, init_val=carry)
+                state, kx, ky, kz, k_sq = carry
                 jax.block_until_ready(state)
                 # save state
                 async_checkpoint_manager.save(i, args=ocp.args.StandardSave(state))
