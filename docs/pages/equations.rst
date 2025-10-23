@@ -1,5 +1,5 @@
-Physics
-=======
+Equations
+=========
 
 ``jaxion`` solves the following equations:
 

@@ -54,11 +54,31 @@ See the docs for more info on how to [build from source](https://jaxion.readthed
 Check out the `examples/` directory for demonstrations of using Jaxion.
 
 <p align="center">
+  <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/cosmological_box">
+    <img src="examples/cosmological_box/movie.gif" alt="cosmological_box" width="128"/>
+  </a>
   <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/dynamical_friction">
     <img src="examples/dynamical_friction/movie.gif" alt="dynamical_friction" width="128"/>
   </a>
   <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/heating_gas">
     <img src="examples/heating_gas/movie.gif" alt="heating_gas" width="128"/>
+  </a>
+  <br>
+  <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/heating_stars">
+    <img src="examples/heating_stars/movie.gif" alt="heating_stars" width="128"/>
+  </a>
+  <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/kinetic_condensation">
+    <img src="examples/kinetic_condensation/movie.gif" alt="kinetic_condensation" width="128"/>
+  </a>
+  <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/logo">
+    <img src="examples/logo/movie.gif" alt="logo" width="128"/>
+  </a>
+  <br>
+  <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/soliton_binary_merger">
+    <img src="examples/soliton_binary_merger/movie.gif" alt="soliton_binary_merger" width="128"/>
+  </a>
+  <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/soliton_merger">
+    <img src="examples/soliton_merger/movie.gif" alt="soliton_merger" width="128"/>
   </a>
   <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/tidal_stripping">
     <img src="examples/tidal_stripping/movie.gif" alt="tidal_stripping" width="128"/>
