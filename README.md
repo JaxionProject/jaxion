@@ -40,16 +40,18 @@ Install with:
 pip install jaxion
 ```
 
-or, for GPU support use:
+or, for GPU support, use:
 
 ```console
 pip install jaxion[cuda12]
 ```
 
-Check out the `examples/` directory for demonstrations of using Jaxion.
+See the docs for more info on how to [build from source](https://jaxion.readthedocs.io/en/latest/pages/installation.html).
 
 
 ## Examples
+
+Check out the `examples/` directory for demonstrations of using Jaxion.
 
 <p align="center">
   <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/dynamical_friction">
@@ -63,11 +65,23 @@ Check out the `examples/` directory for demonstrations of using Jaxion.
   </a>
 </p>
 
+
 ## Links
 
 * [Code repository](https://github.com/JaxionProject/jaxion) on GitHub (this page).
 * [Documentation](https://jaxion.readthedocs.io) for up-to-date information about installing and running jaxion.
 
 
+## Testing
+
+`jaxion` is tested with `pytest`. Tests are included in the `tests/` folder.
+
+
+## Contributing
+
+`jaxion` welcomes community contributions of all kinds. Open an issue or fork the code and submit a Pull request. Please check out the [Contributing Guidslines](CONTRIBUTING.md)
+
+
 ## Cite this repository
 
+TODO XXX
