@@ -107,5 +107,6 @@ jaxion
     :caption: References
 
     pages/parameters
+    pages/equations
     pages/api
     pages/about
