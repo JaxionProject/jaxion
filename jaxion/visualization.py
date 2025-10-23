@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import os
 
 
-def plot_sim(state, projection_operator, checkpoint_dir, i, params):
+def plot_sim(state, checkpoint_dir, i, params):
     """Plot the simulation state."""
 
     dynamic_range = params["output"]["plot_dynamic_range"]
