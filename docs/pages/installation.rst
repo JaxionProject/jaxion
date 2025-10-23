@@ -1,6 +1,7 @@
 Installation
 ============
 
+
 From PyPI
 ---------
 
@@ -15,6 +16,10 @@ For GPU support, use the following command instead:
 .. code-block:: bash
 
     pip install jaxion[cuda12]
+
+.. note::
+    For now, to build with GPU support, use the build from source method below. This will be simplified in future releases.
+
 
 Build from Source
 -----------------

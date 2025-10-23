@@ -1,0 +1,3 @@
+[codespell]
+skip = ./docs/_build/*
+ignore-words-list = Tye,Smoot,Leary

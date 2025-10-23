@@ -1,8 +1,6 @@
 jaxion
 ======
 
-⚠️ Jaxion is currently being built and is not yet ready for use. `⭐ <https://github.com/JaxionProject/jaxion>`_ the repo & check back later! ⚠️
-
 .. grid:: 1
     :class-container: color-cards
 
