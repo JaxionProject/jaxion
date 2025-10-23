@@ -9,6 +9,10 @@ requires-python = ">=3.11"
 license = "Apache-2.0"
 dynamic = ["version", "dependencies"]
 
+[tool.setuptools.packages.find]
+include = ["jaxion"]
+exclude = ["paper"]
+
 [tool.setuptools.package-data]
 "jaxion" = ["*.json"]
 

@@ -42,7 +42,7 @@ Established codes include:
 `PyUltraLight` [@Edwards:2018].
 Such codes enable detailed studies of gas dynamics, star formation, cosmological structure formation, and galaxy evolution. These tools employ a combination of grid-based, particle-based, and spectral methods to solve the governing equations of hydrodynamics, gravity, and additional physics.
 
-Despite their success, classical astrophysics codes are limited in their ability to interface with modern machine learning (ML) frameworks and support automatic differentiation. As ML and AI techniques are becoming more integrated with scientific fields, e.g. for parameter inference, model discovery, and hybrid physics-ML modeling, there is a growing need for simulation frameworks that are flexible and differentiable.
+Despite their successes, classical astrophysics codes are limited in their ability to interface with modern machine learning (ML) frameworks and support automatic differentiation. As ML and AI techniques are becoming more integrated with scientific fields, e.g. for parameter inference, model discovery, and hybrid physics-ML modeling, there is a growing need for simulation frameworks that are flexible and differentiable.
 `jaxion` fills this gap, by leveraging automatic differentiation, hardware acceleration, and seamless integration with ML workflows. Other recent developments of differentiable astrophysics code for various applications ranging from hydrodynamical simulations to modeling gravitational waves include [@Horowitz:2025;@Lanzieri:2022;@Wong:2023]
 
 `jaxion` is a differentiable simulation library specifically designed for studying FDM coupled to baryons (stars and gas). FDM is a plausible dark matter candidate, modeled as a quantum wave-like field. It exhibits unique phenomena such as solitonic cores and granular interference patterns on kiloparsec scales [@Hui:2017]. `jaxion`, with built-in automatic differentiability, is aimed to open new avenues for scientific discovery through gradient-based parameter inference, optimization, and hybrid physics-ML modeling.
@@ -78,7 +78,7 @@ Below are snapshots from some of the examples:
 
 # Acknowledgements
 
-We acknowledge discussions with researchers over the past decade which led to an initial implementation of a fuzzy dark matter,
+We acknowledge discussions with researchers over the past decade which led to an initial implementation of FDM solvers,
 refinement and several publications over the years, and ultimately the development of this Python package. Thanks are due to:
 Mustafa A. Amin,
 Fernando Becerra,
