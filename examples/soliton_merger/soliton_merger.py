@@ -34,7 +34,7 @@ def set_up_simulation(resolution_multiplier):
     m_22 = sim.params["quantum"]["m_22"]
     box_size = sim.params["domain"]["box_size"]
     nx = sim.resolution
-    X, Y, Z = sim.grid
+    xx, yy, zz = sim.grid
 
     def rho_soliton(r, r_soliton, m_22):
         return (
@@ -51,7 +51,9 @@ def set_up_simulation(resolution_multiplier):
         y_soliton = (0.25 + 0.5 * np.random.rand()) * box_size
         z_soliton = (0.25 + 0.5 * np.random.rand()) * box_size
 
-        r = jnp.sqrt((X - x_soliton) ** 2 + (Y - y_soliton) ** 2 + (Z - z_soliton) ** 2)
+        r = jnp.sqrt(
+            (xx - x_soliton) ** 2 + (yy - y_soliton) ** 2 + (zz - z_soliton) ** 2
+        )
         rho += rho_soliton(r, r_soliton, m_22)
 
     sim.state["psi"] = jnp.array(jnp.sqrt(rho))

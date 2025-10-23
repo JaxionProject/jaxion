@@ -164,8 +164,8 @@ class Simulation:
     def grid(self):
         hx = 0.5 * self.dx
         x_lin = jnp.linspace(hx, self.box_size - hx, self.resolution)
-        X, Y, Z = self.xmeshgrid_jit(x_lin)
-        return X, Y, Z
+        xx, yy, zz = self.xmeshgrid_jit(x_lin)
+        return xx, yy, zz
 
     @property
     def kgrid(self):

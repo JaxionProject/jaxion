@@ -42,9 +42,9 @@ def set_up_simulation(resolution_multiplier):
     G = jaxion.constants["gravitational_constant"]
     box_size = sim.params["domain"]["box_size"]
 
-    X, Y, Z = sim.grid
+    xx, yy, zz = sim.grid
     sim.state["psi"] = jnp.sqrt(density) * jnp.exp(
-        1.0j * (2.0 * jnp.pi / box_size) * k_rel * X
+        1.0j * (2.0 * jnp.pi / box_size) * k_rel * xx
     )
 
     # add external potential (host halo)
@@ -52,9 +52,9 @@ def set_up_simulation(resolution_multiplier):
     print(f"M_halo: {M_halo:.2e} M_sun")
 
     r = jnp.sqrt(
-        (X - 0.5 * box_size) ** 2
-        + (Y - 0.5 * box_size) ** 2
-        + (Z - 0.5 * box_size) ** 2
+        (xx - 0.5 * box_size) ** 2
+        + (yy - 0.5 * box_size) ** 2
+        + (zz - 0.5 * box_size) ** 2
     )
     sim.state["V_ext"] = -G * M_halo / (r + 0.5 * sim.dx)  # softening
 
