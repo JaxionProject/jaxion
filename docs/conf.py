@@ -40,6 +40,7 @@ html_theme_options = {
     "collapse_navigation": True,
     "navigation_depth": 4,
     "repository_url": "https://github.com/JaxionProject/jaxion",
+    "path_to_docs": "docs/",
     "use_repository_button": True,
     "use_edit_page_button": True,
     "use_source_button": True,
