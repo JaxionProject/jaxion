@@ -9,6 +9,7 @@
 [![Repo Status][status-badge]][status-link]
 [![PyPI Version Status][pypi-badge]][pypi-link]
 [![Test Status][workflow-test-badge]][workflow-test-link]
+[![Coverage][coverage-badge]][coverage-link]
 [![Readthedocs Status][docs-badge]][docs-link]
 [![License][license-badge]][license-link]
 
@@ -18,6 +19,8 @@
 [pypi-badge]:          https://img.shields.io/pypi/v/jaxion?label=PyPI&logo=pypi
 [workflow-test-link]:  https://github.com/JaxionProject/jaxion/actions/workflows/test-package.yml
 [workflow-test-badge]: https://github.com/JaxionProject/jaxion/actions/workflows/test-package.yml/badge.svg?event=push
+[coverage-link]:       https://app.codecov.io/gh/JaxionProject/jaxion
+[coverage-badge]:      https://codecov.io/github/jaxionproject/jaxion/graph/jaxion-server/badge.svg
 [docs-link]:           https://jaxion.readthedocs.io
 [docs-badge]:          https://readthedocs.org/projects/jaxion/badge
 [license-link]:        https://opensource.org/licenses/Apache-2.0
