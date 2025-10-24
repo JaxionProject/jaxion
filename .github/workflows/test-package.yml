@@ -29,7 +29,7 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -r requirements-dev.txt
         # if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install .
+        pip install -e .
     - name: Lint with ruff
       run: |
         cd ${{ github.workspace }}
@@ -38,6 +38,10 @@ jobs:
     - name: Lint with sphinx-lint
       run: |
         sphinx-lint
-    - name: Test with pytest
+    - name: Test with pytest and generate coverage report
       run: |
-        pytest
+        pytest --cov=./ --cov-report=xml
+    - name:  Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}

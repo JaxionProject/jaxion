@@ -1,3 +1,5 @@
 ruff
 pytest
+pytest-cov
+coverage-badge
 sphinx-lint>=1.0.0

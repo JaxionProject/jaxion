@@ -79,7 +79,8 @@ Below are snapshots from some of the examples:
 # Acknowledgements
 
 We acknowledge discussions with researchers over the past decade which led to an initial implementation of FDM solvers,
-refinement and several publications over the years, and ultimately the development of this Python package. Thanks are due to:
+refinement and several publications over the years, conversations on differentiable simulations, and ultimately the development of this Python package.
+Thanks are due to:
 Mustafa A. Amin,
 Fernando Becerra,
 Gurtina Besla,
@@ -99,6 +100,7 @@ Benjamin Hamm,
 Lars Hernquist,
 Ben Horowitz,
 Lam Hui,
+Tzanio Kolev,
 Lachlan Lancaster,
 Alvaro Pozo Larrocha,
 Mariangela Lisanti,
@@ -111,6 +113,7 @@ Jens C. Niemeyer,
 Matthew Notis,
 Jerry Ostriker,
 Connor A. Painter,
+Rob Rieben,
 Victor H. Robles,
 Bodo Schwabe,
 Xuejian Shen,
@@ -118,6 +121,7 @@ Martin Sparre,
 David Spergel,
 Volker Springel,
 Sauro Succi,
+Aaron Szasz,
 Hy Trac,
 Scott Tremaine,
 Mark Vogelsberger,
