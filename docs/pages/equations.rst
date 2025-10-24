@@ -1,7 +1,7 @@
 Equations
 =========
 
-``jaxion`` solves the following equations:
+Jaxion solves the following equations:
 
 
 Fuzzy Dark Matter

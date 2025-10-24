@@ -109,4 +109,5 @@ jaxion
     pages/parameters
     pages/equations
     pages/api
+    pages/developing
     pages/about

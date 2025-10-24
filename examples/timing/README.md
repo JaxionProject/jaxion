@@ -1,4 +1,4 @@
-# Heating Gas
+# Timing
 
 Timing test for FDM+hydro based on heating_gas/
 

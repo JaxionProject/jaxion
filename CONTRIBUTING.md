@@ -1,5 +1,5 @@
 
-# Contributing to **`jaxion`**
+# Contributing to Jaxion
 
 Thank you for taking the time to contribute! All types of contributions are welcome.
 

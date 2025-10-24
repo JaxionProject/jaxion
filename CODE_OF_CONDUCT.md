@@ -1,4 +1,4 @@
-# Code of Conduct - **`jaxion`**
+# Code of Conduct - Jaxion
 
 ## Our Pledge
 
