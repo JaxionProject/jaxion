@@ -4,10 +4,25 @@ import jaxdecomp as jd
 
 def radial_power_spectrum(data_cube, kx, ky, kz, box_size):
     """
-    Computes radially averaged power spectral density of data_cube (3D).
-    data_cube: jnp.ndarray (3D, must be cubic)
-    boxsize: float (physical size of box)
-    Returns: Pf (radial power spectrum), k (wavenumbers), total_power
+    Computes the radially averaged power spectral density of a 3D datacube.
+
+    Parameters
+    ----------
+        data_cube : jnp.ndarray
+            3D data cube, must be cubic
+        kx, ky, kz: jnp.ndarray
+            wavenumber grids in each dimension
+        box_size: float
+            physical size of box
+
+    Returns
+    -------
+        Pf: jnp.ndarray
+            radial power spectrum
+        k: jnp.ndarray
+            wavenumbers
+        total_power: float
+            total power
     """
     dim = data_cube.ndim
     nx = data_cube.shape[0]

@@ -28,8 +28,11 @@ class Simulation:
 
     Parameters
     ----------
-      params (dict): The Python dictionary that contains the simulation parameters.
-                     Params can also be a string path to a checkpoint directory to load a saved simulation.
+        params : dict
+            The Python dictionary that contains the simulation parameters.
+            Params can also be a string path to a checkpoint directory to load a saved simulation.
+        sharding : jax.sharding.NamedSharding, optional
+            jax sharding used for distributed (multi-GPU) simulations
 
     """
 
@@ -126,6 +129,9 @@ class Simulation:
 
     @property
     def resolution(self):
+        """
+        Return the (linear) resolution of the simulation
+        """
         return (
             self.params["domain"]["resolution_base"]
             * self.params["domain"]["resolution_multiplier"]
@@ -133,18 +139,30 @@ class Simulation:
 
     @property
     def num_particles(self):
+        """
+        Return the number of particles in the simulation
+        """
         return self.params["particles"]["num_particles"]
 
     @property
     def box_size(self):
+        """
+        Return the box size of the simulation (kpc)
+        """
         return self.params["domain"]["box_size"]
 
     @property
     def dx(self):
+        """
+        Return the cell size size of the simulation (kpc)
+        """
         return self.box_size / self.resolution
 
     @property
     def axion_mass(self):
+        """
+        Return the axion particle mass in the simulation (M_sun)
+        """
         return (
             self.params["quantum"]["m_22"]
             * 1.0e-22
@@ -154,14 +172,23 @@ class Simulation:
 
     @property
     def sound_speed(self):
+        """
+        Return the isothermal gas sound speed in the simulation (km/s)
+        """
         return self.params["hydro"]["sound_speed"]
 
     @property
     def params(self):
+        """
+        Return the parameters of the simulation
+        """
         return self._params
 
     @property
     def grid(self):
+        """
+        Return the simulation grid
+        """
         hx = 0.5 * self.dx
         x_lin = jnp.linspace(hx, self.box_size - hx, self.resolution)
         xx, yy, zz = self.xmeshgrid_jit(x_lin)
@@ -169,6 +196,9 @@ class Simulation:
 
     @property
     def kgrid(self):
+        """
+        Return the simulation spectral grid
+        """
         nx = self.resolution
         k_lin = (2.0 * jnp.pi / self.box_size) * jnp.arange(-nx / 2, nx / 2)
         kx, ky, kz = self.xmeshgrid_transpose_jit(k_lin)
@@ -179,6 +209,9 @@ class Simulation:
 
     @property
     def quantum_velocity(self):
+        """
+        Return the dark matter velocity field from the wavefunction
+        """
         m_per_hbar = self.axion_mass / constants["reduced_planck_constant"]
         return quantum_velocity(self.state["psi"], self.box_size, m_per_hbar)
 
@@ -214,6 +247,9 @@ class Simulation:
 
     @property
     def potential(self):
+        """
+        Return the gravitational potential
+        """
         kx, ky, kz = self.kgrid
         k_sq = kx**2 + ky**2 + kz**2
         return self._calc_grav_potential(self.state, k_sq)
@@ -387,5 +423,8 @@ class Simulation:
         return state
 
     def run(self):
+        """
+        Run the simulation
+        """
         self.state = self._evolve(self.state)
         jax.block_until_ready(self.state)

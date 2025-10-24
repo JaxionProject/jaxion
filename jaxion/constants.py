@@ -1,13 +1,13 @@
 # Copyright (c) 2025 The Jaxion Team.
 
-# Physical Constants
-#
-# Jaxion uses a unit system of:
-# [L] = kpc
-# [V] = km/s
-# [M] = Msun
-#
-# other units are derived from these base units, e.g., [T] = [L]/[V] = kpc / (km/s) ~= 0.978 Gyr
+"""
+Physical constants in units of:
+[L] = kpc,
+[V] = km/s,
+[M] = Msun
+
+note: other units are derived from these base units, e.g., [T] = [L]/[V] = kpc / (km/s) ~= 0.978 Gyr
+"""
 
 constants = {
     "gravitational_constant": 4.30241002e-6,  # G / (kpc * (km/s)^2 / Msun)
