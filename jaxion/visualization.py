@@ -20,7 +20,7 @@ def plot_sim(state, checkpoint_dir, i, params):
         nx = state["rho"].shape[0]
         rho_bar_gas = jnp.mean(state["rho"])
         rho_proj_gas = jax.experimental.multihost_utils.process_allgather(
-            jnp.log10(jnp.mean(jnp.abs(state["rho"]) ** 2, axis=2).T)
+            jnp.log10(jnp.mean(state["rho"], axis=2).T)
         ).reshape(nx, nx)
 
     # create plot on process 0
