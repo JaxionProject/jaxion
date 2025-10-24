@@ -1,5 +1,5 @@
 1
 00:00:00,00 --> 00:00:10,00
-Introducting jaxion (Philip Mocz, 2025): a differentiable Fuzzy Dark Matter+gas+stars simulation library in JAX, scalable on multiple GPUs.
+Introducing jaxion (Philip Mocz, 2025): a differentiable Fuzzy Dark Matter+gas+stars simulation library in JAX, scalable on multiple GPUs.
 Check out the repo at: https://github.com/JaxionProject/jaxion or `pip install jaxion`
 

@@ -48,7 +48,7 @@ def plot_sim(state, checkpoint_dir, i, params):
                 sx = (state["pos"][:, 0] / box_size) * nx
                 sy = (state["pos"][:, 1] / box_size) * nx
                 plt.plot(
-                    sx, sy, color="cyan", marker=".", linestyle="None", markersize=2
+                    sx, sy, color="cyan", marker=".", linestyle="None", markersize=5
                 )
             ax.set_aspect("equal")
             ax.get_xaxis().set_visible(False)
