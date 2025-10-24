@@ -7,7 +7,7 @@ To quickly try out Jaxion, install the package via pip:
 
     pip install jaxion
 
-And run a a simple example simulation (``soliton_binary_merger.py``):
+And run a a simple example simulation (``examples/soliton_binary_merger/soliton_binary_merger.py``):
 
 .. literalinclude:: ../../examples/soliton_binary_merger/soliton_binary_merger.py
   :language: python
@@ -24,6 +24,7 @@ Running this should take under a minute and produce output (in ``checkpoints2/``
    :width: 480px
    :align: center
    :alt: soliton binary merger
+
 
 For more info
 -------------

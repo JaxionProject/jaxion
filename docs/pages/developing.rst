@@ -14,4 +14,4 @@ Tests can be run locally in the project directory with ``pytest``:
 
     pytest
 
-Tests are located in the ``jaxion/tests/`` directory. New features should include appropriate tests.
+Tests are located in the ``tests/`` directory. New features should include appropriate tests.
