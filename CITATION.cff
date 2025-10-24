@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Mocz"
+  given-names: "Philip"
+  orcid: "https://orcid.org/0000-0001-6631-2566"
+title: "Jaxion"
+version: 0.0.3
+doi: 10.5281/zenodo.17438467
+date-released: 2025-10-24
+url: "https://github.com/JaxionProject/jaxion"
