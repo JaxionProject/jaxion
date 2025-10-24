@@ -13,6 +13,6 @@ https://jaxion.readthedocs.io
 
 The code is developed by `Philip Mocz <https://pmocz.github.io/>`_, launched in 2025.
 
-TODO XXX: add citation information here.
+Community contributions are welcome! Check out `Developing <../pages/developing.html>`_ for guidelines.
 
-TODO XXX: add contribution guidelines here.
+Please cite the work if you use Jaxion in your research; see: `Citing <../pages/citing.html>`_.

@@ -110,4 +110,5 @@ jaxion
     pages/equations
     pages/api
     pages/developing
+    pages/citing
     pages/about
