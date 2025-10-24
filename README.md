@@ -12,6 +12,7 @@
 [![Coverage][coverage-badge]][coverage-link]
 [![Readthedocs Status][docs-badge]][docs-link]
 [![License][license-badge]][license-link]
+[![Software DOI][software-doi-badge]][software-doi-link]
 
 [status-link]:         https://www.repostatus.org/#active
 [status-badge]:        https://www.repostatus.org/badges/latest/active.svg
@@ -25,6 +26,9 @@
 [docs-badge]:          https://readthedocs.org/projects/jaxion/badge
 [license-link]:        https://opensource.org/licenses/Apache-2.0
 [license-badge]:       https://img.shields.io/badge/License-Apache_2.0-blue.svg
+[software-doi-link]:   https://doi.org/10.5281/zenodo.17438467
+[software-doi-badge]:  https://zenodo.org/badge/1072645376.svg
+
 
 A simple JAX-powered simulation library for numerical experiments of fuzzy dark matter, stars, gas + more!
 
@@ -107,4 +111,16 @@ Jaxion welcomes community contributions of all kinds. Open an issue or fork the 
 
 ## Cite this repository
 
-TODO XXX
+If you use this software, please cite it as below.
+
+```bibtex
+@software{Mocz_Jaxion_2025,
+   author = {Mocz, Philip},
+      doi = {10.5281/zenodo.17438467},
+    month = oct,
+    title = {{Jaxion}},
+      url = {https://github.com/JaxionProject/jaxion},
+  version = {0.0.4},
+     year = {2025}
+}
+```
