@@ -75,6 +75,8 @@ cosmological_box
   :alt: cosmological box
   :target: examples.html#cosmological-box
 
+  See on GitHub: `examples/cosmological_box <https://github.com/JaxionProject/jaxion/tree/main/examples/cosmological_box>`_
+
 README:
 
 .. literalinclude:: ../../examples/cosmological_box/README.md
@@ -94,6 +96,8 @@ dynamical_friction
   :align: center
   :alt: dynamical friction
   :target: examples.html#dynamical-friction
+
+  See on GitHub: `examples/dynamical_friction <https://github.com/JaxionProject/jaxion/tree/main/examples/dynamical_friction>`_
 
 README:
 
@@ -115,6 +119,8 @@ heating_gas
   :alt: heating gas
   :target: examples.html#heating-gas
 
+  See on GitHub: `examples/heating_gas <https://github.com/JaxionProject/jaxion/tree/main/examples/heating_gas>`_
+
 README:
 
 .. literalinclude:: ../../examples/heating_gas/README.md
@@ -134,6 +140,8 @@ heating_stars
   :align: center
   :alt: heating stars
   :target: examples.html#heating-stars
+
+  See on GitHub: `examples/heating_stars <https://github.com/JaxionProject/jaxion/tree/main/examples/heating_stars>`_
 
 README:
 
@@ -155,6 +163,8 @@ kinetic_condensation
   :alt: kinetic condensation
   :target: examples.html#kinetic-condensation
 
+  See on GitHub: `examples/kinetic_condensation <https://github.com/JaxionProject/jaxion/tree/main/examples/kinetic_condensation>`_
+
 README:
 
 .. literalinclude:: ../../examples/kinetic_condensation/README.md
@@ -174,6 +184,8 @@ logo
   :align: center
   :alt: logo
   :target: examples.html#logo
+
+  See on GitHub: `examples/logo <https://github.com/JaxionProject/jaxion/tree/main/examples/logo>`_
 
 README:
 
@@ -195,6 +207,8 @@ soliton_binary_merger
   :alt: soliton binary merger
   :target: examples.html#soliton-binary-merger
 
+  See on GitHub: `examples/soliton_binary_merger <https://github.com/JaxionProject/jaxion/tree/main/examples/soliton_binary_merger>`_
+
 README:
 
 .. literalinclude:: ../../examples/soliton_binary_merger/README.md
@@ -206,6 +220,28 @@ Script:
   :language: python
 
 
+soliton_gas_star
+----------------
+
+.. figure:: ../../examples/soliton_gas_star/movie.gif
+  :width: 300px
+  :align: center
+  :alt: soliton gas star
+  :target: examples.html#soliton-gas-star
+
+  See on GitHub: `examples/soliton_gas_star <https://github.com/JaxionProject/jaxion/tree/main/examples/soliton_gas_star>`_
+
+README:
+
+.. literalinclude:: ../../examples/soliton_gas_star/README.md
+  :language: md
+
+Script:
+
+.. literalinclude:: ../../examples/soliton_gas_star/soliton_gas_star.py
+  :language: python
+
+
 soliton_merger
 --------------
 
@@ -214,6 +250,8 @@ soliton_merger
   :align: center
   :alt: soliton merger
   :target: examples.html#soliton-merger
+
+  See on GitHub: `examples/soliton_merger <https://github.com/JaxionProject/jaxion/tree/main/examples/soliton_merger>`_
 
 README:
 
@@ -235,6 +273,8 @@ tidal_stripping
   :alt: tidal stripping
   :target: examples.html#tidal-stripping
 
+  See on GitHub: `examples/tidal_stripping <https://github.com/JaxionProject/jaxion/tree/main/examples/tidal_stripping>`_
+
 README:
 
 .. literalinclude:: ../../examples/tidal_stripping/README.md
@@ -253,6 +293,8 @@ timing
   :align: center
   :alt: timing
   :target: examples.html#timing
+
+  See on GitHub: `examples/timing <https://github.com/JaxionProject/jaxion/tree/main/examples/timing>`_
 
 README:
 
