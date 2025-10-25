@@ -42,7 +42,6 @@ def set_up_simulation(resolution_multiplier, sharding):
     m_22 = sim.params["quantum"]["m_22"]
     box_size = sim.params["domain"]["box_size"]
     r_soliton = 0.02 * box_size
-    nx = sim.resolution
     xx, yy, zz = sim.grid
 
     def rho_soliton(r, r_soliton, m_22):
