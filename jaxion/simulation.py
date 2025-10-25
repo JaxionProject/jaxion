@@ -411,9 +411,11 @@ class Simulation:
                 elapsed = time.time() - t_start_timer
                 est_total = elapsed / i * num_checkpoints
                 est_remaining = est_total - elapsed
+                num_cells = self.resolution**3
+                mcups = (num_cells * (i * nt_sub)) / (elapsed * 1.0e6)
                 if jax.process_index() == 0:
                     print(
-                        f"{percent:.1f}%: estimated time remaining (s): {est_remaining:.1f}"
+                        f"{percent:.1f}%: mcups={mcups:.1f}, estimated time left (s): {est_remaining:.1f}"
                     )
                 plot_sim(state, checkpoint_dir, i, self.params)
                 async_checkpoint_manager.wait_until_finished()
