@@ -111,24 +111,6 @@ def main():
         devices = mesh_utils.create_device_mesh((1, n_devices))
         mesh = Mesh(devices, axis_names=("x", "y"))
         sharding = NamedSharding(mesh, PartitionSpec("x", "y"))
-        # mesh = jax.make_mesh((1, n_devices, 1), ("x", "y", "z"),axis_types=(AxisType.Explicit, AxisType.Explicit, AxisType.Explicit))
-        # jax.set_mesh(mesh)
-        # sharding = NamedSharding(mesh, PartitionSpec("x", "y", "z"))
-
-        if jax.process_index() == 0:
-            for env_var in [
-                "SLURM_JOB_ID",
-                "SLURM_NTASKS",
-                "SLURM_NODELIST",
-                "SLURM_STEP_NODELIST",
-                "SLURM_STEP_GPUS",
-                "SLURM_GPUS",
-            ]:
-                print(f"{env_var}: {os.getenv(env_var, '')}")
-            print("Total number of processes: ", jax.process_count())
-            print("Total number of devices: ", jax.device_count())
-            print("List of devices: ", jax.devices())
-            print("Number of devices on this process: ", jax.local_device_count())
     else:
         sharding = None
 

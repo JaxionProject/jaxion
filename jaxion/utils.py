@@ -5,11 +5,28 @@ from pathlib import Path
 import importlib.resources
 import json
 from importlib.metadata import version
+import jax
 import jax.numpy as jnp
 
 
 def print_parameters(params):
     print(json.dumps(params, indent=2))
+
+
+def print_distributed_info():
+    for env_var in [
+        "SLURM_JOB_ID",
+        "SLURM_NTASKS",
+        "SLURM_NODELIST",
+        "SLURM_STEP_NODELIST",
+        "SLURM_STEP_GPUS",
+        "SLURM_GPUS",
+    ]:
+        print(f"{env_var}: {os.getenv(env_var, '')}")
+    print("Total number of processes: ", jax.process_count())
+    print("Total number of devices: ", jax.device_count())
+    print("List of devices: ", jax.devices())
+    print("Number of devices on this process: ", jax.local_device_count())
 
 
 def set_up_parameters(user_overwrites):

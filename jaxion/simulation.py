@@ -14,6 +14,7 @@ from .cosmology import get_supercomoving_time_interval, get_next_scale_factor
 from .utils import (
     set_up_parameters,
     print_parameters,
+    print_distributed_info,
     xmeshgrid,
     xmeshgrid_transpose,
     xzeros,
@@ -72,10 +73,12 @@ class Simulation:
                     "hydro/particles sharding is not yet implemented."
                 )
 
-        if self.params["output"]["save"]:
-            if jax.process_index() == 0:
-                print("Simulation parameters:")
-                print_parameters(self.params)
+        # print info
+        if jax.process_index() == 0:
+            print("Simulation parameters:")
+            print_parameters(self.params)
+            if sharding is not None:
+                print_distributed_info()
 
         # jitted functions
         self.xmeshgrid_jit = jax.jit(
