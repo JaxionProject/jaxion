@@ -10,7 +10,7 @@ Usage:
 python soliton_binary_merger.py --res <resolution_multiplier>
 ```
 
-Takes around 6 (res=1) seconds to run on my macbook (cpu).
+Takes around 4 (res=1) seconds to run on my macbook (cpu).
 
 
 ## Simulation snapshots
