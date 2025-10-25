@@ -12,6 +12,8 @@ magick ../examples/soliton_binary_merger/movie.gif  -coalesce input7_frame_%04d.
 magick ../examples/soliton_merger/movie.gif  -coalesce input8_frame_%04d.png
 magick ../examples/tidal_stripping/movie.gif  -coalesce input9_frame_%04d.png
 
+magick -delay 5 -loop 0 input*.png -resize 512x512 -background black -gravity center -extent 512x512 ../jaxion.mp4
+
 for frame in $(seq -f "%04g" 0 100); do
   magick montage input1_frame_${frame}.png input2_frame_${frame}.png input3_frame_${frame}.png \
                  input4_frame_${frame}.png input5_frame_${frame}.png input6_frame_${frame}.png \

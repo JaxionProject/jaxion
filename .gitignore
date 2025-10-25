@@ -170,6 +170,7 @@ slurm-*.out
 slurm-*.err
 fdm_1mpc_256_m2.5e-22_z127_ic.hdf5
 jaxion.gif
+jaxion.mp4
 jaxion.webm
 ffmpeg*log
 
