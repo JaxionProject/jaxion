@@ -1,4 +1,3 @@
-import jax.numpy as jnp
 from jaxion.cosmology import (
     get_physical_time_interval,
     get_supercomoving_time_interval,
