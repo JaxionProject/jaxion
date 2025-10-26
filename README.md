@@ -96,17 +96,29 @@ Check out the `examples/` directory for demonstrations of using Jaxion.
 ## Links
 
 * [Code repository](https://github.com/JaxionProject/jaxion) on GitHub (this page).
-* [Documentation](https://jaxion.readthedocs.io) for up-to-date information about installing and using jaxion.
+* [Documentation](https://jaxion.readthedocs.io) for up-to-date information about installing and using Jaxion.
 
 
-## Testing
+## High-Performance
 
-Jaxion is tested with `pytest`. Tests are included in the `tests/` folder.
+Jaxion is scalable to multiple GPUs!
+
+<p align="center">
+  <a href="https://jaxion.readthedocs.io">
+    <img src="examples/soliton_binary_merger/timing.png" alt="timing" width="256"/>
+  </a>
+</p>
 
 
 ## Contributing
 
-Jaxion welcomes community contributions of all kinds. Open an issue or fork the code and submit a Pull request. Please check out the [Contributing Guidelines](CONTRIBUTING.md)
+Jaxion welcomes community contributions of all kinds. Open an issue or fork the code and submit a pull request. Please check out the [Contributing Guidelines](CONTRIBUTING.md)
+
+
+## Links
+
+* [Code repository](https://github.com/JaxionProject/jaxion) on GitHub (this page).
+* [Documentation](https://jaxion.readthedocs.io) for up-to-date information about installing and using jaxion.
 
 
 ## Cite this repository
