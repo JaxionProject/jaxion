@@ -24,6 +24,10 @@ Takes around 4 (res=1) seconds to run on my macbook (cpu).
   <img src="dm010.png" alt="dm010" width="32%"/>
 </div>
 
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+  <img src="timing.png" alt="timing" width="45%"/>
+</div>
+
 
 ## Reference
 
