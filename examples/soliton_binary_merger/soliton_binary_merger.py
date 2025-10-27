@@ -38,7 +38,7 @@ def set_up_simulation(resolution_multiplier, sharding):
     # Initialize the simulation
     sim = jaxion.Simulation(params, sharding=sharding)
 
-    # Set initial conditions (randomly places solitons)
+    # Set initial conditions (two solitons)
     m_22 = sim.params["quantum"]["m_22"]
     box_size = sim.params["domain"]["box_size"]
     r_soliton = 0.02 * box_size

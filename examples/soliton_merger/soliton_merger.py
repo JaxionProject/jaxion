@@ -30,7 +30,7 @@ def set_up_simulation(resolution_multiplier):
     # Initialize the simulation
     sim = jaxion.Simulation(params)
 
-    # Set initial conditions (randomly places solitons)
+    # Set initial conditions (randomly placed solitons)
     m_22 = sim.params["quantum"]["m_22"]
     box_size = sim.params["domain"]["box_size"]
     nx = sim.resolution
