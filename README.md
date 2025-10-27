@@ -10,6 +10,7 @@
 [![PyPI Version Status][pypi-badge]][pypi-link]
 [![Test Status][workflow-test-badge]][workflow-test-link]
 [![Coverage][coverage-badge]][coverage-link]
+[![Ruff][ruff-badge]][ruff-link]
 [![Readthedocs Status][docs-badge]][docs-link]
 [![License][license-badge]][license-link]
 [![Software DOI][software-doi-badge]][software-doi-link]
@@ -22,6 +23,8 @@
 [workflow-test-badge]: https://github.com/JaxionProject/jaxion/actions/workflows/test-package.yml/badge.svg?event=push
 [coverage-link]:       https://app.codecov.io/gh/JaxionProject/jaxion
 [coverage-badge]:      https://codecov.io/github/jaxionproject/jaxion/graph/jaxion-server/badge.svg
+[ruff-link]:           https://github.com/astral-sh/ruff
+[ruff-badge]:          https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
 [docs-link]:           https://jaxion.readthedocs.io
 [docs-badge]:          https://readthedocs.org/projects/jaxion/badge
 [license-link]:        https://opensource.org/licenses/Apache-2.0
@@ -93,15 +96,9 @@ Check out the `examples/` directory for demonstrations of using Jaxion.
 </p>
 
 
-## Links
-
-* [Code repository](https://github.com/JaxionProject/jaxion) on GitHub (this page).
-* [Documentation](https://jaxion.readthedocs.io) for up-to-date information about installing and using Jaxion.
-
-
 ## High-Performance
 
-Jaxion is scalable to multiple GPUs!
+Jaxion is scalable on multiple GPUs!
 
 <p align="center">
   <a href="https://jaxion.readthedocs.io">

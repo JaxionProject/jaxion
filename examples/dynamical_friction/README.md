@@ -1,6 +1,6 @@
 # Dynamical Friction
 
-Dynamical of Fuzzy Dark Matter soliton in an external potential
+Dynamical friction of Fuzzy Dark Matter soliton in an external potential
 
 Philip Mocz (2025)
 
