@@ -24,7 +24,7 @@ Usage:
 """
 
 
-def set_up_simulation(resolution_multiplier, sharding):
+def set_up_simulation(resolution_multiplier, sharding, save):
     # Parameters added/changed from default values
     params = {
         "physics": {
@@ -35,6 +35,7 @@ def set_up_simulation(resolution_multiplier, sharding):
         },
         "output": {
             "path": f"./checkpoints{resolution_multiplier}/",
+            "save": save,
         },
     }
 
@@ -87,6 +88,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--res", type=int, default=1, help="Resolution multiplier")
     parser.add_argument(
+        "--save", type=bool, default=True, help="Save simulation output"
+    )
+    parser.add_argument(
         "--distributed", action="store_true", help="run in distributed mode"
     )
     parser.add_argument(
@@ -114,7 +118,7 @@ def main():
     else:
         sharding = None
 
-    sim = set_up_simulation(args.res, sharding)
+    sim = set_up_simulation(args.res, sharding, args.save)
     sim.run()
     mean_psi = jnp.mean(jnp.abs(sim.state["psi"]))
     if jax.process_index() == 0:

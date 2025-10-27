@@ -11,6 +11,7 @@
 [![Test Status][workflow-test-badge]][workflow-test-link]
 [![Coverage][coverage-badge]][coverage-link]
 [![Ruff][ruff-badge]][ruff-link]
+[![asv][asv-badge]][asv-link]
 [![Readthedocs Status][docs-badge]][docs-link]
 [![License][license-badge]][license-link]
 [![Software DOI][software-doi-badge]][software-doi-link]
@@ -25,6 +26,8 @@
 [coverage-badge]:      https://codecov.io/github/jaxionproject/jaxion/graph/jaxion-server/badge.svg
 [ruff-link]:           https://github.com/astral-sh/ruff
 [ruff-badge]:          https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
+[asv-link]:            https://jaxionproject.github.io/jaxion-benchmarks/
+[asv-badge]:           https://img.shields.io/badge/benchmarked%20by-asv-blue.svg?style=flat
 [docs-link]:           https://jaxion.readthedocs.io
 [docs-badge]:          https://readthedocs.org/projects/jaxion/badge
 [license-link]:        https://opensource.org/licenses/Apache-2.0
