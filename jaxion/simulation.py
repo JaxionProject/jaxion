@@ -420,7 +420,7 @@ class Simulation:
                 plot_sim(state, checkpoint_dir, i, self.params)
                 async_checkpoint_manager.wait_until_finished()
         else:
-            state = jax.lax.fori_loop(0, nt, _update, init_val=state)
+            state = jax.lax.fori_loop(0, nt, _update, init_val=carry)
         jax.block_until_ready(state)
         if jax.process_index() == 0:
             print("Simulation Run Time (s): ", time.time() - t_start_timer)
