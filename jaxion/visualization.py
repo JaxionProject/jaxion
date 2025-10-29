@@ -13,15 +13,19 @@ def plot_sim(state, checkpoint_dir, i, params):
     if params["physics"]["quantum"]:
         nx = state["psi"].shape[0]
         rho_bar_dm = jnp.mean(jnp.abs(state["psi"]) ** 2)
-        rho_proj_dm = jax.experimental.multihost_utils.process_allgather(
-            jnp.log10(jnp.mean(jnp.abs(state["psi"]) ** 2, axis=2).T)
-        ).reshape(nx, nx)
+        rho_proj_dm = jnp.log10(
+            jax.experimental.multihost_utils.process_allgather(
+                jnp.mean(jnp.abs(state["psi"]) ** 2, axis=2), tiled=True
+            )
+        ).T
     if params["physics"]["hydro"]:
         nx = state["rho"].shape[0]
         rho_bar_gas = jnp.mean(state["rho"])
-        rho_proj_gas = jax.experimental.multihost_utils.process_allgather(
-            jnp.log10(jnp.mean(state["rho"], axis=2).T)
-        ).reshape(nx, nx)
+        rho_proj_gas = jnp.log10(
+            jax.experimental.multihost_utils.process_allgather(
+                jnp.mean(state["rho"], axis=2), tiled=True
+            )
+        ).T
 
     # create plot on process 0
     if jax.process_index() == 0:

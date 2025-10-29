@@ -6,8 +6,8 @@
 #SBATCH --constraint=h100
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --gpus-per-node=1
-#SBATCH --cpus-per-task=1
+#SBATCH --gpus-per-task=1
+#SBATCH --cpus-per-task=8
 #SBATCH --mem=80G
 #SBATCH --time=00-02:00
 
