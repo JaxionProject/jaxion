@@ -174,6 +174,13 @@ class Simulation:
         )
 
     @property
+    def m_per_hbar(self):
+        """
+        Return the mass per hbar in the simulation (M_sun / hbar)
+        """
+        return self.axion_mass / constants["reduced_planck_constant"]
+
+    @property
     def sound_speed(self):
         """
         Return the isothermal gas sound speed in the simulation (km/s)
@@ -215,8 +222,7 @@ class Simulation:
         """
         Return the dark matter velocity field from the wavefunction
         """
-        m_per_hbar = self.axion_mass / constants["reduced_planck_constant"]
-        return quantum_velocity(self.state["psi"], self.box_size, m_per_hbar)
+        return quantum_velocity(self.state["psi"], self.box_size, self.m_per_hbar)
 
     def _calc_rho_bar(self, state):
         rho_bar = 0.0
@@ -274,7 +280,7 @@ class Simulation:
 
         # Simulation parameters
         dx = self.dx
-        m_per_hbar = self.axion_mass / constants["reduced_planck_constant"]
+        m_per_hbar = self.m_per_hbar
         box_size = self.box_size
 
         dt_fac = 1.0
