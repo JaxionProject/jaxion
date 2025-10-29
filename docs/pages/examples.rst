@@ -41,11 +41,11 @@ Gallery
          :alt: kinetic condensation
          :target: examples.html#kinetic-condensation
 
-     - .. figure:: ../../examples/logo/movie.gif
+     - .. figure:: ../../examples/logo_inverse_problem/movie.gif
          :width: 300px
          :align: center
-         :alt: logo
-         :target: examples.html#logo
+         :alt: logo_inverse_problem
+         :target: examples.html#logo_inverse_problem
 
    * - .. figure:: ../../examples/soliton_binary_merger/movie.gif
          :width: 300px
@@ -176,25 +176,25 @@ Script:
   :language: python
 
 
-logo
-----
+logo_inverse_problem
+--------------------
 
-.. figure:: ../../examples/logo/movie.gif
+.. figure:: ../../examples/logo_inverse_problem/movie.gif
   :width: 300px
   :align: center
-  :alt: logo
-  :target: examples.html#logo
+  :alt: logo_inverse_problem
+  :target: examples.html#logo_inverse_problem
 
-  See on GitHub: `examples/logo <https://github.com/JaxionProject/jaxion/tree/main/examples/logo>`_
+  See on GitHub: `examples/logo_inverse_problem <https://github.com/JaxionProject/jaxion/tree/main/examples/logo_inverse_problem>`_
 
 README:
 
-.. literalinclude:: ../../examples/logo/README.md
+.. literalinclude:: ../../examples/logo_inverse_problem/README.md
   :language: md
 
 Script:
 
-.. literalinclude:: ../../examples/logo/logo.py
+.. literalinclude:: ../../examples/logo_inverse_problem/logo_inverse_problem.py
   :language: python
 
 

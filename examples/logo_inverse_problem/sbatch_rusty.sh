@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-#SBATCH --job-name=logo
+#SBATCH --job-name=logo_inverse_problem
 #SBATCH --output=slurm-%j.out
 #SBATCH --error=slurm-%j.err
 #SBATCH --partition gpu
@@ -18,4 +18,4 @@ export PYTHONUNBUFFERED=TRUE
 
 source $VENVDIR/jaxion-venv/bin/activate
 
-srun python logo.py
+srun python logo_inverse_problem.py

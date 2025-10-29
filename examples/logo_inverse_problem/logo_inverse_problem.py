@@ -17,7 +17,7 @@ Inverse problem: Find initial conditions for velocity (dm+stars) to achieve targ
 Philip Mocz (2025)
 
 Usage:
-  python logo.py
+  python logo_inverse_problem.py
 """
 
 

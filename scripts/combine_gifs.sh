@@ -7,7 +7,7 @@ magick ../examples/dynamical_friction/movie.gif  -coalesce input2_frame_%04d.png
 magick ../examples/heating_gas/movie.gif  -coalesce input3_frame_%04d.png
 magick ../examples/heating_stars/movie.gif  -coalesce input4_frame_%04d.png
 magick ../examples/kinetic_condensation/movie.gif -coalesce input5_frame_%04d.png
-magick ../examples/logo/movie.gif  -coalesce input6_frame_%04d.png
+magick ../examples/logo_inverse_problem/movie.gif  -coalesce input6_frame_%04d.png
 magick ../examples/soliton_binary_merger/movie.gif  -coalesce input7_frame_%04d.png
 magick ../examples/soliton_merger/movie.gif  -coalesce input8_frame_%04d.png
 magick ../examples/tidal_stripping/movie.gif  -coalesce input9_frame_%04d.png

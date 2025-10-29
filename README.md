@@ -83,8 +83,8 @@ Check out the `examples/` directory for demonstrations of using Jaxion.
   <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/kinetic_condensation">
     <img src="examples/kinetic_condensation/movie.gif" alt="kinetic_condensation" width="128"/>
   </a>
-  <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/logo">
-    <img src="examples/logo/movie.gif" alt="logo" width="128"/>
+  <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/logo_inverse_problem">
+    <img src="examples/logo_inverse_problem/movie.gif" alt="logo_inverse_problem" width="128"/>
   </a>
   <br>
   <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/soliton_binary_merger">
