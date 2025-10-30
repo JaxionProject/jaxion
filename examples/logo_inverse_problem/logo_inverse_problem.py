@@ -1,6 +1,5 @@
 import jax
 import jax.numpy as jnp
-import numpy as np
 import jaxion
 import chex
 from typing import NamedTuple
@@ -59,12 +58,9 @@ def set_up_simulation(save=False):
     psi = jnp.sqrt(rho_dm) * jnp.ones((nx, nx, nx)) + 0j
 
     # stars are initially uniformly distributed
-    num_stars = params["particles"]["num_particles"]
-    np.random.seed(17)
-    pos = np.random.rand(num_stars, 3) * box_size
-    pos = jnp.array(pos)
     # Arrange positions in a uniform grid in x-y plane, z=box_size/2
-    side = int(np.round(num_stars ** (1 / 2)))
+    num_stars = params["particles"]["num_particles"]
+    side = int(num_stars ** (1 / 2))
     xlin = jnp.linspace(0, box_size, side, endpoint=False) + box_size / (2 * side)
     ylin = jnp.linspace(0, box_size, side, endpoint=False) + box_size / (2 * side)
     zlin = jnp.array([box_size / 2.0])
