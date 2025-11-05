@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Timings on rusty
 resolutions = np.array(
     [
         32,

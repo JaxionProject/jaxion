@@ -4,11 +4,11 @@
 #SBATCH --output=slurm-%j.out
 #SBATCH --error=slurm-%j.err
 #SBATCH --partition batch
-#SBATCH --nodes=1
+#SBATCH --nodes=16
 #SBATCH --ntasks-per-node=4
 #SBATCH --gpus-per-task=1
 #SBATCH --cpus-per-task=8
-#SBATCH --time=00-01:00
+#SBATCH --time=00-00:20
 
 module purge
 module load PrgEnv-gnu/8.6.0
@@ -20,4 +20,4 @@ export PYTHONUNBUFFERED=TRUE
 
 conda activate jaxion-venv
 
-srun --cpu-bind=cores python soliton_binary_merger.py --res=32 --distributed
+srun --cpu-bind=cores python soliton_binary_merger.py --res=64 --distributed
