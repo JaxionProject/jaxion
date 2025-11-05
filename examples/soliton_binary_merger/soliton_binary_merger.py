@@ -30,6 +30,9 @@ def set_up_simulation(resolution_multiplier, sharding):
         "domain": {
             "resolution_multiplier": resolution_multiplier,
         },
+        "time": {
+            "end": 1.0,
+        },
         "output": {
             "path": f"./checkpoints{resolution_multiplier}/",
         },
