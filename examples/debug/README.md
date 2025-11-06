@@ -32,7 +32,7 @@ sbatch sbatch_frontier_L.sh
 
 (this test should run in about 23 minutes.)
 
-Submit an Extra Large (XL) job (resolution 4098^3) on 64 nodes / 512 GPUs:
+Submit an Extra Large (XL) job (resolution 4096^3) on 64 nodes / 512 GPUs:
 
 ```console
 cd examples/debug
