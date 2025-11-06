@@ -8,7 +8,7 @@
 #SBATCH --ntasks-per-node=4
 #SBATCH --gpus-per-task=1
 #SBATCH --cpus-per-task=8
-#SBATCH --time=00-00:20
+#SBATCH --time=00-00:30
 
 module purge
 module load PrgEnv-gnu/8.6.0
