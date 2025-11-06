@@ -35,6 +35,7 @@ def set_up_simulation(resolution_multiplier, sharding):
         },
         "output": {
             "path": f"./checkpoints{resolution_multiplier}/",
+            "save": True,
         },
     }
 
