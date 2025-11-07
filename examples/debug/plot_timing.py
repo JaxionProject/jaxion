@@ -21,15 +21,25 @@ runtime = np.array(
         #        999,
     ]
 )
+runtime_no_awsofirccl = np.array(
+    [
+        4.5,
+        78,
+        160,
+        #        999,
+        #        999,
+    ]
+)
 num_nodes = np.array([1, 2, 16])  # , 128, 1024])
 num_gpus = np.array([1, 8, 64])  # , 512, 4096])
 
-yy = np.array([0.01, 0.1, 1, 10])
+yy = np.array([0.01, 0.1, 1])
 
 
 def main():
     # Compute billion cell updates per second
     bcups = (resolutions**3) / (runtime * 1.0e9)
+    bcups_no_awsofirccl = (resolutions**3) / (runtime_no_awsofirccl * 1.0e9)
 
     plt.figure(figsize=(4, 4))
     plt.plot(
@@ -37,6 +47,12 @@ def main():
         bcups,
         marker="s",
         label="MI250X",
+    )
+    plt.plot(
+        resolutions,
+        bcups_no_awsofirccl,
+        marker="o",
+        label="MI250X (no aws-ofi-rccl)",
     )
     for i, (res, bcup, nodes, gpus) in enumerate(
         zip(resolutions, bcups, num_nodes, num_gpus)

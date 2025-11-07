@@ -80,3 +80,8 @@ which takes around **[78 / 12]** seconds to complete.
 * May want to check out the submit scripts `examples/debug/sbatch_frontier_XL.sh` for missing flags/environment variables.
 
 * May need to update, in the slurm submit scripts, the project allocation number (e.g., `#SBATCH -A AST231`) and the path to `aws-ofi-rccl` (e.g., `export LD_LIBRARY_PATH=/lustre/orion/ast231/scratch/pmocz/aws-ofi-rccl/lib:$LD_LIBRARY_PATH`).
+
+
+## Scaling
+
+![Timing results](timing.png)
