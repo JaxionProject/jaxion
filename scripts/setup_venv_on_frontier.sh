@@ -17,14 +17,14 @@ conda activate jaxion-venv
 pip install jax-rocm60-pjrt==0.5.0 jax-rocm60-plugin==0.5.0 --no-cache-dir
 pip install jax==0.5.0 --no-cache-dir
 
-# HACK: inside requirements.txt, replace "jax==0.5.3" with "jax"
+# HACK: inside requirements.txt, replace "jax==0.5.3" with "jax==0.5.0"
 # since jax 0.5.3 is not available on Frontier
-sed -i 's/jax==0.5.3/jax/g' requirements.txt
+sed -i 's/jax==0.5.3/jax==0.5.0/g' requirements.txt
 
 pip install .
 
 # HACK: change back requirements.txt
-sed -i '0,/jax/s/jax/jax==0.5.3/' requirements.txt
+sed -i 's/jax==0.5.0/jax==0.5.3/g' requirements.txt
 
 conda deactivate
 
