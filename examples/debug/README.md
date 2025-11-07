@@ -40,7 +40,7 @@ cd examples/debug
 sbatch sbatch_frontier_L.sh
 ```
 
-This test takes around **[160 / XXX]** seconds **(without/with `aws-ofi-rccl`)**.
+This test takes around **[160 / 27]** seconds **(without/with `aws-ofi-rccl`)**.
 
 
 ### Submit an Extra Large (XL) job (resolution 4096^3) on 64 nodes / 512 GPUs:
