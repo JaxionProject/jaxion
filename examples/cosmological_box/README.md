@@ -25,6 +25,6 @@ Takes around 870 seconds to run on my macbook (cpu).
 </div>
 
 
-## Reference
+## References
 
 [Mocz, P. et. al.; Galaxy formation with BECDM - II. Cosmic filaments and first galaxies. MNRAS (2020)](https://ui.adsabs.harvard.edu/abs/2020MNRAS.494.2027M)

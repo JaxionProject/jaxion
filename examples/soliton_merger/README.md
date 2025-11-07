@@ -25,6 +25,6 @@ Takes around 4 (res=1) seconds to run on my macbook (cpu).
 </div>
 
 
-## Reference
+## References
 
 [Mocz, P. et. al.; Galaxy formation with BECDM - I. Turbulence and relaxation of idealized haloes. MNRAS (2017)](https://ui.adsabs.harvard.edu/abs/2017MNRAS.471.4559M)

@@ -25,6 +25,6 @@ Takes around 34 (res=1) seconds to run on my macbook (cpu).
 </div>
 
 
-## Reference
+## References
 
 [Levkov, D.G.; Panin, A.G.; Tkachev, I.I.; Gravitational Bose-Einstein condensation in the kinetic regime PRL (2018)](https://ui.adsabs.harvard.edu/abs/2018PhRvL.121o1301L)

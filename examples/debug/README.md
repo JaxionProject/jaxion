@@ -65,6 +65,7 @@ sbatch sbatch_frontier_M.sh
 
 which takes around 78 seconds to complete.
 
+
 ## Notes
 
 * May want to check out the install script `scripts/setup_venv_on_frontier.sh` for improved/more up-to-date ways to install JAX on Frontier.

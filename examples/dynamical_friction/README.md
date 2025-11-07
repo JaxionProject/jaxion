@@ -20,6 +20,6 @@ Takes around 3 (res=1) seconds to run on my macbook (cpu).
 </div>
 
 
-## Reference
+## References
 
 [Lancaster, L.; Giovanetti, C.; Mocz, P.; Kahn, Y.; Lisanti, M.; Spergel, D.N.; Dynamical friction in a Fuzzy Dark Matter universe. JCAP (2020)](https://ui.adsabs.harvard.edu/abs/2020JCAP...01..001L)

@@ -12,6 +12,7 @@ python logo_inverse_problem.py
 
 Takes around 200 seconds to run on my macbook (cpu).
 
+
 ## Simulation snapshots
 
 <div style="display:flex;flex-wrap:wrap;gap:8px">

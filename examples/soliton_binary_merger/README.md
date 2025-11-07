@@ -29,6 +29,8 @@ Takes around 4 (res=1) seconds to run on my macbook (cpu).
 </div>
 
 
-## Reference
+## References
 
 [Schwabe, B.; Niemeyer, J.C.; Engels, J.F.; Simulations of solitonic core mergers in ultralight axion dark matter cosmologies. Phys Rev D. (2016)](https://ui.adsabs.harvard.edu/abs/2016PhRvD..94d3513S)
+
+[Mocz, P. et. al.; Galaxy formation with BECDM - I. Turbulence and relaxation of idealized haloes. MNRAS (2017)](https://ui.adsabs.harvard.edu/abs/2017MNRAS.471.4559M)
