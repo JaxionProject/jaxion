@@ -16,6 +16,9 @@ module load rocm/6.2.4
 module load craype-accel-amd-gfx90a
 module load miniforge3/23.11.0-0
 
+export LD_LIBRARY_PATH=/lustre/orion/ast231/scratch/pmocz/aws-ofi-rccl/lib:$LD_LIBRARY_PATH
+# export FI_MR_CACHE_MONITOR=userfaultfd
+export FI_MR_CACHE_MONITOR=kdreg2
 export PYTHONUNBUFFERED=TRUE
 
 conda activate jaxion-venv
