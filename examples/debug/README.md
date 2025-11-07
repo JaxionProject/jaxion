@@ -23,10 +23,15 @@ cd jaxion
 
 ## Submit jobs
 
-Submit a Large (L) job (resolution 2046^3) on 16 nodes / 64 GPUs:
+Examples to use for testing/debugging are in the `examples/debug` folder:
 
 ```console
 cd examples/debug
+```
+
+Submit a Large (L) job (resolution 2046^3) on 16 nodes / 64 GPUs:
+
+```console
 sbatch sbatch_frontier_L.sh
 ```
 
@@ -35,7 +40,6 @@ sbatch sbatch_frontier_L.sh
 Submit an Extra Large (XL) job (resolution 4096^3) on 64 nodes / 512 GPUs:
 
 ```console
-cd examples/debug
 sbatch sbatch_frontier_XL.sh
 ```
 
@@ -45,6 +49,13 @@ This test currently fails with:
 E1105 14:17:03.123606  763404 pjrt_stream_executor_client.cc:3045] Execution of replica 0 failed: INVALID_ARGUMENT: CliqueIds size must be 1 for NCCL communicator initialization
 ```
 
+Also, as a refernce, we include a Small (S) job (resolution 512^3) on 1 nodes / 1 GPU:
+
+```console
+sbatch sbatch_frontier_S.sh
+```
+
+which should take under 30 seconds to complete.
 
 ## Notes
 
