@@ -31,11 +31,12 @@ def set_up_simulation(resolution_multiplier, sharding):
             "resolution_multiplier": resolution_multiplier,
         },
         "time": {
-            "end": 0.0001 / (resolution_multiplier / 32) ** 2,
+            "end": 0.00004 / (resolution_multiplier / 16) ** 2,
         },
         "output": {
             "path": f"./checkpoints{resolution_multiplier}/",
             "save": False,
+            "num_checkpoints": 10,
         },
     }
 
