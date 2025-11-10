@@ -324,9 +324,7 @@ class Simulation:
         # Checkpointer
         if self.params["output"]["save"]:
             options = ocp.CheckpointManagerOptions()
-            checkpoint_dir = checkpoint_dir = os.path.join(
-                os.getcwd(), self.params["output"]["path"]
-            )
+            checkpoint_dir = os.path.join(os.getcwd(), self.params["output"]["path"])
             path = os.path.join(os.getcwd(), checkpoint_dir)
             if jax.process_index() == 0:
                 path = ocp.test_utils.erase_and_create_empty(checkpoint_dir)

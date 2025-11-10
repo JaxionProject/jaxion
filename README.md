@@ -45,7 +45,7 @@ Jaxion is built for multi-GPU scalability and is fully differentiable. It is a h
 Jaxion is the simpler companion project to differentiable astrophysics code [Adirondax](https://github.com/AdirondaxProject/adirondax)
 
 
-## Getting started
+## Install Jaxion
 
 Install with:
 
