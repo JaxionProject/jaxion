@@ -64,7 +64,7 @@ See the docs for more info on how to [build from source](https://jaxion.readthed
 
 ## Examples
 
-Check out the `examples/` directory for demonstrations of using Jaxion.
+Check out the [`examples/`](https://github.com/JaxionProject/jaxion/tree/main/examples/) directory for demonstrations of using Jaxion.
 
 <p align="center">
   <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/cosmological_box">

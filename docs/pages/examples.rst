@@ -14,55 +14,55 @@ Gallery
    * - .. figure:: ../../examples/cosmological_box/movie.gif
          :width: 300px
          :align: center
-         :alt: cosmological box
+         :alt: cosmological_box
          :target: examples.html#cosmological-box
 
      - .. figure:: ../../examples/dynamical_friction/movie.gif
          :width: 300px
          :align: center
-         :alt: dynamical friction
+         :alt: dynamical_friction
          :target: examples.html#dynamical-friction
 
      - .. figure:: ../../examples/heating_gas/movie.gif
          :width: 300px
          :align: center
-         :alt: heating gas
+         :alt: heating_gas
          :target: examples.html#heating-gas
 
    * - .. figure:: ../../examples/heating_stars/movie.gif
          :width: 300px
          :align: center
-         :alt: heating stars
+         :alt: heating_stars
          :target: examples.html#heating-stars
 
      - .. figure:: ../../examples/kinetic_condensation/movie.gif
          :width: 300px
          :align: center
-         :alt: kinetic condensation
+         :alt: kinetic_condensation
          :target: examples.html#kinetic-condensation
 
      - .. figure:: ../../examples/logo_inverse_problem/movie.gif
          :width: 300px
          :align: center
          :alt: logo_inverse_problem
-         :target: examples.html#logo_inverse_problem
+         :target: examples.html#logo-inverse-problem
 
    * - .. figure:: ../../examples/soliton_binary_merger/movie.gif
          :width: 300px
          :align: center
-         :alt: soliton binary merger
+         :alt: soliton_binary_merger
          :target: examples.html#soliton-binary-merger
 
      - .. figure:: ../../examples/soliton_merger/movie.gif
          :width: 300px
          :align: center
-         :alt: soliton merger
+         :alt: soliton_merger
          :target: examples.html#soliton-merger
 
      - .. figure:: ../../examples/tidal_stripping/movie.gif
          :width: 300px
          :align: center
-         :alt: tidal stripping
+         :alt: tidal_stripping
          :target: examples.html#tidal-stripping
 
 
@@ -284,6 +284,7 @@ Script:
 
 .. literalinclude:: ../../examples/tidal_stripping/tidal_stripping.py
   :language: python
+
 
 timing
 ------
