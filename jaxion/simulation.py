@@ -282,6 +282,7 @@ class Simulation:
         dx = self.dx
         m_per_hbar = self.m_per_hbar
         box_size = self.box_size
+        num_cells = self.resolution**3
 
         dt_fac = 1.0
         dt_kin = dt_fac * (m_per_hbar / 6.0) * (dx * dx)
@@ -290,8 +291,16 @@ class Simulation:
         t_span = t_end - t_start
         state["t"] = t_start
 
+        use_quantum = self.params["physics"]["quantum"]
+        use_gravity = self.params["physics"]["gravity"]
+        use_hydro = self.params["physics"]["hydro"]
+        use_particles = self.params["physics"]["particles"]
+        use_cosmology = self.params["physics"]["cosmology"]
+        use_external_potential = self.params["physics"]["external_potential"]
+        save = self.params["output"]["save"]
+
         # cosmology
-        if self.params["physics"]["cosmology"]:
+        if use_cosmology:
             z_start = self.params["time"]["start"]
             z_end = self.params["time"]["end"]
             omega_matter = self.params["cosmology"]["omega_matter"]
@@ -317,12 +326,12 @@ class Simulation:
         k_sq = None
 
         # Fourier space variables
-        if self.params["physics"]["gravity"] or self.params["physics"]["quantum"]:
+        if use_gravity or use_quantum:
             kx, ky, kz = self.kgrid
             k_sq = kx**2 + ky**2 + kz**2
 
         # Checkpointer
-        if self.params["output"]["save"]:
+        if save:
             options = ocp.CheckpointManagerOptions()
             checkpoint_dir = os.path.join(os.getcwd(), self.params["output"]["path"])
             path = os.path.join(os.getcwd(), checkpoint_dir)
@@ -334,43 +343,36 @@ class Simulation:
 
         def _kick(state, kx, ky, kz, k_sq, dt):
             # Kick (half-step)
-            if (
-                self.params["physics"]["gravity"]
-                and self.params["physics"]["external_potential"]
-            ):
+            if use_gravity and use_external_potential:
                 V = self._calc_grav_potential(state, k_sq) + state["V_ext"]
-            elif self.params["physics"]["gravity"]:
+            elif use_gravity:
                 V = self._calc_grav_potential(state, k_sq)
-            elif self.params["physics"]["external_potential"]:
+            elif use_external_potential:
                 V = state["V_ext"]
 
-            if (
-                self.params["physics"]["gravity"]
-                or self.params["physics"]["external_potential"]
-            ):
-                if self.params["physics"]["quantum"]:
+            if use_gravity or use_external_potential:
+                if use_quantum:
                     state["psi"] = quantum_kick(state["psi"], V, m_per_hbar, dt)
-                if self.params["physics"]["hydro"]:
+                if use_hydro:
                     state["vx"], state["vy"], state["vz"] = hydro_accelerate(
                         state["vx"], state["vy"], state["vz"], V, kx, ky, kz, dt
                     )
-                if self.params["physics"]["particles"]:
+                if use_particles:
                     state["vel"] = particles_accelerate(
                         state["vel"], state["pos"], V, kx, ky, kz, dx, dt
                     )
 
         def _drift(state, k_sq, dt):
             # Drift (full-step)
-            if self.params["physics"]["quantum"]:
+            if use_quantum:
                 state["psi"] = quantum_drift(state["psi"], k_sq, m_per_hbar, dt)
-            if self.params["physics"]["hydro"]:
+            if use_hydro:
                 state["rho"], state["vx"], state["vy"], state["vz"] = hydro_fluxes(
                     state["rho"], state["vx"], state["vy"], state["vz"], dt, dx, c_sound
                 )
-            if self.params["physics"]["particles"]:
+            if use_particles:
                 state["pos"] = particles_drift(state["pos"], state["vel"], dt, box_size)
 
-        @jax.jit
         def _update(_, carry):
             # Update the simulation state by one timestep
             # according to a 2nd-order `kick-drift-kick` scheme
@@ -379,13 +381,9 @@ class Simulation:
             _drift(state, k_sq, dt)
             # update time & redshift
             state["t"] += dt
-            if self.params["physics"]["cosmology"]:
+            if use_cosmology:
                 scale_factor = get_next_scale_factor(
-                    state["redshift"],
-                    dt,
-                    self.params["cosmology"]["omega_matter"],
-                    self.params["cosmology"]["omega_lambda"],
-                    self.params["cosmology"]["little_h"],
+                    state["redshift"], dt, omega_matter, omega_lambda, little_h
                 )
                 state["redshift"] = 1.0 / scale_factor - 1.0
             _kick(state, kx, ky, kz, k_sq, 0.5 * dt)
@@ -395,7 +393,7 @@ class Simulation:
         # save initial state
         if jax.process_index() == 0:
             print(f"Starting simulation (res={self.resolution}, nt={nt}) ...")
-        if self.params["output"]["save"]:
+        if save:
             with open(os.path.join(checkpoint_dir, "params.json"), "w") as f:
                 json.dump(self.params, f, indent=2)
             async_checkpoint_manager.save(0, args=ocp.args.StandardSave(state))
@@ -404,10 +402,10 @@ class Simulation:
 
         # Simulation Main Loop
         t_start_timer = time.time()
-        if self.params["output"]["save"]:
+        if save:
             for i in range(1, num_checkpoints + 1):
                 carry = jax.lax.fori_loop(0, nt_sub, _update, init_val=carry)
-                state, kx, ky, kz, k_sq = carry
+                state, _, _, _, _ = carry
                 jax.block_until_ready(state)
                 # save state
                 async_checkpoint_manager.save(i, args=ocp.args.StandardSave(state))
@@ -415,7 +413,6 @@ class Simulation:
                 elapsed = time.time() - t_start_timer
                 est_total = elapsed / i * num_checkpoints
                 est_remaining = est_total - elapsed
-                num_cells = self.resolution**3
                 mcups = (num_cells * (i * nt_sub)) / (elapsed * 1.0e6)
                 if jax.process_index() == 0:
                     print(
@@ -425,7 +422,7 @@ class Simulation:
                 async_checkpoint_manager.wait_until_finished()
         else:
             carry = jax.lax.fori_loop(0, nt, _update, init_val=carry)
-            state, kx, ky, kz, k_sq = carry
+            state, _, _, _, _ = carry
         jax.block_until_ready(state)
         if jax.process_index() == 0:
             print("Simulation Run Time (s): ", time.time() - t_start_timer)
