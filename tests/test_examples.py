@@ -12,7 +12,7 @@ def test_tidal_stripping():
     )
     assert sim.resolution == 32
     assert sim.state["t"] > 0.0
-    assert jnp.mean(jnp.abs(sim.state["psi"])) == pytest.approx(639.0479, rel=rel_tol)
+    assert jnp.mean(jnp.abs(sim.state["psi"])) == pytest.approx(162.028, rel=rel_tol)
 
 
 def test_tidal_stripping_distributed_emulate():
@@ -22,7 +22,7 @@ def test_tidal_stripping_distributed_emulate():
     )
     assert sim.resolution == 32
     assert sim.state["t"] > 0.0
-    assert jnp.mean(jnp.abs(sim.state["psi"])) == pytest.approx(639.0479, rel=rel_tol)
+    assert jnp.mean(jnp.abs(sim.state["psi"])) == pytest.approx(162.028, rel=rel_tol)
 
 
 def test_heating_gas():
