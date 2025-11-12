@@ -332,11 +332,14 @@ class Simulation:
 
         # self-interaction
         a_s = self.scattering_length
-        hbar = constants["reduced_planck_constant"]
+        c = constants["speed_of_light"]
+        m = self.axion_mass
         si_coeff = None
+        si_coeff2 = None
         do_self_interaction = a_s != 0.0
         if do_self_interaction:
-            si_coeff = (4.0 * jnp.pi) * (a_s / hbar) / m_per_hbar**2
+            si_coeff = (4.0 * jnp.pi) * (a_s / m) / m_per_hbar**2
+            si_coeff2 = (32.0 * jnp.pi) * (a_s / (m * c)) ** 2 / m_per_hbar**4
 
         # hydro
         c_sound = self.params["hydro"]["sound_speed"]
@@ -380,7 +383,7 @@ class Simulation:
                 if use_quantum:
                     if do_self_interaction:
                         rho = jnp.abs(state["psi"]) ** 2
-                        V_prime = V + si_coeff * rho
+                        V_prime = V + si_coeff * rho + si_coeff2 * rho**2
                         state["psi"] = quantum_kick(
                             state["psi"], V_prime, m_per_hbar, dt
                         )

@@ -35,7 +35,7 @@ def set_up_simulation(resolution_multiplier):
         },
         "quantum": {
             "m_22": 1.0,  # axion mass in 10^-22 eV
-            "f_15": -0.2,  # decay constant in 10^15 GeV
+            "f_15": -0.8,  # decay constant in 10^15 GeV
         },
     }
 
