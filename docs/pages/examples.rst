@@ -183,7 +183,7 @@ logo_inverse_problem
   :width: 300px
   :align: center
   :alt: logo_inverse_problem
-  :target: examples.html#logo_inverse_problem
+  :target: examples.html#logo-inverse-problem
 
   See on GitHub: `examples/logo_inverse_problem <https://github.com/JaxionProject/jaxion/tree/main/examples/logo_inverse_problem>`_
 
@@ -195,6 +195,28 @@ README:
 Script:
 
 .. literalinclude:: ../../examples/logo_inverse_problem/logo_inverse_problem.py
+  :language: python
+
+
+self_interaction_collapse
+-------------------------
+
+.. figure:: ../../examples/self_interaction_collapse/movie.gif
+  :width: 300px
+  :align: center
+  :alt: self_interaction_collapse
+  :target: examples.html#self-interaction-collapse
+
+  See on GitHub: `examples/self_interaction_collapse <https://github.com/JaxionProject/jaxion/tree/main/examples/self_interaction_collapse>`_
+
+README:
+
+.. literalinclude:: ../../examples/self_interaction_collapse/README.md
+  :language: md
+
+Script:
+
+.. literalinclude:: ../../examples/self_interaction_collapse/self_interaction_collapse.py
   :language: python
 
 
