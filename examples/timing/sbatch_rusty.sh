@@ -9,7 +9,7 @@
 #SBATCH --gpus-per-task=1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=80G
-#SBATCH --time=00-01:00
+#SBATCH --time=00-00:10
 
 module purge
 module load python/3.11
@@ -18,4 +18,4 @@ export PYTHONUNBUFFERED=TRUE
 
 source $VENVDIR/jaxion-venv/bin/activate
 
-srun python timing.py --res=4
+srun python timing.py --res=16

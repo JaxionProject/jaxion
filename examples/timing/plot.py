@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 resolutions = np.array([32, 64, 128, 256, 512])
 cpu_times = np.array([1.55, 9.83, 75.19, 878.68, 13897.47]) / 100  # seconds
-gpu_times = np.array([1.70, 2.30, 3.86, 17.85, 52.42]) / 100  # seconds
+gpu_times = np.array([1.8, 2.4, 2.7, 4.5, 20.6]) / 100  # seconds
 
 
 def main():
