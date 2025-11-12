@@ -75,6 +75,10 @@
     "m_22": { 
       "default": 1.0,
       "description": "axion mass [10^{-22} eV]."
+    },
+    "f_15": { 
+      "default": 0.0,
+      "description": "self-interaction strength [10^{15} GeV]."
     }
   },
   "hydro": {

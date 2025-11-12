@@ -62,9 +62,10 @@ class Simulation:
                 self.params["physics"]["hydro"]
                 or self.params["physics"]["particles"]
                 or self.params["physics"]["external_potential"]
+                or self.params["quantum"]["f_15"] != 0.0
             ):
                 raise NotImplementedError(
-                    "Cosmological hydro/particles/external_potential physics is not yet implemented."
+                    "Cosmological hydro/particles/external_potential/SI is not yet implemented."
                 )
 
         if self.params["physics"]["hydro"] or self.params["physics"]["particles"]:
@@ -174,6 +175,23 @@ class Simulation:
         )
 
     @property
+    def scattering_length(self):
+        """
+        Return the axion self-interaction scattering length in the simulation (kpc)
+        """
+        f_15 = self.params["quantum"]["f_15"]
+        if f_15 == 0.0:
+            return 0.0
+        else:
+            f = f_15 * 1.0e24 * constants["electron_volt"]
+            sign = 1.0 if f > 0 else -1.0
+            hbar = constants["reduced_planck_constant"]
+            c = constants["speed_of_light"]
+            m = self.axion_mass
+            a_s = sign * (hbar * c**3 * m) / (32.0 * jnp.pi * (f**2))
+            return a_s
+
+    @property
     def m_per_hbar(self):
         """
         Return the mass per hbar in the simulation (M_sun / hbar)
@@ -280,9 +298,9 @@ class Simulation:
 
         # Simulation parameters
         dx = self.dx
-        m_per_hbar = self.m_per_hbar
         box_size = self.box_size
         num_cells = self.resolution**3
+        m_per_hbar = self.m_per_hbar
 
         dt_fac = 1.0
         dt_kin = dt_fac * (m_per_hbar / 6.0) * (dx * dx)
@@ -311,6 +329,14 @@ class Simulation:
             )
             state["t"] = 0.0
             state["redshift"] = z_start
+
+        # self-interaction
+        a_s = self.scattering_length
+        hbar = constants["reduced_planck_constant"]
+        si_coeff = None
+        do_self_interaction = a_s != 0.0
+        if do_self_interaction:
+            si_coeff = (4.0 * jnp.pi) * (a_s / hbar) / m_per_hbar**2
 
         # hydro
         c_sound = self.params["hydro"]["sound_speed"]
@@ -352,7 +378,14 @@ class Simulation:
 
             if use_gravity or use_external_potential:
                 if use_quantum:
-                    state["psi"] = quantum_kick(state["psi"], V, m_per_hbar, dt)
+                    if do_self_interaction:
+                        rho = jnp.abs(state["psi"]) ** 2
+                        V_prime = V + si_coeff * rho
+                        state["psi"] = quantum_kick(
+                            state["psi"], V_prime, m_per_hbar, dt
+                        )
+                    else:
+                        state["psi"] = quantum_kick(state["psi"], V, m_per_hbar, dt)
                 if use_hydro:
                     state["vx"], state["vy"], state["vz"] = hydro_accelerate(
                         state["vx"], state["vy"], state["vz"], V, kx, ky, kz, dt
@@ -361,6 +394,8 @@ class Simulation:
                     state["vel"] = particles_accelerate(
                         state["vel"], state["pos"], V, kx, ky, kz, dx, dt
                     )
+
+            return state
 
         def _drift(state, k_sq, dt):
             # Drift (full-step)
@@ -373,12 +408,14 @@ class Simulation:
             if use_particles:
                 state["pos"] = particles_drift(state["pos"], state["vel"], dt, box_size)
 
+            return state
+
         def _update(_, carry):
             # Update the simulation state by one timestep
             # according to a 2nd-order `kick-drift-kick` scheme
             state, kx, ky, kz, k_sq = carry
-            _kick(state, kx, ky, kz, k_sq, 0.5 * dt)
-            _drift(state, k_sq, dt)
+            state = _kick(state, kx, ky, kz, k_sq, 0.5 * dt)
+            state = _drift(state, k_sq, dt)
             # update time & redshift
             state["t"] += dt
             if use_cosmology:
@@ -386,7 +423,7 @@ class Simulation:
                     state["redshift"], dt, omega_matter, omega_lambda, little_h
                 )
                 state["redshift"] = 1.0 / scale_factor - 1.0
-            _kick(state, kx, ky, kz, k_sq, 0.5 * dt)
+            state = _kick(state, kx, ky, kz, k_sq, 0.5 * dt)
 
             return state, kx, ky, kz, k_sq
 

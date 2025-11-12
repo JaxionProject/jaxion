@@ -31,7 +31,7 @@ def print_distributed_info():
 
 def set_up_parameters(user_overwrites):
     # first load the default params
-    params_path = importlib.resources.files("jaxion") / "params_default.json"
+    params_path = importlib.resources.files("jaxion") / "defaults.json"
     with params_path.open("r", encoding="utf-8") as f:
         params = json.load(f)
 
