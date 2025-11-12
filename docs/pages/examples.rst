@@ -72,7 +72,7 @@ cosmological_box
 .. figure:: ../../examples/cosmological_box/movie.gif
   :width: 300px
   :align: center
-  :alt: cosmological box
+  :alt: cosmological_box
   :target: examples.html#cosmological-box
 
   See on GitHub: `examples/cosmological_box <https://github.com/JaxionProject/jaxion/tree/main/examples/cosmological_box>`_
@@ -94,7 +94,7 @@ dynamical_friction
 .. figure:: ../../examples/dynamical_friction/movie.gif
   :width: 300px
   :align: center
-  :alt: dynamical friction
+  :alt: dynamical_friction
   :target: examples.html#dynamical-friction
 
   See on GitHub: `examples/dynamical_friction <https://github.com/JaxionProject/jaxion/tree/main/examples/dynamical_friction>`_
@@ -116,7 +116,7 @@ heating_gas
 .. figure:: ../../examples/heating_gas/movie.gif
   :width: 300px
   :align: center
-  :alt: heating gas
+  :alt: heating_gas
   :target: examples.html#heating-gas
 
   See on GitHub: `examples/heating_gas <https://github.com/JaxionProject/jaxion/tree/main/examples/heating_gas>`_
@@ -138,7 +138,7 @@ heating_stars
 .. figure:: ../../examples/heating_stars/movie.gif
   :width: 300px
   :align: center
-  :alt: heating stars
+  :alt: heating_stars
   :target: examples.html#heating-stars
 
   See on GitHub: `examples/heating_stars <https://github.com/JaxionProject/jaxion/tree/main/examples/heating_stars>`_
@@ -160,7 +160,7 @@ kinetic_condensation
 .. figure:: ../../examples/kinetic_condensation/movie.gif
   :width: 300px
   :align: center
-  :alt: kinetic condensation
+  :alt: kinetic_condensation
   :target: examples.html#kinetic-condensation
 
   See on GitHub: `examples/kinetic_condensation <https://github.com/JaxionProject/jaxion/tree/main/examples/kinetic_condensation>`_
@@ -226,7 +226,7 @@ soliton_binary_merger
 .. figure:: ../../examples/soliton_binary_merger/movie.gif
   :width: 300px
   :align: center
-  :alt: soliton binary merger
+  :alt: soliton_binary_merger
   :target: examples.html#soliton-binary-merger
 
   See on GitHub: `examples/soliton_binary_merger <https://github.com/JaxionProject/jaxion/tree/main/examples/soliton_binary_merger>`_
@@ -248,7 +248,7 @@ soliton_gas_star
 .. figure:: ../../examples/soliton_gas_star/movie.gif
   :width: 300px
   :align: center
-  :alt: soliton gas star
+  :alt: soliton_gas_star
   :target: examples.html#soliton-gas-star
 
   See on GitHub: `examples/soliton_gas_star <https://github.com/JaxionProject/jaxion/tree/main/examples/soliton_gas_star>`_
@@ -270,7 +270,7 @@ soliton_merger
 .. figure:: ../../examples/soliton_merger/movie.gif
   :width: 300px
   :align: center
-  :alt: soliton merger
+  :alt: soliton_merger
   :target: examples.html#soliton-merger
 
   See on GitHub: `examples/soliton_merger <https://github.com/JaxionProject/jaxion/tree/main/examples/soliton_merger>`_
@@ -292,7 +292,7 @@ tidal_stripping
 .. figure:: ../../examples/tidal_stripping/movie.gif
   :width: 300px
   :align: center
-  :alt: tidal stripping
+  :alt: tidal_stripping
   :target: examples.html#tidal-stripping
 
   See on GitHub: `examples/tidal_stripping <https://github.com/JaxionProject/jaxion/tree/main/examples/tidal_stripping>`_
