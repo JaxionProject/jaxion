@@ -53,20 +53,20 @@ def set_up_simulation(resolution_multiplier, sharding, save):
     r_soliton = 2.2e8 * m_22**-2 / M_soliton  # in kpc
     box_size = sim.params["domain"]["box_size"]
 
-    xx, yy, zz = sim.grid
-    r = jnp.sqrt(
-        (xx - 0.5 * box_size) ** 2
-        + (yy - 0.5 * box_size - r_separation) ** 2
-        + (zz - 0.5 * box_size) ** 2
+    X, Y, Z = sim.grid
+    R = jnp.sqrt(
+        (X - 0.5 * box_size) ** 2
+        + (Y - 0.5 * box_size - r_separation) ** 2
+        + (Z - 0.5 * box_size) ** 2
     )
     sim.state["psi"] = (
         jnp.sqrt(
-            1.9e7 * m_22**-2 * r_soliton**-4 / (1.0 + 0.091 * (r / r_soliton) ** 2) ** 8
+            1.9e7 * m_22**-2 * r_soliton**-4 / (1.0 + 0.091 * (R / r_soliton) ** 2) ** 8
         )
         + 0.0j
     )
     # add circular orbit velocity
-    sim.state["psi"] *= jnp.exp(1.0j * k_soliton * xx)
+    sim.state["psi"] *= jnp.exp(1.0j * k_soliton * X)
 
     # add external potential (host halo)
     M_halo = 0.25 * box_size * k_soliton**2 * hbar**2 / (G * m**2)
@@ -74,12 +74,26 @@ def set_up_simulation(resolution_multiplier, sharding, save):
         print(f"M_halo: {M_halo:.2e} M_sun")
     assert M_halo > M_soliton * 2.0  # halo should be much more massive than soliton
 
-    r = jnp.sqrt(
-        (xx - 0.5 * box_size) ** 2
-        + (yy - 0.5 * box_size) ** 2
-        + (zz - 0.5 * box_size) ** 2
+    R = jnp.sqrt(
+        (X - 0.5 * box_size) ** 2
+        + (Y - 0.5 * box_size) ** 2
+        + (Z - 0.5 * box_size) ** 2
     )
-    sim.state["V_ext"] = -G * M_halo / (r + 0.5 * sim.dx)  # softening
+    V_halo = -G * M_halo / (R + 0.5 * sim.dx)  # softening
+    # add sponge potential to prevent material periodically crossing the box
+    # see Schwabe et al. (2016)
+    V_0 = G * M_halo / (box_size / 4.0)
+    r_N = 0.5 * box_size
+    r_p = (7 / 8) * r_N
+    r_s = 0.5 * (r_N + r_p)
+    delta = r_N - r_p
+    V_sponge = (
+        -0.5j
+        * V_0
+        * (2 + jnp.tanh((R - r_s) / delta) - jnp.tanh(r_s / delta))
+        * jnp.heaviside(R - r_p, 0.0)
+    )
+    sim.state["V_ext"] = V_halo + V_sponge
 
     return sim
 
