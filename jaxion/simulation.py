@@ -95,6 +95,12 @@ class Simulation:
             xones, static_argnums=0, in_shardings=None, out_shardings=sharding
         )
 
+        # customfunctions
+        self.custom_kick = None
+        self.custom_drift = None
+        self.custom_density = None
+        self.custom_plot = None
+
         # simulation state
         self.state = {}
         self.state["t"] = 0.0
@@ -242,6 +248,13 @@ class Simulation:
         """
         return quantum_velocity(self.state["psi"], self.box_size, self.m_per_hbar)
 
+    @property
+    def rho_bar(self):
+        """
+        Return the mean density of the simulation
+        """
+        return self._calc_rho_bar(self.state)
+
     def _calc_rho_bar(self, state):
         rho_bar = 0.0
         if self.params["physics"]["quantum"]:
@@ -253,6 +266,8 @@ class Simulation:
             n_particles = self.num_particles
             box_size = self.box_size
             rho_bar += m_particle * n_particles / box_size
+        if self.custom_density is not None:
+            rho_bar += jnp.mean(self.custom_density(state))
         return rho_bar
 
     def _calc_grav_potential(self, state, k_sq):
@@ -266,6 +281,8 @@ class Simulation:
             rho_tot += state["rho"]
         if self.params["physics"]["particles"]:
             rho_tot += bin_particles(state["pos"], self.dx, self.resolution, m_particle)
+        if self.custom_density is not None:
+            rho_tot += self.custom_density(state)
         if self.params["physics"]["cosmology"]:
             scale_factor = 1.0 / (1.0 + state["redshift"])
             rho_bar *= scale_factor
@@ -316,6 +333,10 @@ class Simulation:
         use_cosmology = self.params["physics"]["cosmology"]
         use_external_potential = self.params["physics"]["external_potential"]
         save = self.params["output"]["save"]
+        use_custom = self.custom_kick is not None or self.custom_drift is not None
+        if use_custom:
+            custom_kick = self.custom_kick
+            custom_drift = self.custom_drift
 
         # cosmology
         if use_cosmology:
@@ -397,6 +418,8 @@ class Simulation:
                     state["vel"] = particles_accelerate(
                         state["vel"], state["pos"], V, kx, ky, kz, dx, dt
                     )
+                if use_custom:
+                    state = custom_kick(state, V, dt)
 
             return state
 
@@ -410,6 +433,8 @@ class Simulation:
                 )
             if use_particles:
                 state["pos"] = particles_drift(state["pos"], state["vel"], dt, box_size)
+            if use_custom:
+                state = custom_drift(state, k_sq, dt)
 
             return state
 
@@ -438,6 +463,8 @@ class Simulation:
                 json.dump(self.params, f, indent=2)
             async_checkpoint_manager.save(0, args=ocp.args.StandardSave(state))
             plot_sim(state, checkpoint_dir, 0, self.params)
+            if self.custom_plot is not None:
+                self.custom_plot(state, checkpoint_dir, 0, self.params)
             async_checkpoint_manager.wait_until_finished()
 
         # Simulation Main Loop
@@ -459,6 +486,8 @@ class Simulation:
                         f"{percent:.1f}%: mcups={mcups:.1f}, estimated time left (s): {est_remaining:.1f}"
                     )
                 plot_sim(state, checkpoint_dir, i, self.params)
+                if self.custom_plot is not None:
+                    self.custom_plot(state, checkpoint_dir, i, self.params)
                 async_checkpoint_manager.wait_until_finished()
         else:
             carry = jax.lax.fori_loop(0, nt, _update, init_val=carry)
