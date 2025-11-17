@@ -9,7 +9,12 @@ from .constants import constants
 from .quantum import quantum_kick, quantum_drift, quantum_velocity
 from .gravity import calculate_gravitational_potential
 from .hydro import hydro_fluxes, hydro_accelerate
-from .particles import particles_accelerate, particles_drift, bin_particles
+from .particles import (
+    particles_accelerate,
+    particles_drift,
+    particles_accrete_gas,
+    bin_particles,
+)
 from .cosmology import get_supercomoving_time_interval, get_next_scale_factor
 from .utils import (
     set_up_parameters,
@@ -95,7 +100,7 @@ class Simulation:
             xones, static_argnums=0, in_shardings=None, out_shardings=sharding
         )
 
-        # customfunctions
+        # custom functions
         self.custom_kick = None
         self.custom_drift = None
         self.custom_density = None
@@ -126,6 +131,11 @@ class Simulation:
         if self.params["physics"]["particles"]:
             self.state["pos"] = jnp.zeros((self.num_particles, 3))
             self.state["vel"] = jnp.zeros((self.num_particles, 3))
+            if self.params["particles"]["accrete_gas"]:
+                self.state["mass"] = (
+                    jnp.zeros(self.num_particles)
+                    + self.params["particles"]["particle_mass"]
+                )
 
         if load_from_checkpoint:
             options = ocp.CheckpointManagerOptions()
@@ -262,17 +272,19 @@ class Simulation:
         if self.params["physics"]["hydro"]:
             rho_bar += jnp.mean(state["rho"])
         if self.params["physics"]["particles"]:
-            m_particle = self.params["particles"]["particle_mass"]
-            n_particles = self.num_particles
             box_size = self.box_size
-            rho_bar += m_particle * n_particles / box_size
+            if self.params["particles"]["accrete_gas"]:
+                rho_bar += jnp.sum(state["mass"]) / box_size**3
+            else:
+                m_particle = self.params["particles"]["particle_mass"]
+                n_particles = self.num_particles
+                rho_bar += m_particle * n_particles / box_size**3
         if self.custom_density is not None:
             rho_bar += jnp.mean(self.custom_density(state))
         return rho_bar
 
     def _calc_grav_potential(self, state, k_sq):
         G = constants["gravitational_constant"]
-        m_particle = self.params["particles"]["particle_mass"]
         rho_bar = self._calc_rho_bar(state)
         rho_tot = 0.0
         if self.params["physics"]["quantum"]:
@@ -280,7 +292,17 @@ class Simulation:
         if self.params["physics"]["hydro"]:
             rho_tot += state["rho"]
         if self.params["physics"]["particles"]:
-            rho_tot += bin_particles(state["pos"], self.dx, self.resolution, m_particle)
+            multiple_masses = self.params["particles"]["accrete_gas"]
+            if multiple_masses:
+                m_particles = state["mass"]
+                rho_tot += bin_particles(
+                    state["pos"], m_particles, self.dx, self.resolution, multiple_masses
+                )
+            else:
+                m_particles = self.params["particles"]["particle_mass"]
+                rho_tot += bin_particles(
+                    state["pos"], m_particles, self.dx, self.resolution, multiple_masses
+                )
         if self.custom_density is not None:
             rho_tot += self.custom_density(state)
         if self.params["physics"]["cosmology"]:
@@ -332,6 +354,7 @@ class Simulation:
         use_particles = self.params["physics"]["particles"]
         use_cosmology = self.params["physics"]["cosmology"]
         use_external_potential = self.params["physics"]["external_potential"]
+        accrete_gas = self.params["particles"]["accrete_gas"]
         save = self.params["output"]["save"]
         use_custom = self.custom_kick is not None or self.custom_drift is not None
         if use_custom:
@@ -435,6 +458,11 @@ class Simulation:
                 state["pos"] = particles_drift(state["pos"], state["vel"], dt, box_size)
             if use_custom:
                 state = custom_drift(state, k_sq, dt)
+            if use_hydro and accrete_gas:
+                G = constants["gravitational_constant"]
+                state["mass"], state["rho"] = particles_accrete_gas(
+                    state["mass"], state["rho"], state["pos"], G, c_sound, dx, dt
+                )
 
             return state
 

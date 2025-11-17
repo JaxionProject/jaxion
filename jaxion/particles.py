@@ -18,7 +18,7 @@ def get_cic_indices_and_weights(pos, dx, resolution):
     return i, ip1, weight_i, weight_ip1
 
 
-def bin_particles(pos, dx, resolution, m_particle):
+def bin_particles(pos, m_particles, dx, resolution, multiple_masses):
     """Bin the particles into the grid using cloud-in-cell weights."""
     nx = resolution
     n_particle = pos.shape[0]
@@ -27,6 +27,10 @@ def bin_particles(pos, dx, resolution, m_particle):
 
     def deposit_particle(s, rho):
         """Deposit the particle mass into the grid."""
+        if multiple_masses:
+            m_particle = m_particles[s]
+        else:
+            m_particle = m_particles
         fac = m_particle / (dx * dx * dx)
         rho = rho.at[i[s, 0], i[s, 1], i[s, 2]].add(
             w_i[s, 0] * w_i[s, 1] * w_i[s, 2] * fac
@@ -112,3 +116,102 @@ def particles_drift(pos, vel, dt, box_size):
     pos = jnp.mod(pos, jnp.array([box_size, box_size, box_size]))
 
     return pos
+
+
+def particles_accrete_gas(mass, rho, pos, G, sound_speed, dx, dt):
+    """Accrete gas onto particles (Bondi)."""
+    n_particle = pos.shape[0]
+    resolution = rho.shape[0]
+    i, ip1, w_i, w_ip1 = get_cic_indices_and_weights(pos, dx, resolution)
+    d_mass = jnp.zeros_like(mass)
+    d_rho = jnp.zeros_like(rho)
+    lam = jnp.exp(1.5) / 4.0  # ≈ 1.12
+    vol = dx**3
+
+    def accrete(s, deltas):
+        """Deposit the particle mass into the grid."""
+        d_mass, d_rho = deltas
+        dM_fac = dt * 4.0 * jnp.pi * lam * (G * mass[s]) ** 2 / sound_speed**3
+        # dM = dM_fac * rho
+
+        dm = w_i[s, 0] * w_i[s, 1] * w_i[s, 2] * dM_fac * rho[i[s, 0], i[s, 1], i[s, 2]]
+        d_rho = d_rho.at[i[s, 0], i[s, 1], i[s, 2]].add(-dm / vol)
+        d_mass = d_mass.at[s].add(dm)
+
+        dm = (
+            w_ip1[s, 0]
+            * w_i[s, 1]
+            * w_i[s, 2]
+            * dM_fac
+            * rho[ip1[s, 0], i[s, 1], i[s, 2]]
+        )
+        d_rho = d_rho.at[ip1[s, 0], i[s, 1], i[s, 2]].add(-dm / vol)
+        d_mass = d_mass.at[s].add(dm)
+
+        dm = (
+            w_i[s, 0]
+            * w_ip1[s, 1]
+            * w_i[s, 2]
+            * dM_fac
+            * rho[i[s, 0], ip1[s, 1], i[s, 2]]
+        )
+        d_rho = d_rho.at[i[s, 0], ip1[s, 1], i[s, 2]].add(-dm / vol)
+        d_mass = d_mass.at[s].add(dm)
+
+        dm = (
+            w_i[s, 0]
+            * w_i[s, 1]
+            * w_ip1[s, 2]
+            * dM_fac
+            * rho[i[s, 0], i[s, 1], ip1[s, 2]]
+        )
+        d_rho = d_rho.at[i[s, 0], i[s, 1], ip1[s, 2]].add(-dm / vol)
+        d_mass = d_mass.at[s].add(dm)
+
+        dm = (
+            w_ip1[s, 0]
+            * w_ip1[s, 1]
+            * w_i[s, 2]
+            * dM_fac
+            * rho[ip1[s, 0], ip1[s, 1], i[s, 2]]
+        )
+        d_rho = d_rho.at[ip1[s, 0], ip1[s, 1], i[s, 2]].add(-dm / vol)
+        d_mass = d_mass.at[s].add(dm)
+
+        dm = (
+            w_ip1[s, 0]
+            * w_i[s, 1]
+            * w_ip1[s, 2]
+            * dM_fac
+            * rho[ip1[s, 0], i[s, 1], ip1[s, 2]]
+        )
+        d_rho = d_rho.at[ip1[s, 0], i[s, 1], ip1[s, 2]].add(-dm / vol)
+        d_mass = d_mass.at[s].add(dm)
+
+        dm = (
+            w_i[s, 0]
+            * w_ip1[s, 1]
+            * w_ip1[s, 2]
+            * dM_fac
+            * rho[i[s, 0], ip1[s, 1], ip1[s, 2]]
+        )
+        d_rho = d_rho.at[i[s, 0], ip1[s, 1], ip1[s, 2]].add(-dm / vol)
+        d_mass = d_mass.at[s].add(dm)
+
+        dm = (
+            w_ip1[s, 0]
+            * w_ip1[s, 1]
+            * w_ip1[s, 2]
+            * dM_fac
+            * rho[ip1[s, 0], ip1[s, 1], ip1[s, 2]]
+        )
+        d_rho = d_rho.at[ip1[s, 0], ip1[s, 1], ip1[s, 2]].add(-dm / vol)
+        d_mass = d_mass.at[s].add(dm)
+
+        return d_mass, d_rho
+
+    d_mass, d_rho = jax.lax.fori_loop(0, n_particle, accrete, (d_mass, d_rho))
+    mass = mass + d_mass
+    rho = rho + d_rho
+
+    return mass, rho

@@ -95,6 +95,10 @@
     "particle_mass": {
       "default": 1.0,
       "description": "particle mass [M_sun]."
+    },
+    "accrete_gas": {
+      "default": false,
+      "description": "switch on to accrete gas."
     }
   },
   "cosmology": {

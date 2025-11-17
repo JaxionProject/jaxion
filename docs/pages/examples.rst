@@ -328,3 +328,31 @@ Script:
 
 .. literalinclude:: ../../examples/timing/timing.py
   :language: python
+
+
+two_field
+---------
+
+.. figure:: ../../examples/two_field/rho1_070.png
+  :width: 300px
+  :align: center
+  :alt: two_field
+  :target: examples.html#two-field
+
+.. figure:: ../../examples/two_field/rho2_070.png
+  :width: 300px
+  :align: center
+  :alt: two_field2
+  :target: examples.html#two-field
+
+  See on GitHub: `examples/two_field <https://github.com/JaxionProject/jaxion/tree/main/examples/two_field>`_
+
+README:
+
+.. literalinclude:: ../../examples/two_field/README.md
+  :language: md
+
+Script:
+
+.. literalinclude:: ../../examples/two_field/two_field.py
+  :language: python
