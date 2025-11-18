@@ -42,7 +42,7 @@ class Simulation:
 
     """
 
-    def __init__(self, params, sharding=None):
+    def __init__(self, params, sharding=None, checkpoint_number=None):
         # allow loading directly from a checkpoint path
         load_from_checkpoint = False
         checkpoint_dir = ""
@@ -142,7 +142,10 @@ class Simulation:
             async_checkpoint_manager = ocp.CheckpointManager(
                 checkpoint_dir, options=options
             )
-            step = async_checkpoint_manager.latest_step()
+            if checkpoint_number is not None:
+                step = checkpoint_number
+            else:
+                step = async_checkpoint_manager.latest_step()
             self.state = async_checkpoint_manager.restore(
                 step, args=ocp.args.StandardRestore(self.state)
             )

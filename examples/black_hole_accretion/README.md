@@ -18,6 +18,8 @@ Takes around 20 (res=1) seconds to run on my macbook (cpu).
 <div style="display:flex;flex-wrap:wrap;gap:8px">
   <img src="dm100.png" alt="dm100" width="45%"/>
   <img src="gas100.png" alt="gas100" width="45%"/>
+  <br>
+  <img src="bh_mass_vs_time.png" alt="bh_mass_vs_time" width="93%"/>
 </div>
 
 
