@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 def main():
     # plot m_bh vs time
-    for res in [1, 2, 3, 4]:
+    for res in [1, 2, 3, 4, 6]:
         checkpoint_dir = f"./checkpoints{res}/"
         t = []
         m_bh = []
