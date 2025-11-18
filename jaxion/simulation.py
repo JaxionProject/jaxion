@@ -341,8 +341,8 @@ class Simulation:
         num_cells = self.resolution**3
         m_per_hbar = self.m_per_hbar
 
-        dt_fac = 1.0
-        dt_kin = dt_fac * (m_per_hbar / 6.0) * (dx * dx)
+        safety = self.params["time"]["safety_factor"]
+        dt_kin = safety * (m_per_hbar / 6.0) * (dx * dx)
         t_start = self.params["time"]["start"]
         t_end = self.params["time"]["end"]
         t_span = t_end - t_start

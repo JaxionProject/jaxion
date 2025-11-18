@@ -48,6 +48,10 @@
       "default": 1.0,
       "description": "simulation end time [kpc/(km/s)] or [redshift] (cosmology=true)."
     },
+    "safety_factor": { 
+      "default": 1.0,
+      "description": "safety factor for time stepping."
+    },
     "adaptive": { 
       "default": false,
       "description": "switch on for adaptive time stepping."
