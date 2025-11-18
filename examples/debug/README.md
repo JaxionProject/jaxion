@@ -17,13 +17,13 @@ git clone git@github.com:JaxionProject/jaxion.git
 
 ```console
 cd jaxion
-./scripts/setup_venv_on_frontier.sh
+./scripts/setup_frontier_venv.sh
 ```
 
 3. (Optional, Recommended): Install the AWS-OFI-RCCL Plugin to improve performance on AMD GPUs -- see: https://docs.olcf.ornl.gov/software/analytics/pytorch_frontier.html#aws-ofi-rccl-plugin
 
 ```console
-./scripts/setup_aws-ofi-rccl_on_frontier.sh
+./scripts/setup_frontier_aws-ofi-rccl.sh
 ```
 
 ## Submit jobs
@@ -75,7 +75,7 @@ which takes around **[78 / 12]** seconds to complete.
 
 ## Notes
 
-* May want to check out the install script `scripts/setup_venv_on_frontier.sh` for improved/more up-to-date ways to install JAX on Frontier.
+* May want to check out the install script `scripts/setup_frontier_venv.sh` for improved/more up-to-date ways to install JAX on Frontier.
 
 * May want to check out the submit scripts `examples/debug/sbatch_frontier_XL.sh` for missing flags/environment variables.
 
