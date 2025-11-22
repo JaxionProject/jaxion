@@ -105,6 +105,7 @@ class Simulation:
         self.custom_drift = None
         self.custom_density = None
         self.custom_plot = None
+        self.callback = None
 
         # simulation state
         self.state = {}
@@ -180,6 +181,23 @@ class Simulation:
         Return the cell size size of the simulation (kpc)
         """
         return self.box_size / self.resolution
+
+    @property
+    def nt(self):
+        """
+        Return the number of timesteps
+        """
+        dx = self.dx
+        m_per_hbar = self.m_per_hbar
+        safety = self.params["time"]["safety_factor"]
+        dt_kin = safety * (m_per_hbar / 6.0) * (dx * dx)
+        t_start = self.params["time"]["start"]
+        t_end = self.params["time"]["end"]
+        t_span = t_end - t_start
+        num_checkpoints = self.params["output"]["num_checkpoints"]
+        nt = int(round(round(t_span / dt_kin) / num_checkpoints) * num_checkpoints)
+
+        return nt
 
     @property
     def axion_mass(self):
@@ -344,8 +362,6 @@ class Simulation:
         num_cells = self.resolution**3
         m_per_hbar = self.m_per_hbar
 
-        safety = self.params["time"]["safety_factor"]
-        dt_kin = safety * (m_per_hbar / 6.0) * (dx * dx)
         t_start = self.params["time"]["start"]
         t_end = self.params["time"]["end"]
         t_span = t_end - t_start
@@ -363,6 +379,9 @@ class Simulation:
         if use_custom:
             custom_kick = self.custom_kick
             custom_drift = self.custom_drift
+        use_callback = self.callback is not None
+        if use_callback:
+            custom_callback = self.callback
 
         # cosmology
         if use_cosmology:
@@ -393,7 +412,7 @@ class Simulation:
 
         # round up to the nearest multiple of num_checkpoints
         num_checkpoints = self.params["output"]["num_checkpoints"]
-        nt = int(round(round(t_span / dt_kin) / num_checkpoints) * num_checkpoints)
+        nt = self.nt
         nt_sub = int(round(nt / num_checkpoints))
         dt = t_span / nt
 
@@ -469,7 +488,7 @@ class Simulation:
 
             return state
 
-        def _update(_, carry):
+        def _update(i, carry):
             # Update the simulation state by one timestep
             # according to a 2nd-order `kick-drift-kick` scheme
             state, kx, ky, kz, k_sq = carry
@@ -484,6 +503,9 @@ class Simulation:
                 state["redshift"] = 1.0 / scale_factor - 1.0
             state = _kick(state, kx, ky, kz, k_sq, 0.5 * dt)
 
+            if use_callback:
+                custom_callback(i, state)
+
             return state, kx, ky, kz, k_sq
 
         # save initial state
@@ -493,16 +515,19 @@ class Simulation:
             with open(os.path.join(checkpoint_dir, "params.json"), "w") as f:
                 json.dump(self.params, f, indent=2)
             async_checkpoint_manager.save(0, args=ocp.args.StandardSave(state))
+            async_checkpoint_manager.wait_until_finished()
             plot_sim(state, checkpoint_dir, 0, self.params)
             if self.custom_plot is not None:
                 self.custom_plot(state, checkpoint_dir, 0, self.params)
-            async_checkpoint_manager.wait_until_finished()
 
         # Simulation Main Loop
         t_start_timer = time.time()
         if save:
             for i in range(1, num_checkpoints + 1):
-                carry = jax.lax.fori_loop(0, nt_sub, _update, init_val=carry)
+                i_timestep = (i - 1) * nt_sub
+                carry = jax.lax.fori_loop(
+                    i_timestep, i_timestep + nt_sub, _update, init_val=carry
+                )
                 state, _, _, _, _ = carry
                 jax.block_until_ready(state)
                 # save state
@@ -516,10 +541,10 @@ class Simulation:
                     print(
                         f"{percent:.1f}%: mcups={mcups:.1f}, estimated time left (s): {est_remaining:.1f}"
                     )
+                async_checkpoint_manager.wait_until_finished()
                 plot_sim(state, checkpoint_dir, i, self.params)
                 if self.custom_plot is not None:
                     self.custom_plot(state, checkpoint_dir, i, self.params)
-                async_checkpoint_manager.wait_until_finished()
         else:
             carry = jax.lax.fori_loop(0, nt, _update, init_val=carry)
             state, _, _, _, _ = carry

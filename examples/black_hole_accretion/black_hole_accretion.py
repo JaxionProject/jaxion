@@ -1,6 +1,7 @@
 import jax.numpy as jnp
 import argparse
 import sys
+import matplotlib.pyplot as plt
 
 sys.path.append("../../")  # XXX
 import jaxion
@@ -20,6 +21,7 @@ Usage:
 
 def set_up_simulation(resolution_multiplier):
     # Parameters added/changed from default values
+    M_bh = 1.0e7
     params = {
         "physics": {
             "quantum": True,
@@ -36,11 +38,14 @@ def set_up_simulation(resolution_multiplier):
         "hydro": {
             "sound_speed": 40.0,  # km/s
         },
-        "particles": {"num_particles": 1, "particle_mass": 1.0e7, "accrete_gas": True},
+        "particles": {"num_particles": 1, "particle_mass": M_bh, "accrete_gas": True},
     }
 
     # Initialize the simulation
     sim = jaxion.Simulation(params)
+
+    # these are the fields we evolve:
+    print(sim.state.keys())
 
     # Set initial conditions
     M_soliton = 1.0e9  # mass of soliton (M_sun)
@@ -77,7 +82,22 @@ def set_up_simulation(resolution_multiplier):
     sim.state["pos"] = pos
     sim.state["vel"] = vel
 
+    # add callback to record info about state
+    n_buffer = sim.nt + 1
+    sim.state["tt"] = jnp.full((n_buffer,), jnp.nan)
+    sim.state["m_bh"] = jnp.full((n_buffer,), jnp.nan)
+    sim.state["tt"] = sim.state["tt"].at[0].set(0.0)
+    sim.state["m_bh"] = sim.state["m_bh"].at[0].set(M_bh)
+    sim.callback = callback
+
     return sim
+
+
+def callback(i, state):
+    # record the black hole mass at end of timestep i
+    state["tt"] = state["tt"].at[i + 1].set(state["t"])
+    state["m_bh"] = state["m_bh"].at[i + 1].set(state["mass"][0])
+    return state
 
 
 def main():
@@ -107,6 +127,14 @@ def main():
     dm_gas = (jnp.mean(sim.state["rho"]) - rho_gas0) * box_size**3
     print("mass gained:", dm_bh)
     print("mass lost:", dm_gas)
+
+    # Make a plot of black hole mass vs time:
+    plt.plot(sim.state["tt"], sim.state["m_bh"])
+    plt.xlabel("time [kpc/(km/s)]")
+    plt.ylabel(r"mass [$M_\odot$]")
+    plt.yscale("log")
+    plt.savefig("callback.png")
+    plt.close()
 
     return sim
 
