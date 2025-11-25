@@ -4,20 +4,23 @@
 #SBATCH --output=slurm-%j.out
 #SBATCH --error=slurm-%j.err
 #SBATCH --partition batch
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=1
-#SBATCH --gpus-per-task=1
-#SBATCH --cpus-per-task=8
-#SBATCH --time=00-00:10
+#SBATCH --nodes=8
+#SBATCH --time=00-00:20
 
 module purge
 module load PrgEnv-gnu/8.6.0
-module load rocm/6.2.4
+module load rocm/7.0.2
 module load craype-accel-amd-gfx90a
 module load miniforge3/23.11.0-0
 
+export LD_LIBRARY_PATH=/lustre/orion/ast231/scratch/pmocz/aws-ofi-rccl/lib:$LD_LIBRARY_PATH
+# export FI_MR_CACHE_MONITOR=userfaultfd
+export FI_MR_CACHE_MONITOR=kdreg2
 export PYTHONUNBUFFERED=TRUE
 
-conda activate jaxion-venv
+# see https://docs.olcf.ornl.gov/software/analytics/pytorch_frontier.html
+# for more optimization tips
 
-srun python soliton_binary_merger.py --res=8
+conda activate /lustre/orion/scratch/pmocz/ast231/venvs/jaxion-venv
+
+srun -N$SLURM_NNODES --ntasks-per-node=8 --cpus-per-task=7 --gpu-bind=closest --cpu-bind=cores python soliton_binary_merger.py --res=64 --distributed

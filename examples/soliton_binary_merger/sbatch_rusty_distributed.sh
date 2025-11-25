@@ -4,8 +4,8 @@
 #SBATCH --error=slurm-%j.err
 #SBATCH --partition gpu
 #SBATCH --constraint=h100
-#SBATCH --nodes=1
-#SBATCH --ntasks-per-node=4
+#SBATCH --nodes=2
+#SBATCH --ntasks-per-node=8
 #SBATCH --gpus-per-task=1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=80G
