@@ -32,7 +32,7 @@ yy = np.array([0.1, 1, 10])
 def main():
     # Compute billion cell updates per second
     bcups = 10 * (resolutions**3) / (runtime * 1.0e9)
-    #bcups_no_awsofirccl = 10 * (resolutions**3) / (runtime_no_awsofirccl * 1.0e9)
+    # bcups_no_awsofirccl = 10 * (resolutions**3) / (runtime_no_awsofirccl * 1.0e9)
 
     plt.figure(figsize=(4, 4))
     plt.plot(
