@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-#SBATCH --job-name=black_hole_accretion
+#SBATCH --job-name=two_field
 #SBATCH --output=slurm-%j.out
 #SBATCH --error=slurm-%j.err
 #SBATCH --partition gpu
@@ -18,4 +18,4 @@ export PYTHONUNBUFFERED=TRUE
 
 source $VENVDIR/jaxion-venv/bin/activate
 
-srun python black_hole_accretion.py --res=8
+srun python two_field.py --res=8
