@@ -2,30 +2,31 @@
 
 # Create virtual environment on Frontier
 
+# Variables
+
+rocm_version=7.0.2
+jax_version=0.6.0
+
+ENV_PATH='/lustre/orion/scratch/pmocz/ast231/venvs'
+ENV_NAME='jaxion-venv'
+
 # Set up JAX on Frontier. See: https://docs.olcf.ornl.gov/software/analytics/jax.html
 module purge
 module load PrgEnv-gnu/8.6.0
-module load rocm/6.2.4 # may work with ROCm 6.0.0 and 6.1.x
+module load rocm/$rocm_version
 module load craype-accel-amd-gfx90a
 module load miniforge3/23.11.0-0
 
-conda env remove --name jaxion-venv
+conda env remove --name $ENV_NAME
 
-conda create -n jaxion-venv python=3.11 numpy scipy -c conda-forge --yes
-conda activate jaxion-venv
+conda create -p $ENV_PATH/$ENV_NAME python=3.12.8 numpy scipy -c conda-forge --yes
+conda activate $ENV_PATH/$ENV_NAME
 
-pip install jax-rocm60-pjrt==0.5.0 jax-rocm60-plugin==0.5.0 --no-cache-dir
-pip install jax==0.5.0 --no-cache-dir
-
-# HACK: inside requirements.txt, replace "jax==0.5.3" with "jax==0.5.0"
-# since jax 0.5.3 is not available on Frontier
-sed -i 's/jax==0.5.3/jax==0.5.0/g' requirements.txt
+pip install jax-rocm7-pjrt==$jax_version jax-rocm7-plugin==$jax_version --no-cache-dir
+pip install jaxlib==$jax_version jax==$jax_version --no-cache-dir
 
 pip install .
 
-# HACK: change back requirements.txt
-sed -i 's/jax==0.5.0/jax==0.5.3/g' requirements.txt
-
 conda deactivate
 
-echo "Virtual environment 'jaxion-venv' created and jaxion installed."
+echo "Virtual environment '$ENV_NAME' created and jaxion installed."

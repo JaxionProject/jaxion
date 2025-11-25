@@ -25,7 +25,7 @@ dependencies = {file = ["requirements.txt"]}
 
 [project.optional-dependencies]
 cuda12 = [
-    "jax[cuda12]==0.5.3",
+    "jax[cuda12]==0.6.0",
 ]
 
 [tool.setuptools-git-versioning]

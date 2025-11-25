@@ -3,7 +3,7 @@
 # Set up AWS-OFI-RCCL plugin for better performance.
 # See https://docs.olcf.ornl.gov/software/analytics/pytorch_frontier.html
 
-rocm_version=6.2.4
+rocm_version=7.0.2
 
 # Load modules
 module load PrgEnv-gnu/8.6.0

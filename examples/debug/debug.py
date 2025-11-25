@@ -108,6 +108,13 @@ def main():
     sim = set_up_simulation(args.res, sharding)
     sim.run()
 
+    # print some diagnostic info
+    mean_psi = jnp.mean(jnp.abs(sim.state["psi"]))
+    mean_psi2 = jnp.mean(jnp.abs(sim.state["psi"]) ** 2)
+    if jax.process_index() == 0:
+        print("mean |psi|=", mean_psi)
+        print("mean |psi|^2=", mean_psi2)
+
     return sim
 
 
