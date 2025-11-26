@@ -12,7 +12,7 @@
 #SBATCH --time=00-00:10
 
 module purge
-module load python/3.11
+module load python/3.12.9
 
 export PYTHONUNBUFFERED=TRUE
 

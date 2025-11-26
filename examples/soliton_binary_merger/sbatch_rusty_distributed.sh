@@ -4,7 +4,7 @@
 #SBATCH --error=slurm-%j.err
 #SBATCH --partition gpu
 #SBATCH --constraint=h100
-#SBATCH --nodes=2
+#SBATCH --nodes=1
 #SBATCH --ntasks-per-node=8
 #SBATCH --gpus-per-task=1
 #SBATCH --cpus-per-task=8
@@ -12,10 +12,10 @@
 #SBATCH --time=00-01:00
 
 module purge
-module load python/3.11
+module load python/3.12.9
 
 export PYTHONUNBUFFERED=TRUE
 
 source $VENVDIR/jaxion-venv/bin/activate
 
-srun --cpu-bind=cores python soliton_binary_merger.py --res=32 --distributed
+srun --gpu-bind=none --cpu-bind=cores python soliton_binary_merger.py --res=16 --distributed
