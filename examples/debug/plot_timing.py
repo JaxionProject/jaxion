@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Timings on Frontier
+# Timings on Frontier & Rusty
 
 resolutions = np.array(
     [
@@ -23,6 +23,8 @@ runtime = np.array(
     ]
 )
 
+runtime_rusty = np.array([1.9, 3.0, np.nan, np.nan])  # , np.nan])
+
 num_nodes = np.array([1, 1, 8, 64])  # 512])
 num_gpus = np.array([1, 8, 64, 512])  # 4096])  # really # GCDs (=2 * # gpus)
 
@@ -31,15 +33,23 @@ yy = np.array([0.1, 1, 10])
 
 def main():
     # Compute billion cell updates per second
-    bcups = 10 * (resolutions**3) / (runtime * 1.0e9)
+    nsteps = 10
+    bcups = nsteps * (resolutions**3) / (runtime * 1.0e9)
     # bcups_no_awsofirccl = 10 * (resolutions**3) / (runtime_no_awsofirccl * 1.0e9)
+    bcups_rusty = nsteps * (resolutions**3) / (runtime_rusty * 1.0e9)
 
     plt.figure(figsize=(4, 4))
     plt.plot(
         resolutions,
         bcups,
         marker="s",
-        label="MI250X",
+        label="MI250X (Frontier)",
+    )
+    plt.plot(
+        resolutions,
+        bcups_rusty,
+        marker="o",
+        label="H100 (Rusty)",
     )
     for i, (res, bcup, nodes, gpus) in enumerate(
         zip(resolutions, bcups, num_nodes, num_gpus)
