@@ -18,4 +18,4 @@ export PYTHONUNBUFFERED=TRUE
 
 source $VENVDIR/jaxion-venv/bin/activate
 
-srun --gpu-bind=none --cpu-bind=cores python debug.py --res=16 --distributed
+srun --gpu-bind=none --cpu-bind=cores python debug.py --res=32 --distributed
