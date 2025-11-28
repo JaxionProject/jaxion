@@ -23,7 +23,7 @@ runtime = np.array(
     ]
 )
 
-runtime_rusty_h100 = np.array([2.2, 13.6, np.nan, np.nan])  # , np.nan])
+runtime_rusty_h100 = np.array([2.2, 13.2, np.nan, np.nan])  # , np.nan])
 runtime_rusty_h200 = np.array([np.nan, np.nan, np.nan, np.nan])  # , np.nan])
 
 num_nodes = np.array([1, 1, 8, 64])  # 512])
