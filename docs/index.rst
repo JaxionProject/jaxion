@@ -106,6 +106,7 @@ jaxion
     pages/tutorial3
     pages/tutorial4
     pages/tutorial5
+    pages/tutorial6
 
 .. toctree::
     :maxdepth: 1

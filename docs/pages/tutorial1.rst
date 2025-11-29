@@ -25,6 +25,13 @@ It will also often be useful to import `jax.numpy <https://docs.jax.dev/en/lates
 
 to set up initial conditions, which as JAX arrays.
 
+By default, JAX runs in single-precision mode, which is sufficient for many Jaxion simulations.
+But if you'd like to run in double-precision mode, you can set:
+
+.. code-block:: python
+
+    jax.config.update("jax_enable_x64", True)
+
 The basic steps are:
 
 (1) set simulation parameters,
@@ -59,6 +66,7 @@ Let's look at the parameters for this example:
         "time": {
             "start": 0.0,
             "end": 1.0,
+            "safety_factor": 1.0
         },
         "output": {
             "path": f"./checkpoints",
@@ -85,6 +93,8 @@ with a base resolution of 32 grid cells per side,
 and a resolution multiplier of 2 (meaning the effective resolution is 64 grid cells per side).
 
 In the ``"time"`` section, we set the simulation to start at time 0.0 and end at time 1.0 (in code units (kpc / (km/s))).
+The time step in a Jaxion simulation is, by default, the quantum kinetically-limited time step,
+dt = (m_per_hbar / 6.0) * (dx * dx), which can be scaled by the ``safety_factor`` parameter (here set to 1.0).
 
 In the ``"output"`` section, we specify the output path for saving simulation checkpoints,
 the number of checkpoints to save (100), and enable saving.
