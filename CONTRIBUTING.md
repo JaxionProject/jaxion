@@ -24,6 +24,6 @@ Fork this repository, add your feature, and submit a PR for review.
 
 To make sure the code passes testing, do a:
 ```sh
-pip install .
+pip install -e .
 pytest
 ```

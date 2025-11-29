@@ -101,6 +101,11 @@ jaxion
     :caption: Tutorials & Examples
 
     pages/examples
+    pages/tutorial1
+    pages/tutorial2
+    pages/tutorial3
+    pages/tutorial4
+    pages/tutorial5
 
 .. toctree::
     :maxdepth: 1
