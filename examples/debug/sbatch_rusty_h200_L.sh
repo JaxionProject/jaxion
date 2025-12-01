@@ -2,7 +2,8 @@
 #SBATCH --job-name=jaxionL
 #SBATCH --output=slurm-h200L-%j.out
 #SBATCH --error=slurm-h200L-%j.err
-#SBATCH --partition eval
+#SBATCH --partition=gpup
+#SBATCH --reservation=polymathic_training
 #SBATCH --constraint=h200
 #SBATCH --nodes=8
 #SBATCH --ntasks-per-node=8

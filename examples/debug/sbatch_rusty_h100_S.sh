@@ -2,7 +2,7 @@
 #SBATCH --job-name=jaxionS
 #SBATCH --output=slurm-h100S-%j.out
 #SBATCH --error=slurm-h100S-%j.err
-#SBATCH --partition gpu
+#SBATCH --partition=gpu
 #SBATCH --constraint=h100
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1

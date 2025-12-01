@@ -3,7 +3,7 @@
 #SBATCH --job-name=jaxionM
 #SBATCH --output=slurm-mi250xM-%j.out
 #SBATCH --error=slurm-mi250xM-%j.err
-#SBATCH --partition batch
+#SBATCH --partition=batch
 #SBATCH --nodes=1
 #SBATCH --time=00-00:05
 

@@ -2,7 +2,7 @@
 #SBATCH --job-name=tidal_stripping
 #SBATCH --output=slurm-%j.out
 #SBATCH --error=slurm-%j.err
-#SBATCH --partition gpu
+#SBATCH --partition=gpu
 #SBATCH --constraint=h100
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=8

@@ -2,7 +2,7 @@
 #SBATCH --job-name=soliton_binary_merger
 #SBATCH --output=slurm-%j.out
 #SBATCH --error=slurm-%j.err
-#SBATCH --partition gpu
+#SBATCH --partition=gpu
 #SBATCH --constraint=h100
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=8
