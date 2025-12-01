@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 #SBATCH -A AST231
 #SBATCH --job-name=jaxionL
-#SBATCH --output=slurm-%j.out
-#SBATCH --error=slurm-%j.err
+#SBATCH --output=slurm-mi250xL-%j.out
+#SBATCH --error=slurm-mi250xL-%j.err
 #SBATCH --partition batch
 #SBATCH --nodes=8
 #SBATCH --time=00-00:05

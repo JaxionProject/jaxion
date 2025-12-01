@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 #SBATCH --job-name=jaxionS
-#SBATCH --output=slurm-%j.out
-#SBATCH --error=slurm-%j.err
+#SBATCH --output=slurm-h100S-%j.out
+#SBATCH --error=slurm-h100S-%j.err
 #SBATCH --partition gpu
 #SBATCH --constraint=h100
 #SBATCH --nodes=1

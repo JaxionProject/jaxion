@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 #SBATCH --job-name=jaxionS
-#SBATCH --output=slurm-%j.out
-#SBATCH --error=slurm-%j.err
+#SBATCH --output=slurm-h200S-%j.out
+#SBATCH --error=slurm-h200S-%j.err
 #SBATCH --partition eval
 #SBATCH --constraint=h200
 #SBATCH --nodes=1
