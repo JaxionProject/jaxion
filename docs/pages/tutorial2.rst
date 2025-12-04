@@ -23,7 +23,7 @@ Once the simulation is loaded, the fields can be accessed from the ``sim.state``
 
 Jaxion also provides built-in functions to help with analysis and post-processing.
 
-For example, to compute the radially averaged power spectrum of the fuzzy dark matter density field, do:
+For example, to compute the radially-averaged power spectrum of the fuzzy dark matter density field, do:
 
 .. code-block:: python
 

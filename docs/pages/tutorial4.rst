@@ -13,7 +13,7 @@ It is simply done by creating new simulation state variables and defining a call
 .. code-block:: python
 
     # add callback to record info about state
-    n_buffer = sim.nt + 1
+    n_buffer = sim.nt + 1  # (number of simulation timesteps + 1)
     sim.state["tt"] = jnp.full((n_buffer,), jnp.nan)
     sim.state["m_bh"] = jnp.full((n_buffer,), jnp.nan)
     sim.state["tt"] = sim.state["tt"].at[0].set(0.0)
@@ -27,11 +27,13 @@ It is simply done by creating new simulation state variables and defining a call
         return state
 
 The callback function takes two arguments:
+
 - `i`: the current time step index
 - `state`: the current simulation state
+
 The function should return the updated state.
 
-In this example, the black hole mass looks something like this:
+In this example, the black hole mass as a function of time looks something like this:
 
 .. figure:: ../../examples/black_hole_accretion/callback.png
   :width: 300px

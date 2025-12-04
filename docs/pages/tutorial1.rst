@@ -6,8 +6,13 @@ It describes the example: `examples/soliton_gas_star <https://github.com/JaxionP
 
 Jaxion is designed for astrophysical scale simulations of fuzzy dark matter.
 As such, it uses units of:
-[L] = kpc, [V] = km/s, [M] = Msun
+
+* length [L] = kpc
+* velocity [V] = km/s
+* mass [M] = Msun
+
 (unless otherwise specified).
+
 All other units are derived from these base units;
 e.g., units of time are in [T] = [L]/[V] = kpc / (km/s) ~= 0.978 Gyr.
 
@@ -34,10 +39,10 @@ But if you'd like to run in double-precision mode, you can set:
 
 The basic steps are:
 
-(1) set simulation parameters,
-(2) create the simulation object,
-(3) set the initial conditions,
-(4) run the simulation.
+(1) set simulation parameters
+(2) create the simulation object
+(3) set the initial conditions
+(4) run the simulation
 
 
 Setting Simulation Parameters
@@ -47,7 +52,7 @@ The simulation parameters are set in a Python dictionary.
 If nothing is specified, the default values will be used.
 The default values can be found on the :doc:`Parameters <parameters>` page.
 
-Let's look at the parameters for this example:
+Let's look at the parameters for the example problem in this tutorial:
 
 .. code-block:: python
 
@@ -94,12 +99,12 @@ and a resolution multiplier of 2 (meaning the effective resolution is 64 grid ce
 
 In the ``"time"`` section, we set the simulation to start at time 0.0 and end at time 1.0 (in code units (kpc / (km/s))).
 The time step in a Jaxion simulation is, by default, the quantum kinetically-limited time step,
-dt = (m_per_hbar / 6.0) * (dx * dx), which can be scaled by the ``safety_factor`` parameter (here set to 1.0).
+dt = (m_per_hbar / 6.0) * (dx * dx), which can be scaled by the ``safety_factor`` parameter (set to 1.0 by default).
 
 In the ``"output"`` section, we specify the output path for saving simulation checkpoints,
 the number of checkpoints to save (100), and enable saving.
 
-In the ``"quantum"`` section, we set the fuzzy dark matter particle mass to m_22 = 1.0 (in units of 10^-22 eV).
+In the ``"quantum"`` section, we set the fuzzy dark matter particle mass to ``m_22`` = 1.0 (in units of 10^-22 eV).
 
 In the ``"hydro"`` section, we set the sound speed of the isothermal gas to 40.0 km/s.
 
@@ -129,12 +134,13 @@ To see all fields that need to be set, we can print the keys of the simulation s
 
 In this example, we need to set the initial conditions for the:
 
-* quantum wavefunction ``sim.state["psi"]`` (complex),
-* gas density ``sim.state["rho"]`` and velocity ``sim.state["vx"]``, ``sim.state["vy"]``, ``sim.state["vz"]``,
-* star particle position ``sim.state["pos"]`` and velocity ``sim.state["vel"]``.
+* quantum wavefunction ``sim.state["psi"]`` (complex)
+* gas density ``sim.state["rho"]`` and velocity ``sim.state["vx"]``, ``sim.state["vy"]``, ``sim.state["vz"]``
+* star particle positions ``sim.state["pos"]`` and velocities ``sim.state["vel"]``
 
-The fields are represented as JAX arrays, of dimension (N, N, N),
+The fields for the dark matter and gas are represented as JAX arrays, of dimension (N, N, N),
 where N is the grid resolution, which can be obtained from ``sim.resolution``.
+The star particle positions and velocities are represented as JAX arrays of shape (num_particles, 3).
 
 The simulation gridpoints may be obtained as ``xx, yy, zz = sim.grid``,
 which can be helpful for setting some types of initial conditions.

@@ -37,7 +37,7 @@ Then, we need to define custom kick, drift, and total density functions, and att
     sim.custom_kick = custom_kick
     sim.custom_drift = custom_drift
 
-In this example, the custom density function is used to compute the total density from both fields.
+In this example, the custom density function is used to compute the total density from both dark matter fields.
 The custom kick and drift functions are used to update the fields during the simulation.
 
 The simulation can then be run as usual with ``sim.run()``.

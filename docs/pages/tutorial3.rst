@@ -7,8 +7,9 @@ Sponge boundary conditions can be used to absorb outgoing waves at the domain bo
 
 An example of sponge boundary conditions is provided in `examples/tidal_stripping <https://github.com/JaxionProject/jaxion/tree/main/examples/tidal_stripping>`_
 
-It is created by adding an external potential to the simulation.
-We need to set ``params["physics"]["external_potential"] = True``.
+It is created by adding an imaginary external potential to the simulation.
+We need to set ``params["physics"]["external_potential"] = True``,
+and define ``sim.state["V_ext"]`` on the grid:
 
 .. code-block:: python
 
