@@ -24,7 +24,7 @@ runtime = np.array(
 )
 
 runtime_rusty_h100 = np.array([2.2, 13.2, np.nan, np.nan])  # , np.nan])
-runtime_rusty_h200 = np.array([2.3, 7.0, np.nan, np.nan])  # , np.nan])
+runtime_rusty_h200 = np.array([2.3, 7.0, 10.3, np.nan])  # , np.nan])
 
 num_nodes = np.array([1, 1, 8, 64])  # 512])
 num_gpus = np.array([1, 8, 64, 512])  # 4096])  # really # GCDs (=2 * # gpus)
