@@ -53,13 +53,7 @@ Install with:
 pip install jaxion
 ```
 
-or, for GPU support, use:
-
-```console
-pip install jaxion[cuda12]
-```
-
-See the docs for more info on how to [build from source](https://jaxion.readthedocs.io/en/latest/pages/installation.html).
+or see the docs for how to [build from source](https://jaxion.readthedocs.io/en/latest/pages/installation.html).
 
 
 ## Examples
@@ -97,6 +91,11 @@ Check out the [`examples/`](https://github.com/JaxionProject/jaxion/tree/main/ex
     <img src="examples/tidal_stripping/movie.gif" alt="tidal_stripping" width="128"/>
   </a>
 </p>
+
+
+## Try it out!
+
+Try out a quick example in Google Colab here [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JaxionProject/jaxion/blob/main/notebooks/soliton_binary_merger/soliton_binary_merger.ipynb)
 
 
 ## High-Performance

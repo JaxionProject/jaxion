@@ -59,7 +59,6 @@ def set_up_simulation(resolution_multiplier, sharding):
         x_soliton = (0.5 + 0.3 * (i - 0.5)) * box_size
         y_soliton = 0.5 * box_size
         z_soliton = 0.5 * box_size
-
         r = jnp.sqrt(
             (xx - x_soliton) ** 2 + (yy - y_soliton) ** 2 + (zz - z_soliton) ** 2
         )
