@@ -7,3 +7,8 @@ extend-ignore-identifiers-re = [
     "Hsi",
     "Frostig",
 ]
+
+[files]
+extend-exclude = [
+    "*ipynb",
+]

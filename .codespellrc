@@ -1,3 +1,5 @@
 [codespell]
 skip = ./docs/_build/*
 ignore-words-list = Tye,Smoot,Leary
+exclude-file = notebooks/soliton_binary_merger/soliton_binary_merger.ipynb
+

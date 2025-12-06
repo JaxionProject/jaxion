@@ -95,7 +95,7 @@ Check out the [`examples/`](https://github.com/JaxionProject/jaxion/tree/main/ex
 
 ## Try it out!
 
-Try out a quick example in Google Colab here [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JaxionProject/jaxion/blob/main/notebooks/soliton_binary_merger/soliton_binary_merger.ipynb)
+Launch a live demo in Google Colab: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/JaxionProject/jaxion/blob/main/notebooks/soliton_binary_merger/soliton_binary_merger.ipynb)
 
 
 ## High-Performance
