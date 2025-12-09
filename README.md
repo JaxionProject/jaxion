@@ -128,10 +128,10 @@ If you use this software, please cite it as below.
 @software{Mocz_Jaxion_2025,
    author = {Mocz, Philip},
       doi = {10.5281/zenodo.17438467},
-    month = oct,
+    month = dec,
     title = {{Jaxion}},
       url = {https://github.com/JaxionProject/jaxion},
-  version = {0.0.4},
+  version = {0.0.9},
      year = {2025}
 }
 ```
