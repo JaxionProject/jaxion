@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Timings on Frontier & Rusty (H100 and H200)
+# Timings on Frontier (MI250X) & Rusty (H100 & H200)
 
 resolutions = np.array(
     [

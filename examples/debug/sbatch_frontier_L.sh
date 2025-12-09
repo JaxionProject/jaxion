@@ -23,4 +23,4 @@ export PYTHONUNBUFFERED=TRUE
 
 conda activate /lustre/orion/scratch/pmocz/ast231/venvs/jaxion-venv
 
-srun -N$SLURM_NNODES --ntasks-per-node=8 --cpus-per-task=7 --gpu-bind=closest --cpu-bind=cores python debug.py --res=64 --distributed
+srun -N$SLURM_NNODES --ntasks-per-node=8 --cpus-per-task=7 --gpu-bind=closest python debug.py --res=64 --distributed
