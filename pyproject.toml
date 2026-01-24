@@ -10,7 +10,7 @@ license = "Apache-2.0"
 dynamic = ["version", "dependencies"]
 
 [tool.setuptools.packages.find]
-include = ["jaxio*"]
+include = ["jaxion*"]
 exclude = ["paper"]
 
 [tool.setuptools.package-data]
