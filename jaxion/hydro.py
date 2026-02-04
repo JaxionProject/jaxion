@@ -197,36 +197,42 @@ def slope_limiter(f, dx, f_dx, f_dy, f_dz):
     denom = adjust_denominator(orig_f_dx)
     num = (f - jnp.roll(f, 1, axis=0)) / dx
     ratio = num / denom
-    limiter = jnp.maximum(0.0, jnp.minimum(1.0, ratio))
-    f_dx = limiter * f_dx
+    limiter_left = jnp.maximum(0.0, jnp.minimum(1.0, ratio))
 
     num = -(f - jnp.roll(f, -1, axis=0)) / dx
     ratio = num / denom  # Use the same adjusted denominator
-    limiter = jnp.maximum(0.0, jnp.minimum(1.0, ratio))
-    f_dx = limiter * f_dx
+    limiter_right = jnp.maximum(0.0, jnp.minimum(1.0, ratio))
+
+    # Take minimum of both limiters and apply to original slope
+    limiter = jnp.minimum(limiter_left, limiter_right)
+    f_dx = limiter * orig_f_dx
 
     # For y-direction
     denom = adjust_denominator(orig_f_dy)
     num = (f - jnp.roll(f, 1, axis=1)) / dx
     ratio = num / denom
-    limiter = jnp.maximum(0.0, jnp.minimum(1.0, ratio))
-    f_dy = limiter * f_dy
+    limiter_left = jnp.maximum(0.0, jnp.minimum(1.0, ratio))
 
     num = -(f - jnp.roll(f, -1, axis=1)) / dx
     ratio = num / denom
-    limiter = jnp.maximum(0.0, jnp.minimum(1.0, ratio))
-    f_dy = limiter * f_dy
+    limiter_right = jnp.maximum(0.0, jnp.minimum(1.0, ratio))
+
+    # Take minimum of both limiters and apply to original slope
+    limiter = jnp.minimum(limiter_left, limiter_right)
+    f_dy = limiter * orig_f_dy
 
     # For z-direction
     denom = adjust_denominator(orig_f_dz)
     num = (f - jnp.roll(f, 1, axis=2)) / dx
     ratio = num / denom
-    limiter = jnp.maximum(0.0, jnp.minimum(1.0, ratio))
-    f_dz = limiter * f_dz
+    limiter_left = jnp.maximum(0.0, jnp.minimum(1.0, ratio))
 
     num = -(f - jnp.roll(f, -1, axis=2)) / dx
     ratio = num / denom
-    limiter = jnp.maximum(0.0, jnp.minimum(1.0, ratio))
-    f_dz = limiter * f_dz
+    limiter_right = jnp.maximum(0.0, jnp.minimum(1.0, ratio))
+
+    # Take minimum of both limiters and apply to original slope
+    limiter = jnp.minimum(limiter_left, limiter_right)
+    f_dz = limiter * orig_f_dz
 
     return f_dx, f_dy, f_dz
