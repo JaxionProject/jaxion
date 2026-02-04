@@ -114,6 +114,12 @@ Jaxion is scalable on multiple GPUs!
 Jaxion welcomes community contributions of all kinds. Open an issue or fork the code and submit a pull request. Please check out the [Contributing Guidelines](CONTRIBUTING.md)
 
 
+## TODO/Wishlist
+
+* cosmological initial condition generator
+* add cosmological factors to gas evolution
+
+
 ## Links
 
 * [Code repository](https://github.com/JaxionProject/jaxion) on GitHub (this page).

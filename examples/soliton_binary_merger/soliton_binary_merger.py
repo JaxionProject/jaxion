@@ -4,9 +4,6 @@ from jax.experimental import mesh_utils
 from jax.sharding import Mesh, PartitionSpec, NamedSharding
 import argparse
 import os
-import sys
-
-sys.path.append("../../")  # XXX
 import jaxion
 
 # switch on for double precision

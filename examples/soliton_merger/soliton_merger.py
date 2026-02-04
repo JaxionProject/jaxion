@@ -1,7 +1,7 @@
 import jax.numpy as jnp
 import numpy as np
-import jaxion
 import argparse
+import jaxion
 
 # switch on for double precision
 # jax.config.update("jax_enable_x64", True)

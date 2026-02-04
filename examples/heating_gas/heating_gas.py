@@ -1,11 +1,8 @@
 import jax.numpy as jnp
 import numpy as np
 import jaxdecomp as jd
-import sys
-
-sys.path.append("../../")  # XXX
-import jaxion
 import argparse
+import jaxion
 
 # switch on for double precision
 # jax.config.update("jax_enable_x64", True)
@@ -36,6 +33,9 @@ def set_up_simulation(resolution_multiplier):
         "output": {
             "path": f"./checkpoints{resolution_multiplier}/",
             "plot_dynamic_range": 2.0,
+        },
+        "quantum": {
+            "m_22": 1.0,  # axion mass in units of 10^-22 eV
         },
         "hydro": {
             "sound_speed": 20.0,  # km/s
