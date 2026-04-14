@@ -191,9 +191,19 @@ class Simulation:
         m_per_hbar = self.m_per_hbar
         safety = self.params["time"]["safety_factor"]
         dt_kin = safety * (m_per_hbar / 6.0) * (dx * dx)
-        t_start = self.params["time"]["start"]
-        t_end = self.params["time"]["end"]
-        t_span = t_end - t_start
+        if self.params["physics"]["cosmology"]:
+            z_start = self.params["time"]["start"]
+            z_end = self.params["time"]["end"]
+            omega_matter = self.params["cosmology"]["omega_matter"]
+            omega_lambda = self.params["cosmology"]["omega_lambda"]
+            little_h = self.params["cosmology"]["little_h"]
+            t_span = get_supercomoving_time_interval(
+                z_start, z_end, omega_matter, omega_lambda, little_h
+            )
+        else:
+            t_start = self.params["time"]["start"]
+            t_end = self.params["time"]["end"]
+            t_span = t_end - t_start
         num_checkpoints = self.params["output"]["num_checkpoints"]
         nt = int(round(round(t_span / dt_kin) / num_checkpoints) * num_checkpoints)
 
