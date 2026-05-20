@@ -34,14 +34,13 @@ def get_gradient(psi, kx, ky, kz):
     return grad_psi_x, grad_psi_y, grad_psi_z
 
 
-def quantum_velocity(psi, box_size, m_per_hbar):
+def quantum_velocity(psi, dx, m_per_hbar):
     """
     Compute the velocity from the wave-function
     v = nabla S / m
     psi = sqrt(rho) exp(i S / hbar)
+    dx: uniform cell spacing (kpc); works correctly for non-cubic domains.
     """
-    N = psi.shape[0]
-    dx = box_size / N
 
     S_per_hbar = jnp.angle(psi)
 

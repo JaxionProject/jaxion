@@ -58,6 +58,8 @@ class Simulation:
         # additional checks
         if self.resolution % 2 != 0:
             raise ValueError("Resolution must be divisible by 2.")
+        if self.nx % 2 != 0:
+            raise ValueError("nx (aspect_ratio * resolution) must be divisible by 2.")
 
         if self.params["time"]["adaptive"]:
             raise NotImplementedError("Adaptive time stepping is not yet implemented.")
@@ -113,22 +115,14 @@ class Simulation:
         if self.params["physics"]["cosmology"]:
             self.state["redshift"] = 0.0
         if self.params["physics"]["quantum"]:
-            self.state["psi"] = self.xzeros_jit(self.resolution) * 1j
+            self.state["psi"] = self.xzeros_jit(self.shape) * 1j
         if self.params["physics"]["external_potential"]:
-            self.state["V_ext"] = self.xzeros_jit(self.resolution)
+            self.state["V_ext"] = self.xzeros_jit(self.shape)
         if self.params["physics"]["hydro"]:
-            self.state["rho"] = jnp.zeros(
-                (self.resolution, self.resolution, self.resolution),
-            )
-            self.state["vx"] = jnp.zeros(
-                (self.resolution, self.resolution, self.resolution),
-            )
-            self.state["vy"] = jnp.zeros(
-                (self.resolution, self.resolution, self.resolution),
-            )
-            self.state["vz"] = jnp.zeros(
-                (self.resolution, self.resolution, self.resolution),
-            )
+            self.state["rho"] = jnp.zeros(self.shape)
+            self.state["vx"] = jnp.zeros(self.shape)
+            self.state["vy"] = jnp.zeros(self.shape)
+            self.state["vz"] = jnp.zeros(self.shape)
         if self.params["physics"]["particles"]:
             self.state["pos"] = jnp.zeros((self.num_particles, 3))
             self.state["vel"] = jnp.zeros((self.num_particles, 3))
@@ -154,12 +148,37 @@ class Simulation:
     @property
     def resolution(self):
         """
-        Return the (linear) resolution of the simulation
+        Return the (linear) resolution of the simulation (ny == nz)
         """
         return (
             self.params["domain"]["resolution_base"]
             * self.params["domain"]["resolution_multiplier"]
         )
+
+    @property
+    def aspect_ratio(self):
+        """
+        Return the aspect ratio of the simulation domain in the x direction.
+        nx = aspect_ratio * resolution; ny = nz = resolution.
+        Cell spacing dx = dy = dz is preserved.
+        """
+        return self.params["domain"]["aspect_ratio"]
+
+    @property
+    def nx(self):
+        """
+        Return the number of cells in the x direction (elongated axis).
+        """
+        return self.resolution * self.aspect_ratio
+
+    @property
+    def shape(self):
+        """
+        Return the grid shape (nx, ny, nz) as a tuple.
+        For a cubic domain this equals (resolution, resolution, resolution).
+        """
+        n = self.resolution
+        return (self.nx, n, n)
 
     @property
     def num_particles(self):
@@ -178,7 +197,8 @@ class Simulation:
     @property
     def dx(self):
         """
-        Return the cell size size of the simulation (kpc)
+        Return the (uniform) cell size of the simulation (kpc).
+        dx = dy = dz = box_size / resolution; Lx = aspect_ratio * box_size.
         """
         return self.box_size / self.resolution
 
@@ -262,21 +282,34 @@ class Simulation:
     @property
     def grid(self):
         """
-        Return the simulation grid
+        Return the simulation grid (xx, yy, zz) in kpc.
+        Shape is (nx, ny, nz); Lx = aspect_ratio * box_size, Ly = Lz = box_size.
         """
-        hx = 0.5 * self.dx
-        x_lin = jnp.linspace(hx, self.box_size - hx, self.resolution)
-        xx, yy, zz = self.xmeshgrid_jit(x_lin)
+        dx = self.dx
+        nx, ny, nz = self.shape
+        hx = 0.5 * dx
+        x_lin = jnp.linspace(hx, nx * dx - hx, nx)
+        y_lin = jnp.linspace(hx, ny * dx - hx, ny)
+        z_lin = y_lin
+        xx, yy, zz = self.xmeshgrid_jit(x_lin, y_lin, z_lin)
         return xx, yy, zz
 
     @property
     def kgrid(self):
         """
-        Return the simulation spectral grid
+        Return the simulation spectral grid (kx, ky, kz) in kpc^-1.
+        For a non-cubic domain the fundamental mode differs along x vs y/z.
+        After jaxdecomp's pfft3d the array axis order is (Y, Z, X), so the
+        returned k-arrays are already in that transposed layout.
         """
-        nx = self.resolution
-        k_lin = (2.0 * jnp.pi / self.box_size) * jnp.arange(-nx / 2, nx / 2)
-        kx, ky, kz = self.xmeshgrid_transpose_jit(k_lin)
+        nx, ny, nz = self.shape
+        dx = self.dx
+        Lx = nx * dx          # elongated box length
+        Ly = ny * dx          # == box_size
+        k_lin_x = (2.0 * jnp.pi / Lx) * jnp.arange(-nx / 2, nx / 2)
+        k_lin_y = (2.0 * jnp.pi / Ly) * jnp.arange(-ny / 2, ny / 2)
+        k_lin_z = k_lin_y     # nz == ny, Lz == Ly
+        kx, ky, kz = self.xmeshgrid_transpose_jit(k_lin_x, k_lin_y, k_lin_z)
         kx = jnp.fft.ifftshift(kx)
         ky = jnp.fft.ifftshift(ky)
         kz = jnp.fft.ifftshift(kz)
@@ -285,9 +318,10 @@ class Simulation:
     @property
     def quantum_velocity(self):
         """
-        Return the dark matter velocity field from the wavefunction
+        Return the dark matter velocity field from the wavefunction.
+        Passes dx directly so the result is correct for non-cubic domains.
         """
-        return quantum_velocity(self.state["psi"], self.box_size, self.m_per_hbar)
+        return quantum_velocity(self.state["psi"], self.dx, self.m_per_hbar)
 
     @property
     def rho_bar(self):
@@ -303,13 +337,14 @@ class Simulation:
         if self.params["physics"]["hydro"]:
             rho_bar += jnp.mean(state["rho"])
         if self.params["physics"]["particles"]:
-            box_size = self.box_size
+            # volume = Lx * Ly * Lz = aspect_ratio * box_size^3
+            volume = self.aspect_ratio * self.box_size**3
             if self.params["particles"]["accrete_gas"]:
-                rho_bar += jnp.sum(state["mass"]) / box_size**3
+                rho_bar += jnp.sum(state["mass"]) / volume
             else:
                 m_particle = self.params["particles"]["particle_mass"]
                 n_particles = self.num_particles
-                rho_bar += m_particle * n_particles / box_size**3
+                rho_bar += m_particle * n_particles / volume
         if self.custom_density is not None:
             rho_bar += jnp.mean(self.custom_density(state))
         return rho_bar
@@ -369,7 +404,8 @@ class Simulation:
         # Simulation parameters
         dx = self.dx
         box_size = self.box_size
-        num_cells = self.resolution**3
+        _nx, _ny, _nz = self.shape
+        num_cells = _nx * _ny * _nz
         m_per_hbar = self.m_per_hbar
 
         t_start = self.params["time"]["start"]
@@ -520,7 +556,7 @@ class Simulation:
 
         # save initial state
         if jax.process_index() == 0:
-            print(f"Starting simulation (res={self.resolution}, nt={nt}) ...")
+            print(f"Starting simulation (shape={self.shape}, nt={nt}) ...")
         if save:
             with open(os.path.join(checkpoint_dir, "params.json"), "w") as f:
                 json.dump(self.params, f, indent=2)
