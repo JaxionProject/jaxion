@@ -8,7 +8,8 @@ import pytest
 def test_quantum_velocity_and_radial_power_spectrum():
     sim = jaxion.Simulation({})
     box_size = sim.box_size
-    m_per_hbar = sim.m_per_hbar
+    m_per_hbar = sim.dx
+    dx = sim.dx
     xx, yy, _ = sim.grid
     kx, ky, kz = sim.kgrid
 
@@ -17,7 +18,7 @@ def test_quantum_velocity_and_radial_power_spectrum():
         + jnp.cos(2.0 * jnp.pi * yy / box_size) * 1j
     )
 
-    vx, _, _ = quantum_velocity(psi, box_size, m_per_hbar)
+    vx, _, _ = quantum_velocity(psi, dx, m_per_hbar)
 
     Pf, _, _ = radial_power_spectrum(vx, kx, ky, kz, box_size)
 
