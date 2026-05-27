@@ -303,11 +303,11 @@ class Simulation:
         """
         nx, ny, nz = self.shape
         dx = self.dx
-        Lx = nx * dx          # elongated box length
-        Ly = ny * dx          # == box_size
+        Lx = nx * dx  # elongated box length
+        Ly = ny * dx  # == box_size
         k_lin_x = (2.0 * jnp.pi / Lx) * jnp.arange(-nx / 2, nx / 2)
         k_lin_y = (2.0 * jnp.pi / Ly) * jnp.arange(-ny / 2, ny / 2)
-        k_lin_z = k_lin_y     # nz == ny, Lz == Ly
+        k_lin_z = k_lin_y  # nz == ny, Lz == Ly
         kx, ky, kz = self.xmeshgrid_transpose_jit(k_lin_x, k_lin_y, k_lin_z)
         kx = jnp.fft.ifftshift(kx)
         ky = jnp.fft.ifftshift(ky)
