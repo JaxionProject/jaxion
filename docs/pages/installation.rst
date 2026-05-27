@@ -53,3 +53,13 @@ Verify the installation by running the test suite:
 .. code-block:: bash
 
     pytest
+
+
+Build Prerequisites
+-------------------
+
+Jaxion depends on ``jaxdecomp``. When a ``jaxdecomp`` wheel is not available for your
+platform, pip builds it from source during installation. This source build requires a
+C++ toolchain, ``cmake``, and ``ninja`` to be available on the build path.
+CUDA is not required for the CPU install; if a CUDA compiler is not found,
+``jaxdecomp`` falls back to its pure-JAX backend.
