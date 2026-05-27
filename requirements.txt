@@ -1,6 +1,5 @@
 jax==0.6.0
 jaxdecomp==0.2.9
-tensorflow
 orbax-checkpoint==0.11.25
 optax==0.2.6
 numpy

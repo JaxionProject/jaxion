@@ -2,6 +2,19 @@ Installation
 ============
 
 
+Supported Platforms and Build Prerequisites
+-------------------------------------------
+
+Jaxion is tested primarily on Linux with Python 3.11, 3.12, and 3.13. Newer Python
+releases may not be supported until the dependency stack publishes compatible wheels.
+
+Jaxion depends on ``jaxdecomp``. When a ``jaxdecomp`` wheel is not available for your
+platform, pip builds it from source during installation. This source build requires a
+C++ toolchain, ``cmake``, and ``ninja`` to be available on the build path. On macOS arm64, ``jaxdecomp`` may currently be built from source because no wheel is
+available. CUDA is not required for the CPU install; if a CUDA compiler is not found,
+``jaxdecomp`` falls back to its pure-JAX backend.
+
+
 From PyPI
 ---------
 
@@ -53,13 +66,3 @@ Verify the installation by running the test suite:
 .. code-block:: bash
 
     pytest
-
-
-Build Prerequisites
--------------------
-
-Jaxion depends on ``jaxdecomp``. When a ``jaxdecomp`` wheel is not available for your
-platform, pip builds it from source during installation. This source build requires a
-C++ toolchain, ``cmake``, and ``ninja`` to be available on the build path.
-CUDA is not required for the CPU install; if a CUDA compiler is not found,
-``jaxdecomp`` falls back to its pure-JAX backend.
