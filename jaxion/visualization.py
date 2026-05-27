@@ -8,10 +8,14 @@ def plot_sim(state, checkpoint_dir, i, params):
     """Plot the simulation state."""
 
     dynamic_range = params["output"]["plot_dynamic_range"]
+    box_size = params["domain"]["box_size"]
+    aspect_ratio = params["domain"].get("aspect_ratio", 1)
+    lx = aspect_ratio * box_size
+    ly = box_size
+    extent = [0, lx, 0, ly]
 
     # process distributed data
     if params["physics"]["quantum"]:
-        nx = state["psi"].shape[0]
         rho_bar_dm = jnp.mean(jnp.abs(state["psi"]) ** 2)
         rho_proj_dm = jnp.log10(
             jax.experimental.multihost_utils.process_allgather(
@@ -19,7 +23,6 @@ def plot_sim(state, checkpoint_dir, i, params):
             )
         ).T
     if params["physics"]["hydro"]:
-        nx = state["rho"].shape[0]
         rho_bar_gas = jnp.mean(state["rho"])
         rho_proj_gas = jnp.log10(
             jax.experimental.multihost_utils.process_allgather(
@@ -33,7 +36,6 @@ def plot_sim(state, checkpoint_dir, i, params):
             plt.clf()
 
             # DM projection
-            nx = state["psi"].shape[0]
             vmin = jnp.log10(rho_bar_dm / dynamic_range)
             vmax = jnp.log10(rho_bar_dm * dynamic_range)
 
@@ -44,15 +46,17 @@ def plot_sim(state, checkpoint_dir, i, params):
                 origin="lower",
                 vmin=vmin,
                 vmax=vmax,
-                extent=[0, nx, 0, nx],
+                extent=extent,
             )
             if params["physics"]["particles"]:
                 # draw particles
-                box_size = params["domain"]["box_size"]
-                sx = (state["pos"][:, 0] / box_size) * nx
-                sy = (state["pos"][:, 1] / box_size) * nx
                 plt.plot(
-                    sx, sy, color="cyan", marker=".", linestyle="None", markersize=5
+                    state["pos"][:, 0],
+                    state["pos"][:, 1],
+                    color="cyan",
+                    marker=".",
+                    linestyle="None",
+                    markersize=5,
                 )
             ax.set_aspect("equal")
             ax.get_xaxis().set_visible(False)
@@ -69,7 +73,6 @@ def plot_sim(state, checkpoint_dir, i, params):
             plt.clf()
 
             # gas projection
-            nx = state["rho"].shape[0]
             vmin = jnp.log10(rho_bar_gas / dynamic_range)
             vmax = jnp.log10(rho_bar_gas * dynamic_range)
 
@@ -80,15 +83,17 @@ def plot_sim(state, checkpoint_dir, i, params):
                 origin="lower",
                 vmin=vmin,
                 vmax=vmax,
-                extent=[0, nx, 0, nx],
+                extent=extent,
             )
             if params["physics"]["particles"]:
                 # draw particles
-                box_size = params["domain"]["box_size"]
-                sx = (state["pos"][:, 0] / box_size) * nx
-                sy = (state["pos"][:, 1] / box_size) * nx
                 plt.plot(
-                    sx, sy, color="red", marker=".", linestyle="None", markersize=5
+                    state["pos"][:, 0],
+                    state["pos"][:, 1],
+                    color="red",
+                    marker=".",
+                    linestyle="None",
+                    markersize=5,
                 )
             ax.set_aspect("equal")
             ax.get_xaxis().set_visible(False)

@@ -58,6 +58,11 @@ class Simulation:
         # additional checks
         if self.resolution % 2 != 0:
             raise ValueError("Resolution must be divisible by 2.")
+        if self.aspect_ratio <= 0:
+            raise ValueError("aspect_ratio must be positive.")
+        nx = self.resolution * self.aspect_ratio
+        if abs(nx - round(nx)) > 1.0e-9:
+            raise ValueError("aspect_ratio * resolution must be an integer.")
         if self.nx % 2 != 0:
             raise ValueError("nx (aspect_ratio * resolution) must be divisible by 2.")
 
@@ -169,7 +174,7 @@ class Simulation:
         """
         Return the number of cells in the x direction (elongated axis).
         """
-        return self.resolution * self.aspect_ratio
+        return int(round(self.resolution * self.aspect_ratio))
 
     @property
     def shape(self):
@@ -192,6 +197,15 @@ class Simulation:
         Return the box size of the simulation (kpc)
         """
         return self.params["domain"]["box_size"]
+
+    @property
+    def domain_size(self):
+        """
+        Return the physical domain size in each dimension (kpc).
+        """
+        return jnp.array(
+            [self.aspect_ratio * self.box_size, self.box_size, self.box_size]
+        )
 
     @property
     def dx(self):
@@ -361,12 +375,12 @@ class Simulation:
             if multiple_masses:
                 m_particles = state["mass"]
                 rho_tot += bin_particles(
-                    state["pos"], m_particles, self.dx, self.resolution, multiple_masses
+                    state["pos"], m_particles, self.dx, self.shape, multiple_masses
                 )
             else:
                 m_particles = self.params["particles"]["particle_mass"]
                 rho_tot += bin_particles(
-                    state["pos"], m_particles, self.dx, self.resolution, multiple_masses
+                    state["pos"], m_particles, self.dx, self.shape, multiple_masses
                 )
         if self.custom_density is not None:
             rho_tot += self.custom_density(state)
@@ -402,7 +416,7 @@ class Simulation:
 
         # Simulation parameters
         dx = self.dx
-        box_size = self.box_size
+        domain_size = self.domain_size
         _nx, _ny, _nz = self.shape
         num_cells = _nx * _ny * _nz
         m_per_hbar = self.m_per_hbar
@@ -522,7 +536,9 @@ class Simulation:
                     state["rho"], state["vx"], state["vy"], state["vz"], dt, dx, c_sound
                 )
             if use_particles:
-                state["pos"] = particles_drift(state["pos"], state["vel"], dt, box_size)
+                state["pos"] = particles_drift(
+                    state["pos"], state["vel"], dt, domain_size
+                )
             if use_custom:
                 state = custom_drift(state, k_sq, dt)
             if use_hydro and accrete_gas:

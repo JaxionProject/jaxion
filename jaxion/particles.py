@@ -5,25 +5,31 @@ import jaxdecomp as jd
 # Pure functions for particle-mesh calculations (stars, BHs, ...)
 
 
-def get_cic_indices_and_weights(pos, dx, resolution):
+def _as_shape(shape):
+    if isinstance(shape, int):
+        return (shape, shape, shape)
+    return tuple(shape)
+
+
+def get_cic_indices_and_weights(pos, dx, shape):
     """Compute the cloud-in-cell indices and weights for the particle positions."""
-    nx = resolution
+    shape = _as_shape(shape)
     dxs = jnp.array([dx, dx, dx])
     i = jnp.floor((pos - 0.5 * dxs) / dxs)
     ip1 = i + 1.0
     weight_i = ((ip1 + 0.5) * dxs - pos) / dxs
     weight_ip1 = (pos - (i + 0.5) * dxs) / dxs
-    i = jnp.mod(i, jnp.array([nx, nx, nx])).astype(int)
-    ip1 = jnp.mod(ip1, jnp.array([nx, nx, nx])).astype(int)
+    i = jnp.mod(i, jnp.array(shape)).astype(int)
+    ip1 = jnp.mod(ip1, jnp.array(shape)).astype(int)
     return i, ip1, weight_i, weight_ip1
 
 
-def bin_particles(pos, m_particles, dx, resolution, multiple_masses):
+def bin_particles(pos, m_particles, dx, shape, multiple_masses):
     """Bin the particles into the grid using cloud-in-cell weights."""
-    nx = resolution
+    shape = _as_shape(shape)
     n_particle = pos.shape[0]
-    rho = jnp.zeros((nx, nx, nx))
-    i, ip1, w_i, w_ip1 = get_cic_indices_and_weights(pos, dx, resolution)
+    rho = jnp.zeros(shape)
+    i, ip1, w_i, w_ip1 = get_cic_indices_and_weights(pos, dx, shape)
 
     def deposit_particle(s, rho):
         """Deposit the particle mass into the grid."""
@@ -65,8 +71,7 @@ def bin_particles(pos, m_particles, dx, resolution, multiple_masses):
 def get_acceleration(pos, V, kx, ky, kz, dx):
     """Compute the acceleration of the particles."""
     n_particle = pos.shape[0]
-    resolution = V.shape[0]
-    i, ip1, w_i, w_ip1 = get_cic_indices_and_weights(pos, dx, resolution)
+    i, ip1, w_i, w_ip1 = get_cic_indices_and_weights(pos, dx, V.shape)
 
     # find accelerations on the grid
     V_hat = jd.fft.pfft3d(V)
@@ -111,9 +116,12 @@ def particles_accelerate(vel, pos, V, kx, ky, kz, dx, dt):
     return vel
 
 
-def particles_drift(pos, vel, dt, box_size):
+def particles_drift(pos, vel, dt, domain_size):
     pos += vel * dt
-    pos = jnp.mod(pos, jnp.array([box_size, box_size, box_size]))
+    domain_size = jnp.asarray(domain_size)
+    if domain_size.ndim == 0:
+        domain_size = jnp.repeat(domain_size, 3)
+    pos = jnp.mod(pos, domain_size)
 
     return pos
 
@@ -121,8 +129,7 @@ def particles_drift(pos, vel, dt, box_size):
 def particles_accrete_gas(mass, rho, pos, G, sound_speed, dx, dt):
     """Accrete gas onto particles (Bondi)."""
     n_particle = pos.shape[0]
-    resolution = rho.shape[0]
-    i, ip1, w_i, w_ip1 = get_cic_indices_and_weights(pos, dx, resolution)
+    i, ip1, w_i, w_ip1 = get_cic_indices_and_weights(pos, dx, rho.shape)
     d_mass = jnp.zeros_like(mass)
     d_rho = jnp.zeros_like(rho)
     lam = jnp.exp(1.5) / 4.0  # ≈ 1.12

@@ -24,6 +24,14 @@ def radial_power_spectrum(data_cube, kx, ky, kz, box_size):
         total_power: float
             total power
     """
+    if data_cube.ndim != 3:
+        raise ValueError("radial_power_spectrum expects a 3D data cube.")
+    if len(set(data_cube.shape)) != 1:
+        raise ValueError(
+            "radial_power_spectrum currently requires cubic data; "
+            f"got shape {data_cube.shape}."
+        )
+
     dim = data_cube.ndim
     nx = data_cube.shape[0]
     dx = box_size / nx
