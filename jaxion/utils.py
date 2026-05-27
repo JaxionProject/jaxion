@@ -111,8 +111,8 @@ def run_example_main(example_path, argv=None):
 
 
 # Make a distributed meshgrid function
-def xmeshgrid(x_lin):
-    xx, yy, zz = jnp.meshgrid(x_lin, x_lin, x_lin, indexing="ij")
+def xmeshgrid(x_lin, y_lin, z_lin):
+    xx, yy, zz = jnp.meshgrid(x_lin, y_lin, z_lin, indexing="ij")
     return xx, yy, zz
 
 
@@ -120,17 +120,17 @@ def xmeshgrid(x_lin):
 # so the fourier space variables (e.g. kx, ky, kz) all need to be transposed
 
 
-def xmeshgrid_transpose(x_lin):
-    xx, yy, zz = jnp.meshgrid(x_lin, x_lin, x_lin, indexing="ij")
+def xmeshgrid_transpose(x_lin, y_lin, z_lin):
+    xx, yy, zz = jnp.meshgrid(x_lin, y_lin, z_lin, indexing="ij")
     xx = jnp.transpose(xx, (1, 2, 0))
     yy = jnp.transpose(yy, (1, 2, 0))
     zz = jnp.transpose(zz, (1, 2, 0))
     return xx, yy, zz
 
 
-def xzeros(nx):
-    return jnp.zeros((nx, nx, nx))
+def xzeros(shape):
+    return jnp.zeros(shape)
 
 
-def xones(nx):
-    return jnp.ones((nx, nx, nx))
+def xones(shape):
+    return jnp.ones(shape)
