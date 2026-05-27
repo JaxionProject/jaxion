@@ -39,7 +39,7 @@ def quantum_velocity(psi, dx, m_per_hbar):
     Compute the velocity from the wave-function
     v = nabla S / m
     psi = sqrt(rho) exp(i S / hbar)
-    dx: uniform cell spacing (kpc); works correctly for non-cubic domains.
+    dx: cell spacing
     """
 
     S_per_hbar = jnp.angle(psi)

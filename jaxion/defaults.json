@@ -40,7 +40,7 @@
     },
     "aspect_ratio": {
       "default": 1,
-      "description": "elongation of the domain in the x direction; nx = aspect_ratio * resolution_base * resolution_multiplier, ny = nz = resolution_base * resolution_multiplier. Cell spacing dx = dy = dz is preserved."
+      "description": "elongation of the domain in the x direction."
     }
   },
   "time": {

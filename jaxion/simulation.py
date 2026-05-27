@@ -174,8 +174,7 @@ class Simulation:
     @property
     def shape(self):
         """
-        Return the grid shape (nx, ny, nz) as a tuple.
-        For a cubic domain this equals (resolution, resolution, resolution).
+        Return the grid shape (nx, ny, nz).
         """
         n = self.resolution
         return (self.nx, n, n)
