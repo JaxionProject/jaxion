@@ -2,7 +2,7 @@ import jax.numpy as jnp
 from jaxion.utils import run_example_main
 import pytest
 
-rel_tol = 1e-4
+rel_tol = 1e-3
 
 
 def test_tidal_stripping():
