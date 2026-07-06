@@ -464,7 +464,7 @@ class Simulation:
         do_self_interaction = a_s != 0.0
         if do_self_interaction:
             si_coeff = (4.0 * jnp.pi) * (a_s / m) / m_per_hbar**2
-            si_coeff2 = (32.0 * jnp.pi**2 / 3.0) * (a_s / (m * c)) ** 2 / m_per_hbar**5
+            si_coeff2 = (32.0 * jnp.pi**2 / 3.0) * (a_s / (m * c)) ** 2 / m_per_hbar**4
 
         # hydro
         c_sound = self.params["hydro"]["sound_speed"]
