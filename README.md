@@ -134,10 +134,10 @@ If you use this software, please cite it as below.
 @software{Mocz_Jaxion_2025,
    author = {Mocz, Philip},
       doi = {10.5281/zenodo.17438467},
-    month = dec,
+    month = apr,
     title = {{Jaxion}},
       url = {https://github.com/JaxionProject/jaxion},
-  version = {0.0.9},
-     year = {2025}
+  version = {0.0.11},
+     year = {2026}
 }
 ```
