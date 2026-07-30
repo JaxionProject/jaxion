@@ -70,22 +70,22 @@ class Simulation:
         if self.params["time"]["adaptive"]:
             raise NotImplementedError("Adaptive time stepping is not yet implemented.")
 
-        if self.params["physics"]["cosmology"]:
-            if (
-                self.params["physics"]["hydro"]
-                or self.params["physics"]["particles"]
-                or self.params["physics"]["external_potential"]
-                or self.params["quantum"]["f_15"] != 0.0
-            ):
-                raise NotImplementedError(
-                    "Cosmological hydro/particles/external_potential/SI is not yet implemented."
-                )
+        if self.params["physics"]["cosmology"] and (
+            self.params["physics"]["hydro"]
+            or self.params["physics"]["particles"]
+            or self.params["physics"]["external_potential"]
+            or self.params["quantum"]["f_15"] != 0.0
+        ):
+            raise NotImplementedError(
+                "Cosmological hydro/particles/external_potential/SI is not yet implemented."
+            )
 
-        if self.params["physics"]["hydro"] or self.params["physics"]["particles"]:
-            if sharding is not None:
-                raise NotImplementedError(
-                    "hydro/particles sharding is not yet implemented."
-                )
+        if (
+            self.params["physics"]["hydro"] or self.params["physics"]["particles"]
+        ) and (sharding is not None):
+            raise NotImplementedError(
+                "hydro/particles sharding is not yet implemented."
+            )
 
         # print info
         if jax.process_index() == 0:
@@ -175,7 +175,7 @@ class Simulation:
         """
         Return the number of cells in the x direction (elongated axis).
         """
-        return int(round(self.resolution * self.aspect_ratio))
+        return round(self.resolution * self.aspect_ratio)
 
     @property
     def shape(self):
@@ -239,7 +239,7 @@ class Simulation:
             t_end = self.params["time"]["end"]
             t_span = t_end - t_start
         num_checkpoints = self.params["output"]["num_checkpoints"]
-        nt = int(round(round(t_span / dt_kin) / num_checkpoints) * num_checkpoints)
+        nt = round(round(t_span / dt_kin) / num_checkpoints) * num_checkpoints
 
         return nt
 
@@ -300,7 +300,7 @@ class Simulation:
         Shape is (nx, ny, nz); Lx = aspect_ratio * box_size, Ly = Lz = box_size.
         """
         dx = self.dx
-        nx, ny, nz = self.shape
+        nx, ny, _ = self.shape
         hx = 0.5 * dx
         x_lin = jnp.linspace(hx, nx * dx - hx, nx)
         y_lin = jnp.linspace(hx, ny * dx - hx, ny)
@@ -316,7 +316,7 @@ class Simulation:
         After jaxdecomp's pfft3d the array axis order is (Y, Z, X), so the
         returned k-arrays are already in that transposed layout.
         """
-        nx, ny, nz = self.shape
+        nx, ny, _ = self.shape
         dx = self.dx
         Lx = nx * dx  # elongated box length
         Ly = ny * dx  # == box_size
@@ -473,7 +473,7 @@ class Simulation:
         # round up to the nearest multiple of num_checkpoints
         num_checkpoints = self.params["output"]["num_checkpoints"]
         nt = self.nt
-        nt_sub = int(round(nt / num_checkpoints))
+        nt_sub = round(nt / num_checkpoints)
         dt = t_span / nt
 
         # distributed arrays (fixed) needed for calculations
