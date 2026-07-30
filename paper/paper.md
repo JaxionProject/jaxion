@@ -30,7 +30,7 @@ JAX's automatic differentiation enables the simulations to be used with optimiza
 
 # Statement of need
 
-`jaxion` is designed to be an open-source release of previous research code algorithms that have been used to investigate several aspects of FDM [@Mocz:2017;@Mocz:2018;@Church:2019;@Amin:2019;@Mocz:2019;@Lancaster:2020;@Davies:2020;@Mocz:2020;@Mocz:2021;@Amin:2022;@Dome:2023;@Mocz:2023;@Foote:2023;@Dome:2023;@Luu:2024;@Pozo:2024;@Painter:2024;@Luu:2025;@Pozo:2025]. This new release, written in JAX [@jax2018github], has the added advantage of being differentiable and deployable on multiple GPUs.
+`jaxion` is designed to be an open-source release of previous research code algorithms that have been used to investigate several aspects of FDM [@Mocz:2017;@Mocz:2018;@Church:2019;@Amin:2019;@Mocz:2019;@Lancaster:2020;@Davies:2020;@Mocz:2020;@Mocz:2021;@Amin:2022;@Dome:2023;@Mocz:2023;@Foote:2023;@Dome2:2023;@Luu:2024;@Pozo:2024;@Painter:2024;@Luu:2025;@Pozo:2025]. This new release, written in JAX [@jax2018github], has the added advantage of being differentiable and deployable on multiple GPUs.
 
 Astrophysics research has long relied on sophisticated simulation codes.
 Established codes include:
