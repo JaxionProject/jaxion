@@ -15,6 +15,7 @@
 [![Readthedocs Status][docs-badge]][docs-link]
 [![License][license-badge]][license-link]
 [![Software DOI][software-doi-badge]][software-doi-link]
+[![JOSS DOI][joss-doi-badge]][joss-doi-link]
 
 [status-link]:         https://www.repostatus.org/#active
 [status-badge]:        https://www.repostatus.org/badges/latest/active.svg
@@ -34,6 +35,8 @@
 [license-badge]:       https://img.shields.io/badge/License-Apache_2.0-blue.svg
 [software-doi-link]:   https://doi.org/10.5281/zenodo.17438467
 [software-doi-badge]:  https://zenodo.org/badge/1072645376.svg
+[joss-doi-link]:       https://doi.org/10.21105/joss.09542
+[joss-doi-badge]:      https://joss.theoj.org/papers/10.21105/joss.09542/status.svg
 
 
 A simple JAX-powered simulation library for numerical experiments of fuzzy dark matter, stars, gas + more!
