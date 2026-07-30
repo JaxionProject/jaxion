@@ -43,9 +43,9 @@ Established codes include:
 Such codes enable detailed studies of gas dynamics, star formation, cosmological structure formation, and galaxy evolution. These tools employ a combination of grid-based, particle-based, and spectral methods to solve the governing equations of hydrodynamics, gravity, and additional physics.
 
 Despite their successes, classical astrophysics codes are limited in their ability to interface with modern machine learning (ML) frameworks and support automatic differentiation. As ML and AI techniques are becoming more integrated with scientific fields, e.g. for parameter inference, model discovery, and hybrid physics-ML modeling, there is a growing need for simulation frameworks that are flexible and differentiable.
-`jaxion` fills this gap, by leveraging automatic differentiation, hardware acceleration, and seamless integration with ML workflows. Other recent developments of differentiable astrophysics code for various applications ranging from hydrodynamical simulations to modeling gravitational waves include [@Horowitz:2025;@Lanzieri:2022;@Wong:2023]
+`jaxion` fills this gap, by leveraging automatic differentiation, hardware acceleration, and seamless integration with ML workflows. Other recent developments of differentiable astrophysics codes for various applications ranging from hydrodynamical simulations to modeling gravitational waves include [@Horowitz:2025;@Lanzieri:2022;@Wong:2023].
 
-`jaxion` is a differentiable simulation library specifically designed for studying FDM coupled to baryons (stars and gas). FDM is a plausible dark matter candidate, modeled as a quantum wave-like field. It exhibits unique phenomena such as solitonic cores and granular interference patterns on kiloparsec scales [@Hui:2017]. `jaxion`, with built-in automatic differentiability, is aimed to open new avenues for scientific discovery through gradient-based parameter inference, optimization, and hybrid physics-ML modeling.
+`jaxion` is a differentiable simulation library specifically designed for studying FDM coupled to baryons (stars and gas). FDM is a plausible dark matter candidate, modeled as a quantum wave-like field. It exhibits unique phenomena such as solitonic cores and granular interference patterns on kiloparsec scales [@Hui:2017]. `jaxion`, with built-in automatic differentiability, is aimed at opening new avenues for scientific discovery through gradient-based parameter inference, optimization, and hybrid physics-ML modeling.
 
 
 # Overview of functionality
@@ -54,7 +54,7 @@ Despite their successes, classical astrophysics codes are limited in their abili
 
 | Component         | Governing Equations             | Numerical Method |
 |-------------------|---------------------------------|------------------|
-| Fuzzy Dark Matter | Schrodinger-Poisson             | Spectral         |
+| Fuzzy Dark Matter | Schrödinger-Poisson             | Spectral         |
 | Gas               | Compressible Euler (isothermal) | Finite Volume    |
 | Stars             | Collisionless N-body            | Particle-Mesh    |
 | Gravity           | Poisson equation                | Spectral         |
@@ -65,7 +65,7 @@ The code generates checkpoints (for restart and analysis) and images.
 
 Documentation is found at: https://jaxion.readthedocs.io/
 
-The Github Repository is at: https://github.com/JaxionProject/jaxion
+The GitHub Repository is at: https://github.com/JaxionProject/jaxion
 
 Examples of simulation setups are found in the `examples/` directory, including inverse problems (optimization).
 
@@ -104,13 +104,13 @@ Benjamin Hamm,
 Lars Hernquist,
 Ben Horowitz,
 Lam Hui,
+Tina Kahniashvili,
 Tzanio Kolev,
 Lachlan Lancaster,
 Alvaro Pozo Larrocha,
 Mariangela Lisanti,
 Eric Ludwig,
 Hoang Nhan Luu,
-Tina Kahniashvili,
 Federico Marinacci,
 Simon May,
 Jens C. Niemeyer,
