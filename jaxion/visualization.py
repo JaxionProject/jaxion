@@ -1,7 +1,8 @@
+import os
+
 import jax
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
-import os
 
 
 def plot_sim(state, checkpoint_dir, i, params):

@@ -1,12 +1,13 @@
+import time
+from typing import NamedTuple
+
+import chex
 import jax
 import jax.numpy as jnp
+import matplotlib.image as img
+import optax
 
 import jaxion
-import chex
-from typing import NamedTuple
-import optax
-import time
-import matplotlib.image as img
 
 # switch on for double precision
 # jax.config.update("jax_enable_x64", True)

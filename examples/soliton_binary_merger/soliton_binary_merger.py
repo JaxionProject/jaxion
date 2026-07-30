@@ -1,9 +1,11 @@
+import argparse
+import os
+
 import jax
 import jax.numpy as jnp
 from jax.experimental import mesh_utils
-from jax.sharding import Mesh, PartitionSpec, NamedSharding
-import argparse
-import os
+from jax.sharding import Mesh, NamedSharding, PartitionSpec
+
 import jaxion
 
 # switch on for double precision

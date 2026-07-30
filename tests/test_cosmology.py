@@ -1,10 +1,11 @@
-from jaxion.cosmology import (
-    get_physical_time_interval,
-    get_supercomoving_time_interval,
-    get_scale_factor,
-    get_next_scale_factor,
-)
 import pytest
+
+from jaxion.cosmology import (
+    get_next_scale_factor,
+    get_physical_time_interval,
+    get_scale_factor,
+    get_supercomoving_time_interval,
+)
 
 
 def test_cosmology_functions():

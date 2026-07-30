@@ -1,5 +1,5 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 resolutions = np.array([32, 64, 128, 256, 512])
 cpu_times = np.array([1.55, 9.83, 75.19, 878.68, 13897.47]) / 100  # seconds

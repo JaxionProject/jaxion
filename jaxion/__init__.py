@@ -1,8 +1,8 @@
-from importlib.metadata import version, PackageNotFoundError
+from importlib.metadata import PackageNotFoundError, version
 
-from .simulation import Simulation as Simulation
-from .constants import constants as constants
 from .analysis import radial_power_spectrum as radial_power_spectrum
+from .constants import constants as constants
+from .simulation import Simulation as Simulation
 
 """
 jaxion: A JAX library for simulations of fuzzy dark matter, stars, gas + more!

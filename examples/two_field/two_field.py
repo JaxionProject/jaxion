@@ -1,8 +1,10 @@
+import argparse
+
 import jax
 import jax.numpy as jnp
-import numpy as np
 import jaxdecomp as jd
-import argparse
+import numpy as np
+
 import jaxion
 
 # switch on for double precision
@@ -99,8 +101,9 @@ def set_up_simulation(resolution_multiplier):
         return state
 
     def custom_plot(state, checkpoint_dir, i, params):
-        import matplotlib.pyplot as plt
         import os
+
+        import matplotlib.pyplot as plt
 
         dynamic_range = params["output"]["plot_dynamic_range"]
 

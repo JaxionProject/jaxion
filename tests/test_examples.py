@@ -1,6 +1,7 @@
 import jax.numpy as jnp
-from jaxion.utils import run_example_main
 import pytest
+
+from jaxion.utils import run_example_main
 
 rel_tol = 1e-3
 

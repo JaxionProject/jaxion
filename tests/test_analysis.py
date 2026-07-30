@@ -1,8 +1,9 @@
 import jax.numpy as jnp
-import jaxion
-from jaxion.quantum import quantum_velocity
-from jaxion.analysis import radial_power_spectrum
 import pytest
+
+import jaxion
+from jaxion.analysis import radial_power_spectrum
+from jaxion.quantum import quantum_velocity
 
 
 def test_quantum_velocity_and_radial_power_spectrum():

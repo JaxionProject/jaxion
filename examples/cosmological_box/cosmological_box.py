@@ -1,6 +1,7 @@
-import jax.numpy as jnp
-import jaxion
 import h5py
+import jax.numpy as jnp
+
+import jaxion
 
 # switch on for double precision
 # jax.config.update("jax_enable_x64", True)

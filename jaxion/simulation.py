@@ -1,29 +1,30 @@
+import json
+import os
+import time
+
 import jax
 import jax.numpy as jnp
 import orbax.checkpoint as ocp
-import os
-import json
-import time
 
 from .constants import constants
-from .quantum import quantum_kick, quantum_drift, quantum_velocity
+from .cosmology import get_next_scale_factor, get_supercomoving_time_interval
 from .gravity import calculate_gravitational_potential
-from .hydro import hydro_fluxes, hydro_accelerate
+from .hydro import hydro_accelerate, hydro_fluxes
 from .particles import (
-    particles_accelerate,
-    particles_drift,
-    particles_accrete_gas,
     bin_particles,
+    particles_accelerate,
+    particles_accrete_gas,
+    particles_drift,
 )
-from .cosmology import get_supercomoving_time_interval, get_next_scale_factor
+from .quantum import quantum_drift, quantum_kick, quantum_velocity
 from .utils import (
-    set_up_parameters,
-    print_parameters,
     print_distributed_info,
+    print_parameters,
+    set_up_parameters,
     xmeshgrid,
     xmeshgrid_transpose,
-    xzeros,
     xones,
+    xzeros,
 )
 from .visualization import plot_sim
 

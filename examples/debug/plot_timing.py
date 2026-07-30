@@ -1,5 +1,5 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Timings on Frontier (MI250X) & Rusty (H100 & H200)
 

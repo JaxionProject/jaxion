@@ -1,7 +1,9 @@
-import jax.numpy as jnp
-import numpy as np
-import jaxdecomp as jd
 import argparse
+
+import jax.numpy as jnp
+import jaxdecomp as jd
+import numpy as np
+
 import jaxion
 
 # switch on for double precision
