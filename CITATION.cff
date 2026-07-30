@@ -1,11 +1,32 @@
-cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
+cff-version: "1.2.0"
 authors:
-- family-names: "Mocz"
-  given-names: "Philip"
+- family-names: Mocz
+  given-names: Philip
   orcid: "https://orcid.org/0000-0001-6631-2566"
-title: "Jaxion"
-version: 0.0.3
-doi: 10.5281/zenodo.17438467
-date-released: 2025-10-24
+contact:
+- family-names: Mocz
+  given-names: Philip
+  orcid: "https://orcid.org/0000-0001-6631-2566"
+doi: 10.5281/zenodo.21221061
+message: If you use this software, please cite our article in the
+  Journal of Open Source Software.
+preferred-citation:
+  authors:
+  - family-names: Mocz
+    given-names: Philip
+    orcid: "https://orcid.org/0000-0001-6631-2566"
+  date-published: 2026-07-30
+  doi: 10.21105/joss.09542
+  issn: 2475-9066
+  issue: 123
+  journal: Journal of Open Source Software
+  publisher:
+    name: Open Journals
+  start: 9542
+  title: "Jaxion: A JAX package for Fuzzy Dark Matter"
+  type: article
+  url: "https://joss.theoj.org/papers/10.21105/joss.09542"
+  volume: 11
+title: "Jaxion: A JAX package for Fuzzy Dark Matter"
 url: "https://github.com/JaxionProject/jaxion"
+version: 0.0.12
