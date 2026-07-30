@@ -131,7 +131,7 @@ Jaxion welcomes community contributions of all kinds. Open an issue or fork the 
 
 ## Cite this repository
 
-If you use this software, please cite it as below.
+If you use this software, please cite the software
 
 ```bibtex
 @software{Mocz_Jaxion_2025,
@@ -142,5 +142,22 @@ If you use this software, please cite it as below.
       url = {https://github.com/JaxionProject/jaxion},
   version = {0.0.11},
      year = {2026}
+}
+```
+
+and the published JOSS paper:
+
+```bibtex
+@article{Mocz_Jaxion_JOSS_2026,
+author = {Mocz, Philip},
+doi = {10.21105/joss.09542},
+journal = {Journal of Open Source Software},
+month = jul,
+number = {123},
+pages = {9542},
+title = {{Jaxion: A JAX package for Fuzzy Dark Matter}},
+url = {https://joss.theoj.org/papers/10.21105/joss.09542},
+volume = {11},
+year = {2026}
 }
 ```
