@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import h5py
 import jax.numpy as jnp
 
