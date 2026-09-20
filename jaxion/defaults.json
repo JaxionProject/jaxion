@@ -10,7 +10,7 @@
     },
     "hydro": { 
       "default": false,
-      "description": "switch on for hydrodynamics (isothermal)."
+      "description": "switch on for hydrodynamics."
     },
     "particles": { 
       "default": false,
@@ -90,9 +90,17 @@
     }
   },
   "hydro": {
+    "eos": { 
+      "default": "isothermal",
+      "description": "equation of state: 'isothermal' or 'ideal'."
+    },
     "sound_speed": { 
       "default": 1.0,
-      "description": "isothermal sound speed [km/s]."
+      "description": "isothermal sound speed [km/s]; also sets the gas Courant time step (for the 'ideal' equation of state, set it to the maximum expected signal speed |v| + c_s)."
+    },
+    "gamma": { 
+      "default": 1.6666666666666667,
+      "description": "adiabatic index of the 'ideal' equation of state."
     }
   },
   "particles": {

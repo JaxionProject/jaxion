@@ -77,19 +77,23 @@ Check out the [`examples/`](https://github.com/JaxionProject/jaxion/tree/main/ex
   <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/heating_stars">
     <img src="examples/heating_stars/movie.gif" alt="heating_stars" width="128"/>
   </a>
+  <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/kelvin_helmholtz">
+    <img src="examples/kelvin_helmholtz/movie.gif" alt="kelvin_helmholtz" width="128"/>
+  </a>
   <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/kinetic_condensation">
     <img src="examples/kinetic_condensation/movie.gif" alt="kinetic_condensation" width="128"/>
   </a>
+  <br>
   <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/logo_inverse_problem">
     <img src="examples/logo_inverse_problem/movie.gif" alt="logo_inverse_problem" width="128"/>
   </a>
-  <br>
   <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/soliton_binary_merger">
     <img src="examples/soliton_binary_merger/movie.gif" alt="soliton_binary_merger" width="128"/>
   </a>
   <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/soliton_merger">
     <img src="examples/soliton_merger/movie.gif" alt="soliton_merger" width="128"/>
   </a>
+  <br>
   <a href="https://github.com/JaxionProject/jaxion/tree/main/examples/tidal_stripping">
     <img src="examples/tidal_stripping/movie.gif" alt="tidal_stripping" width="128"/>
   </a>

@@ -35,19 +35,25 @@ Gallery
          :alt: heating_stars
          :target: examples.html#heating-stars
 
+     - .. figure:: ../../examples/kelvin_helmholtz/movie.gif
+         :width: 300px
+         :align: center
+         :alt: kelvin_helmholtz
+         :target: examples.html#kelvin-helmholtz
+
      - .. figure:: ../../examples/kinetic_condensation/movie.gif
          :width: 300px
          :align: center
          :alt: kinetic_condensation
          :target: examples.html#kinetic-condensation
 
-     - .. figure:: ../../examples/logo_inverse_problem/movie.gif
+   * - .. figure:: ../../examples/logo_inverse_problem/movie.gif
          :width: 300px
          :align: center
          :alt: logo_inverse_problem
          :target: examples.html#logo-inverse-problem
 
-   * - .. figure:: ../../examples/soliton_binary_merger/movie.gif
+     - .. figure:: ../../examples/soliton_binary_merger/movie.gif
          :width: 300px
          :align: center
          :alt: soliton_binary_merger
@@ -59,11 +65,15 @@ Gallery
          :alt: soliton_merger
          :target: examples.html#soliton-merger
 
-     - .. figure:: ../../examples/tidal_stripping/movie.gif
+   * - .. figure:: ../../examples/tidal_stripping/movie.gif
          :width: 300px
          :align: center
          :alt: tidal_stripping
          :target: examples.html#tidal-stripping
+
+     -
+
+     -
 
 
 cosmological_box
@@ -151,6 +161,28 @@ README:
 Script:
 
 .. literalinclude:: ../../examples/heating_stars/heating_stars.py
+  :language: python
+
+
+kelvin_helmholtz
+----------------
+
+.. figure:: ../../examples/kelvin_helmholtz/movie.gif
+  :width: 300px
+  :align: center
+  :alt: kelvin_helmholtz
+  :target: examples.html#kelvin-helmholtz
+
+  See on GitHub: `examples/kelvin_helmholtz <https://github.com/JaxionProject/jaxion/tree/main/examples/kelvin_helmholtz>`_
+
+README:
+
+.. literalinclude:: ../../examples/kelvin_helmholtz/README.md
+  :language: md
+
+Script:
+
+.. literalinclude:: ../../examples/kelvin_helmholtz/kelvin_helmholtz.py
   :language: python
 
 

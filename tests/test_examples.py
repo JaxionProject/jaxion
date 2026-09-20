@@ -36,6 +36,19 @@ def test_heating_gas():
     assert jnp.mean(jnp.abs(sim.state["vz"])) == pytest.approx(4.1069093, rel=rel_tol)
 
 
+def test_kelvin_helmholtz():
+    sim = run_example_main(
+        "examples/kelvin_helmholtz/kelvin_helmholtz.py", argv=["--res", "1"]
+    )
+    assert sim.resolution == 32
+    assert sim.state["t"] > 0.0
+    # mass is conserved exactly by the finite volume scheme
+    assert jnp.mean(sim.state["rho"]) == pytest.approx(1.5, rel=rel_tol)
+    assert jnp.max(sim.state["rho"]) == pytest.approx(1.9329057, rel=rel_tol)
+    assert jnp.mean(jnp.abs(sim.state["vy"])) == pytest.approx(0.00239378, rel=rel_tol)
+    assert jnp.mean(sim.state["P"]) == pytest.approx(2.569811, rel=rel_tol)
+
+
 def test_heating_stars():
     sim = run_example_main(
         "examples/heating_stars/heating_stars.py", argv=["--res", "1"]

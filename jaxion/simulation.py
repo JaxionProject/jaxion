@@ -9,7 +9,7 @@ import orbax.checkpoint as ocp
 from .constants import constants
 from .cosmology import get_next_scale_factor, get_supercomoving_time_interval
 from .gravity import calculate_gravitational_potential
-from .hydro import hydro_accelerate, hydro_fluxes
+from .hydro import hydro_accelerate, hydro_fluxes, hydro_fluxes_ideal
 from .particles import (
     bin_particles,
     particles_accelerate,
@@ -70,6 +70,17 @@ class Simulation:
         if self.params["time"]["adaptive"]:
             raise NotImplementedError("Adaptive time stepping is not yet implemented.")
 
+        if self.params["hydro"]["eos"] not in ("isothermal", "ideal"):
+            raise ValueError("eos must be either 'isothermal' or 'ideal'.")
+
+        if self.params["hydro"]["eos"] == "ideal":
+            if self.params["hydro"]["gamma"] <= 1.0:
+                raise ValueError("gamma must be greater than 1.")
+            if self.params["particles"]["accrete_gas"]:
+                raise NotImplementedError(
+                    "Gas accretion with an ideal equation of state is not yet implemented."
+                )
+
         if self.params["physics"]["cosmology"] and (
             self.params["physics"]["hydro"]
             or self.params["physics"]["particles"]
@@ -129,6 +140,8 @@ class Simulation:
             self.state["vx"] = jnp.zeros(self.shape)
             self.state["vy"] = jnp.zeros(self.shape)
             self.state["vz"] = jnp.zeros(self.shape)
+            if self.params["hydro"]["eos"] == "ideal":
+                self.state["P"] = jnp.zeros(self.shape)
         if self.params["physics"]["particles"]:
             self.state["pos"] = jnp.zeros((self.num_particles, 3))
             self.state["vel"] = jnp.zeros((self.num_particles, 3))
@@ -224,7 +237,13 @@ class Simulation:
         dx = self.dx
         m_per_hbar = self.m_per_hbar
         safety = self.params["time"]["safety_factor"]
-        dt_kin = safety * (m_per_hbar / 6.0) * (dx * dx)
+        dt = safety * (m_per_hbar / 6.0) * (dx * dx)
+        if self.params["physics"]["hydro"]:
+            dt_cfl = safety * 0.25 * dx / self.sound_speed
+            if self.params["physics"]["quantum"]:
+                dt = min(dt, dt_cfl)
+            else:
+                dt = dt_cfl
         if self.params["physics"]["cosmology"]:
             z_start = self.params["time"]["start"]
             z_end = self.params["time"]["end"]
@@ -239,7 +258,7 @@ class Simulation:
             t_end = self.params["time"]["end"]
             t_span = t_end - t_start
         num_checkpoints = self.params["output"]["num_checkpoints"]
-        nt = round(round(t_span / dt_kin) / num_checkpoints) * num_checkpoints
+        nt = round(round(t_span / dt) / num_checkpoints) * num_checkpoints
 
         return nt
 
@@ -282,9 +301,17 @@ class Simulation:
     @property
     def sound_speed(self):
         """
-        Return the isothermal gas sound speed in the simulation (km/s)
+        Return the isothermal gas sound speed in the simulation (km/s).
+        For the ideal equation of state this value only sets the gas time step.
         """
         return self.params["hydro"]["sound_speed"]
+
+    @property
+    def adiabatic_index(self):
+        """
+        Return the adiabatic index (gamma) of the ideal gas equation of state
+        """
+        return self.params["hydro"]["gamma"]
 
     @property
     def params(self):
@@ -469,6 +496,8 @@ class Simulation:
 
         # hydro
         c_sound = self.params["hydro"]["sound_speed"]
+        gamma = self.params["hydro"]["gamma"]
+        use_ideal_eos = self.params["hydro"]["eos"] == "ideal"
 
         # round up to the nearest multiple of num_checkpoints
         num_checkpoints = self.params["output"]["num_checkpoints"]
@@ -532,7 +561,24 @@ class Simulation:
             # Drift (full-step)
             if use_quantum:
                 state["psi"] = quantum_drift(state["psi"], k_sq, m_per_hbar, dt)
-            if use_hydro:
+            if use_hydro and use_ideal_eos:
+                (
+                    state["rho"],
+                    state["vx"],
+                    state["vy"],
+                    state["vz"],
+                    state["P"],
+                ) = hydro_fluxes_ideal(
+                    state["rho"],
+                    state["vx"],
+                    state["vy"],
+                    state["vz"],
+                    state["P"],
+                    dt,
+                    dx,
+                    gamma,
+                )
+            elif use_hydro:
                 state["rho"], state["vx"], state["vy"], state["vz"] = hydro_fluxes(
                     state["rho"], state["vx"], state["vy"], state["vz"], dt, dx, c_sound
                 )

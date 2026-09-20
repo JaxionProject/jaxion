@@ -72,6 +72,7 @@ The `examples/` directory contains various demonstrations:
 - `dynamical_friction/` - Dynamical friction effects
 - `heating_gas/` - Gas heating simulations
 - `heating_stars/` - Stellar heating effects
+- `kelvin_helmholtz/` - Kelvin-Helmholtz instability of an ideal gas
 - `kinetic_condensation/` - Kinetic condensation phenomena
 - `logo_inverse_problem/` - Inverse problem demonstration
 - `soliton_binary_merger/` - Binary soliton merger

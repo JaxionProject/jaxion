@@ -100,6 +100,8 @@ and a resolution multiplier of 2 (meaning the effective resolution is 64 grid ce
 In the ``"time"`` section, we set the simulation to start at time 0.0 and end at time 1.0 (in code units (kpc / (km/s))).
 The time step in a Jaxion simulation is, by default, the quantum kinetically-limited time step,
 dt = (m_per_hbar / 6.0) * (dx * dx), which can be scaled by the ``safety_factor`` parameter (set to 1.0 by default).
+When hydrodynamics is switched on, the time step is additionally limited by the Courant condition of the gas,
+dt = 0.25 * dx / ``sound_speed``.
 
 In the ``"output"`` section, we specify the output path for saving simulation checkpoints,
 the number of checkpoints to save (100), and enable saving.
@@ -107,6 +109,8 @@ the number of checkpoints to save (100), and enable saving.
 In the ``"quantum"`` section, we set the fuzzy dark matter particle mass to ``m_22`` = 1.0 (in units of 10^-22 eV).
 
 In the ``"hydro"`` section, we set the sound speed of the isothermal gas to 40.0 km/s.
+(Jaxion also supports an ``"ideal"`` equation of state, in which case an additional pressure field ``"P"``
+is evolved with adiabatic index ``gamma``; see the ``kelvin_helmholtz`` example.)
 
 In the ``"particles"`` section, we specify that we want to include 1 star particle with a mass of 1.0e7 Msun.
 

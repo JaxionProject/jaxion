@@ -42,7 +42,9 @@ where :math:`a` is the cosmological scale factor, :math:`H\equiv\dot{a}/a` is th
 Gas
 ---
 
-For the gas, we consider the compressible isothermal Euler equations, with density :math:`\rho_{\rm gas}\equiv\rho`, velocity :math:`\mathbf{v}`, and (fixed) sound-speed :math:`c_s`:
+For the gas, we consider the compressible Euler equations, with density :math:`\rho_{\rm gas}\equiv\rho`, velocity :math:`\mathbf{v}`, and pressure :math:`P`.
+
+With the ``"isothermal"`` equation of state (the default), the pressure is set by a fixed sound-speed :math:`c_s`, namely :math:`P=\rho c_s^2`, and the equations close on the density and momentum alone:
 
 .. math::
 
@@ -63,7 +65,31 @@ For the gas, we consider the compressible isothermal Euler equations, with densi
   -\rho \nabla V
   \end{pmatrix}
 
-(where the gas pressure is :math:`P=\rho c_s^2`).
+With the ``"ideal"`` equation of state, the pressure instead follows from the total energy density :math:`e = \frac{1}{2}\rho |\mathbf{v}|^2 + P/(\gamma - 1)`, which is evolved as an additional conserved variable:
+
+.. math::
+
+  \frac{\partial}{\partial t}
+  \begin{pmatrix}
+  \rho \\
+  \rho \mathbf{v} \\
+  e
+  \end{pmatrix}
+  +
+  \nabla \cdot
+  \begin{pmatrix}
+  \rho \mathbf{v} \\
+  \rho \mathbf{v}\mathbf{v}^T + P \\
+  (e + P) \mathbf{v}
+  \end{pmatrix}
+  =
+  \begin{pmatrix}
+  0 \\
+  -\rho \nabla V \\
+  -\rho \mathbf{v} \cdot \nabla V
+  \end{pmatrix}
+
+where :math:`\gamma` is the adiabatic index (:math:`5/3` by default), and the sound-speed is :math:`c_s=\sqrt{\gamma P / \rho}`.
 
 
 Stars
